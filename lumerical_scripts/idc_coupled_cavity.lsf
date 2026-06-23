@@ -1,0 +1,39 @@
+# idc_coupled_cavity.lsf
+# Lumerical FDTD script: IDC-coupled CPW resonator
+# MSc Project — THz CPW Resonator
+#
+# Description:
+#   Builds a CPW resonator with interdigital capacitor (IDC) coupling.
+#   Uses merged signal polygon with integrated IDC fingers.
+#
+# IDC Parameters:
+#   L_IDC   = 12e-6;   # IDC length (m)
+#   w_f     = 0.6e-6;  # finger width (m)
+#   g_f     = 0.45e-6; # finger gap (m)
+#   g_tip   = 0.5e-6;  # tip gap (m)
+#   N       = 4;       # fingers per side
+#
+# TODO: implement full IDC geometry with polygon vertices
+
+switchtolayout;
+
+# === Parameters ===
+s      = 10e-6;
+w      = 7e-6;
+L_cav  = 70.75e-6;
+L_IDC  = 12e-6;
+w_f    = 0.6e-6;
+g_f    = 0.45e-6;
+g_tip  = 0.5e-6;
+N      = 4;
+
+# === Geometry placeholder ===
+# Build merged signal polygon with IDC finger vertices here
+# ...
+
+# === Mesh override for IDC region ===
+# Apply local mesh override (0.05–0.10 um) around each IDC
+# ...
+
+# === Run ===
+# run;

@@ -1,0 +1,27 @@
+# mesh_setup.lsf
+# Lumerical FDTD script: mesh override setup
+# MSc Project — THz CPW Resonator
+#
+# Description:
+#   Adds local mesh override regions around IDC structures
+#   to resolve sub-micrometre features (fingers, gaps, tips).
+#
+# Recommended mesh sizes:
+#   dx = dy = 0.05–0.10 um  (IDC region)
+#   dz = 0.2–0.5 um         (IDC region)
+#   General CPW region: coarser mesh
+
+switchtolayout;
+
+# === IDC mesh override ===
+# addmesh;
+# set("name", "IDC_left_mesh");
+# set("x", x_IDC_left);  set("x span", IDC_mesh_span_x);
+# set("y", 0);            set("y span", IDC_mesh_span_y);
+# set("z", 0);            set("z span", IDC_mesh_span_z);
+# set("dx", 0.05e-6);
+# set("dy", 0.05e-6);
+# set("dz", 0.2e-6);
+
+# Repeat for right IDC
+# ...

@@ -1,0 +1,34 @@
+# gap_coupled_cavity.lsf
+# Lumerical FDTD script: gap-coupled CPW resonator
+# MSc Project — THz CPW Resonator
+#
+# Description:
+#   Builds a half-wavelength CPW resonator with simple capacitive gap coupling.
+#   Sweeps gap size and extracts S21 transmission spectra.
+#
+# Parameters (edit before running):
+#   s       = 10e-6;   # centre conductor width (m)
+#   w       = 7e-6;    # CPW slot gap (m)
+#   L_cav   = 70.75e-6;# cavity length (m)
+#   gap     = 1e-6;    # coupling gap (m)
+#
+# TODO: implement full geometry and port/monitor setup
+
+switchtolayout;
+
+# === Parameters ===
+s     = 10e-6;
+w     = 7e-6;
+L_cav = 70.75e-6;
+gap   = 1e-6;
+
+# === Geometry placeholder ===
+# Add CPW signal conductor, ground planes, substrate here
+# ...
+
+# === Ports and monitors ===
+# Add mode source / port objects and frequency-domain monitors here
+# ...
+
+# === Run ===
+# run;

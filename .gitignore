@@ -1,0 +1,47 @@
+# Lumerical project files (large binaries)
+*.fsp
+*.ldev
+*.lms
+*.mat
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.pdfsync
+*.nav
+*.snm
+*.vrb
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Data files (add your own CSVs once ready to share)
+# data/**/*.csv
+
+# Figures (generated — add when ready)
+# figures/*.png
