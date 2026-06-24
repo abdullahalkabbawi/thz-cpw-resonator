@@ -701,7 +701,7 @@ print(f"  Resonance Frequency (f0): {f0_2:.4f} THz")
 print(f"  FWHM (df):                {df_2 * 1e3:.2f} GHz ({df_2:.4f} THz)")
 print(f"  Quality Factor (Q):       {Q_2:.4f}")
 print("-" * 60)
-print("DATASET 3 (Reduced - 4+4 Fingers):")
+print("DATASET 3 (Reduced - 3+3 Fingers):")
 print(f"  Resonance Frequency (f0): {f0_3:.4f} THz")
 print(f"  FWHM (df):                {df_3 * 1e3:.2f} GHz ({df_3:.4f} THz)")
 print(f"  Quality Factor (Q):       {Q_3:.4f}")
@@ -763,7 +763,7 @@ ax3.text(0.06, 0.74, annotation_text3, transform=ax3.transAxes,
          bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.25', alpha=0.9),
          fontsize=7.5, color='#333333')
 ax3.set_xlabel('Frequency (THz)', fontweight='medium')
-ax3.set_title('(c) IDC: $N=4+4$ Fingers', pad=8, fontweight='bold', fontsize=9)
+ax3.set_title('(c) IDC: $N=3+3$ Fingers', pad=8, fontweight='bold', fontsize=9)
 ax3.grid(True, which='both', linestyle='--', alpha=0.3)
 ax3.set_xlim(0.1, 1.5)
 ax3.set_ylim(0, 0.8)
@@ -773,7 +773,9 @@ plt.tight_layout()
 # Save the plot
 output_dir = 'figures'
 os.makedirs(output_dir, exist_ok=True)
-plot_path = os.path.join(output_dir, 'extracted_q_factor_fit.png')
-plt.savefig(plot_path, dpi=300)
-print(f"Plot saved successfully to: {plot_path}")
+# Save under both names — report uses idc_sweep_s21.png
+for fname in ['idc_sweep_s21.png', 'extracted_q_factor_fit.png']:
+    plot_path = os.path.join(output_dir, fname)
+    plt.savefig(plot_path, dpi=300)
+    print(f"Plot saved successfully to: {plot_path}")
 plt.show()
