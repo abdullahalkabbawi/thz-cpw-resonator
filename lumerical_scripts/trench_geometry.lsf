@@ -29,6 +29,7 @@ cav_L      = 80e-6;     # cavity length             (m)
 L_burried  = 5e-6;      # trench width in y         (m)
 y_height   = 5e-6;      # ground offset above slot  (m)
 h_burried  = 50e-6;     # trench depth in z         (m)
+x_offset   = -150e-6;   # shifts the entire cavity (m)
 material   = "PEC (Perfect Electrical Conductor)";
 air        = "etch";
 
@@ -38,10 +39,8 @@ deleteall;
 # -------------------------------------------------------------
 # SIGNAL LINE  (3 segments: left feed | cavity | right feed)
 # -------------------------------------------------------------
-# We centre the cavity at x = 0.
-# The cavity spans from x = -cav_L/2 to +cav_L/2.
-# Gap 1 (left) is between x = -cav_L/2 - C_g and x = -cav_L/2.
-# Gap 2 (right) is between x = +cav_L/2 and x = +cav_L/2 + C_g.
+# We centre the cavity at x = x_offset.
+# The cavity spans from x = x_offset - cav_L/2 to x_offset + cav_L/2.
 
 # Left feed
 add2drect;
@@ -49,7 +48,7 @@ set("name","signal");
 set("y min", -s/2);
 set("y max",  s/2);
 set("x min", -2000e-6);
-set("x max", -cav_L/2 - C_g);
+set("x max", x_offset - cav_L/2 - C_g);
 set("z", 0e-6);
 set("material", material);
 
@@ -58,8 +57,8 @@ add2drect;
 set("name","signal2");
 set("y min", -s/2);
 set("y max",  s/2);
-set("x min", -cav_L/2);
-set("x max",  cav_L/2);
+set("x min", x_offset - cav_L/2);
+set("x max", x_offset + cav_L/2);
 set("z", 0);
 set("material", material);
 
@@ -68,7 +67,7 @@ add2drect;
 set("name","signal3");
 set("y min", -s/2);
 set("y max",  s/2);
-set("x min",  cav_L/2 + C_g);
+set("x min", x_offset + cav_L/2 + C_g);
 set("x max",  2000e-6);
 set("z", 0);
 set("material", material);
