@@ -636,14 +636,8 @@ are given in \cref{tab:idc_params}.
 The total IDC height is $2N w_f + (2N-1)g_f = 10 \times \SI{0.6}{\micro\metre}
 + 9 \times \SI{0.45}{\micro\metre} = \SI{10.05}{\micro\metre}$, which
 exactly matches the signal conductor width $s$, leaving zero edge margin.
-The physical layout built in Lumerical FDTD is shown in \cref{fig:lumerical_layout}, and the detailed 2D geometry with annotated dimensions is shown in \cref{fig:geometry}.
+The detailed 2D geometry with annotated dimensions is shown in \cref{fig:geometry}.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{lumerical_idc_layout.png}
-    \caption{Lumerical FDTD physical layout of the IDC-coupled CPW resonator, showing the top metal layer (grey) on the substrate.}
-    \label{fig:lumerical_layout}
-\end{figure}
 
 \begin{figure}[htbp]
     \centering
@@ -888,7 +882,7 @@ To address this overcoupling, a parametric sweep of the finger count $N$ was con
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{idc_sweep_s21.png}
+    \includegraphics[width=1.0\textwidth]{idc_sweep_s21.png}
     \caption{Simulated $|S_{21}|^2$ transmission spectra of the IDC-coupled resonator for three finger counts ($N = 3, 5$, and $7$ fingers per side). All three configurations exhibit broad, low-contrast resonances characteristic of an overcoupled system ($Q_L < 1$).}
     \label{fig:idc_sweep_s21}
 \end{figure}
