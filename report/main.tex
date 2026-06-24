@@ -706,9 +706,9 @@ The key geometric parameters of the trench design are defined in
         Parameter & Symbol & Value & Unit \\
         \midrule
         Signal conductor width    & $s$                      & 10  & \si{\micro\metre} \\
-        Slot width                & $w$                      & 5   & \si{\micro\metre} \\
+        Slot width                & $w$                      & 7.5 & \si{\micro\metre} \\
         Coupling gap length       & $C_g$                    & 3   & \si{\micro\metre} \\
-        Cavity length             & $L_{\mathrm{cav}}$       & 120 & \si{\micro\metre} \\
+        Cavity length             & $L_{\mathrm{cav}}$       & 80  & \si{\micro\metre} \\
         Ground offset above slot  & $y_{\mathrm{height}}$    & 5   & \si{\micro\metre} \\
         Trench width in $y$       & $L_{\mathrm{buried}}$    & 5   & \si{\micro\metre} \\
         Trench depth in $z$       & $h_{\mathrm{buried}}$    & 50  & \si{\micro\metre} \\
@@ -730,7 +730,7 @@ builds each structural element in sequence:
 add2drect;
 set("name","signal");
 set("y min",-s/2);  set("y max",s/2);
-set("x min",-2000e-6);  set("x max",-C_g/2);
+set("x min",-2000e-6);  set("x max",-cav_L/2-C_g);
 set("z",0e-6);  set("material",material);
 
 # Upper trench inner sidewall (y-normal)
