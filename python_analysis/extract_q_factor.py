@@ -258,47 +258,47 @@ print("EXTRACTED RESONANCE PARAMETERS:")
 print(f"Resonance Frequency (f0): {f0_fit:.4f} THz")
 print(f"FWHM (df):                {df_fit * 1e3:.2f} GHz ({df_fit:.4f} THz)")
 print(f"Quality Factor (Q):       {Q_factor:.4f}")
-print("=" * 40)
+print("=" * 45)
 
 # ---------------------------------------------------------
-# 4. PLOT RESULTS (RESEARCH/PUBLICATION STYLE)
+# 4. GENERATE PUBLICATION-STYLE PLOT
 # ---------------------------------------------------------
 plt.rcParams.update({
-    'font.size': 11,
-    'axes.labelsize': 12,
-    'axes.titlesize': 13,
-    'xtick.labelsize': 10,
-    'ytick.labelsize': 10,
-    'legend.fontsize': 10,
-    'figure.titlesize': 14,
+    'font.size': 9,
+    'axes.labelsize': 10,
+    'axes.titlesize': 11,
+    'xtick.labelsize': 8,
+    'ytick.labelsize': 8,
+    'legend.fontsize': 8,
+    'figure.titlesize': 12,
     'font.family': 'sans-serif'
 })
 
-fig, ax = plt.subplots(figsize=(6.5, 4.8), dpi=300)
+fig, ax = plt.subplots(figsize=(5.0, 3.8), dpi=300)
 
-# Plot raw data
-ax.scatter(freq, y, color='#1f77b4', s=12, alpha=0.7, label='Raw Data')
+# Plot raw data points (smaller size s=5, and transparent to see the curve)
+ax.scatter(freq, y, color='#1f77b4', s=5, alpha=0.5, label='Raw Data')
 
-# Plot fitted curve over the fit mask range and slightly beyond
-freq_fit_line = np.linspace(0.15, 0.85, 500)
+# Plot Lorentzian fit line over the full range of interest
+freq_fit_line = np.linspace(0.1, 1.2, 500)
 y_fit_line = lorentzian(freq_fit_line, *popt)
-ax.plot(freq_fit_line, y_fit_line, color='#d62728', lw=2.2, label='Lorentzian Fit')
+ax.plot(freq_fit_line, y_fit_line, color='#d62728', lw=1.5, label='Lorentzian Fit')
 
-# Annotate results
+# Add metrics text box (smaller box and text)
 annotation_text = (
     f"$f_0 = {f0_fit:.3f}$ THz\n"
     f"$\\Delta f = {df_fit*1e3:.1f}$ GHz\n"
-    f"$Q = {Q_factor:.2f}$"
+    f"$Q = {Q_factor:.3f}$"
 )
-ax.text(0.65, 0.75, annotation_text, transform=ax.transAxes,
-        bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.5', alpha=0.9),
-        fontsize=11, color='#333333')
+ax.text(0.68, 0.75, annotation_text, transform=ax.transAxes,
+        bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
+        fontsize=8, color='#333333')
 
 # Labels and Styling
 ax.set_xlabel('Frequency (THz)', fontweight='medium')
 ax.set_ylabel('Amplitude (Y)', fontweight='medium')
-ax.set_title('Resonance Extraction & Lorentzian Fitting', pad=12, fontweight='bold')
-ax.grid(True, which='both', linestyle='--', alpha=0.5)
+ax.set_title('Resonance Extraction & Lorentzian Fitting', pad=8, fontweight='bold')
+ax.grid(True, which='both', linestyle='--', alpha=0.3)
 ax.legend(loc='upper right')
 ax.set_xlim(0.1, 1.2)
 ax.set_ylim(0, 0.8)
