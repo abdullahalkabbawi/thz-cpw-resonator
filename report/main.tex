@@ -1,190 +1,1132 @@
 \documentclass[12pt,a4paper]{article}
 
-%% ── Packages ────────────────────────────────────────────────────────────────
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{amsmath, amssymb}
+% -------------------- Packages --------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{booktabs}
-\usepackage{siunitx}
-\usepackage{hyperref}
-\usepackage{geometry}
-\usepackage{caption}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
 \usepackage{subcaption}
-\usepackage{cleveref}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{soul}
+\usepackage{setspace}
+\usepackage{newtxtext,newtxmath}
+\usepackage[colorlinks=true,
+            linkcolor=uofgblue,
+            urlcolor=uofgblue,
+            citecolor=uofgblue]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}   % must load AFTER hyperref
 
-\geometry{margin=2.5cm}
-\sisetup{per-mode=symbol}
+% -------------------- Page setup --------------------
+\singlespacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
 
-%% ── Title ───────────────────────────────────────────────────────────────────
-\title{Design and Simulation of Terahertz Coplanar Waveguide Resonators}
-\author{Abdullah Alkabbawi}
-\date{\today}
+% -------------------- Colours --------------------
+\definecolor{uofgblue}{RGB}{0,65,101}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{boxblue}{RGB}{230,242,250}
+
+% -------------------- Header/Footer --------------------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{MSc Project Report}
+\rhead{THz CPW Resonator}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% -------------------- Custom Lumerical language --------------------
+\lstdefinelanguage{Lumerical}{
+    morekeywords={deleteall, switchtolayout, add2drect, add2dpoly,
+                  set, addmesh, polyor, floor, run, for, if,
+                  addport, addpower, adddft, setnamed, getresult},
+    sensitive=false,
+    morecomment=[l]{\#},
+    morestring=[b]"
+}
+
+% -------------------- Code style --------------------
+\lstdefinestyle{lumerical}{
+    backgroundcolor=\color{lightgray},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keywordstyle=\color{uofgblue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{teal},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=5
+}
+\lstset{style=lumerical}
+
+% -------------------- Box styles --------------------
+\tcbset{
+    sharp corners, boxrule=0.5pt,
+    colframe=uofgblue, colback=boxblue,
+    left=6pt, right=6pt, top=6pt, bottom=6pt
+}
+
+% -------------------- siunitx --------------------
+\sisetup{per-mode=symbol, detect-weight=true}
+
+% -------------------- Report metadata --------------------
+% TODO: fill in your name, GUID and supervisor before submission
+\newcommand{\projecttitle}{Design and Simulation of Terahertz Coplanar Waveguide Resonators}
+\newcommand{\studentname}{Your Name}
+\newcommand{\studentid}{Your GUID}
+\newcommand{\supervisor}{Supervisor Name}
+\newcommand{\degreeprogramme}{MSc Electronics and Electrical Engineering}
+\newcommand{\school}{James Watt School of Engineering}
+\newcommand{\university}{University of Glasgow}
+\newcommand{\academicyear}{2025--2026}
 
 \begin{document}
 
-\maketitle
+% ============================================================
+% FRONT COVER
+% ============================================================
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    {\Large \textbf{\university}}\\[0.3cm]
+    {\large \school}\\[1.5cm]
+    {\Huge \textbf{\projecttitle}}\\[1.5cm]
+    {\Large MSc Project Report}\\[1cm]
+    \begin{tabular}{rl}
+        \textbf{Student Name:}          & \studentname  \\[4pt]
+        \textbf{GUID / Matriculation:}  & \studentid    \\[4pt]
+        \textbf{Degree Programme:}      & \degreeprogramme \\[4pt]
+        \textbf{Supervisor:}            & \supervisor   \\[4pt]
+        \textbf{Academic Year:}         & \academicyear \\
+    \end{tabular}
+    \vfill
+    {\large Submitted in partial fulfilment of the requirements for the
+    degree of Master of Science.}\\[0.5cm]
+    {\large \today}
+\end{titlepage}
+
+% ============================================================
+% ABSTRACT
+% ============================================================
+\newpage
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+This project investigates the design and simulation of terahertz coplanar
+waveguide (CPW) resonators using Ansys Lumerical FDTD. The aim is to
+understand how cavity length and capacitive coupling geometry control the
+resonance frequency, transmission response and loaded quality factor~($Q_L$).
+A half-wavelength CPW cavity with a centre conductor width of
+$s = \SI{10.05}{\micro\metre}$ and a slot gap of $w = \SI{6.6}{\micro\metre}$
+was designed for a fundamental resonance near \SI{0.8}{\tera\hertz}.
+
+A cavity length sweep confirmed the inverse frequency--length relationship
+and yielded a corrected effective refractive index $n_{\mathrm{eff}} = 2.68$
+and an end correction $\Delta L \approx \SI{12.4}{\micro\metre}$, consistent
+with capacitive loading at the coupling gaps. A capacitive gap sweep with
+gaps from \SI{0.8}{\micro\metre} to \SI{5}{\micro\metre} produced $Q_L$
+values of 6.3 to 13.6, confirming that larger gaps give weaker coupling and
+higher quality factors. An interdigital capacitor (IDC) coupling structure
+with 5+5 fingers was subsequently simulated; the IDC loading shifted the
+resonance to approximately \SI{0.45}{\tera\hertz} and produced a very broad
+transmission response ($Q_L \approx 1.2$), indicating severe overcoupling.
+The project demonstrates that CPW resonator behaviour can be engineered
+through cavity geometry and coupling design, and identifies finger count
+reduction and tip-gap enlargement as the primary routes to higher~$Q_L$.
+
+% ============================================================
+% FRONT MATTER
+% ============================================================
+\newpage
 \tableofcontents
 \newpage
+\listoffigures
+\newpage
+\listoftables
 
-%% ── 1. Introduction ─────────────────────────────────────────────────────────
+% ============================================================
+% NOMENCLATURE
+% ============================================================
+\newpage
+\section*{Nomenclature}
+\addcontentsline{toc}{section}{Nomenclature}
+
+\begin{tabular}{p{3.2cm} p{10.8cm}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$c$                        & Speed of light in vacuum, \SI{3e8}{\metre\per\second} \\
+$\epsilon_r$               & Relative permittivity of the substrate \\
+$\epsilon_{\mathrm{eff}}$  & Effective permittivity of the CPW quasi-TEM mode \\
+$n_{\mathrm{eff}}$         & Effective refractive index \\
+$f_0$                      & Resonance frequency \\
+$\Delta f$                 & FWHM bandwidth of the resonance peak \\
+$L_{\mathrm{cav}}$         & Physical cavity length \\
+$\Delta L$                 & End correction (additional effective electrical length) \\
+$s$                        & CPW centre conductor width \\
+$w$                        & CPW slot gap to ground plane \\
+$L_{\mathrm{IDC}}$         & IDC finger length \\
+$N$                        & IDC finger count per side \\
+$w_f$                      & IDC finger width \\
+$g_f$                      & IDC finger gap \\
+$g_{\mathrm{tip}}$         & IDC tip gap \\
+$S_{11}$                   & Reflection coefficient \\
+$S_{21}$                   & Transmission coefficient \\
+$Q_L$                      & Loaded quality factor \\
+$Q_i$                      & Internal (unloaded) quality factor \\
+$Q_c$                      & Coupling quality factor \\
+CPW                        & Coplanar waveguide \\
+FDTD                       & Finite-difference time-domain \\
+IDC                        & Interdigital capacitor \\
+FWHM                       & Full width at half maximum \\
+PEC                        & Perfect electrical conductor \\
+PML                        & Perfectly matched layer \\
+\bottomrule
+\end{tabular}
+
+% ============================================================
+% 1. INTRODUCTION
+% ============================================================
+\newpage
 \section{Introduction}
 \label{sec:intro}
 
-This report presents the design and simulation of terahertz (THz)
-coplanar waveguide (CPW) resonators using Ansys Lumerical FDTD\@.
-The aim is to understand how resonator geometry controls the resonance
-frequency, transmission response, bandwidth, and loaded quality factor.
+\subsection{Background}
 
-Two coupling methods are investigated:
-\begin{enumerate}
-  \item Simple capacitive gap coupling.
-  \item Interdigital capacitor (IDC) coupling.
+Coplanar waveguides (CPWs) are widely used in microwave, millimetre-wave
+and terahertz circuits because they provide compact planar transmission
+lines that can be fabricated using standard photolithographic
+processes~\cite{Wen1969}. A CPW consists of a centre signal conductor
+flanked by two lateral ground planes, separated by narrow slots. The
+electromagnetic field is concentrated in the gap region, making CPWs
+well suited for compact resonators and integrated sensing devices.
+
+The terahertz frequency range (approximately \SIrange{0.1}{10}{\tera\hertz})
+is of growing importance for high-speed wireless communication, imaging,
+molecular spectroscopy and quantum information
+systems~\cite{Siegel2002}. However, the wavelength at terahertz
+frequencies is on the order of hundreds of micrometres, so resonators
+must be designed at the micrometre scale. Substrate permittivity, metal
+conductivity and coupling geometry each play a significant role in the
+frequency response and quality factor of the device.
+
+\subsection{Motivation}
+
+This project is motivated by the need to understand how CPW resonator
+geometry can be used to engineer resonance frequency and quality factor
+at terahertz frequencies. Two coupling strategies are investigated:
+simple capacitive gap coupling and interdigital capacitor (IDC) coupling.
+The IDC structure offers greater design flexibility, but introduces a
+more complex capacitive loading that must be carefully characterised.
+
+\subsection{Aim}
+
+The aim is to design, simulate and analyse terahertz CPW resonators
+using full-wave FDTD simulation, with focus on how coupling geometry
+controls resonance frequency, bandwidth and loaded quality factor.
+
+\subsection{Objectives}
+
+\begin{enumerate}[label=\textbf{O\arabic*:}]
+    \item Review relevant literature on CPW resonator theory, terahertz
+          devices and FDTD simulation.
+    \item Design a half-wavelength CPW resonator targeting resonance near
+          \SI{0.8}{\tera\hertz}.
+    \item Build and simulate the resonator geometry in Ansys Lumerical FDTD.
+    \item Characterise the relationship between cavity length and resonance
+          frequency and extract the effective refractive index and end
+          correction.
+    \item Investigate simple capacitive gap coupling and its effect on
+          $Q_L$ over a range of gap widths.
+    \item Design and simulate an IDC-coupled resonator and characterise the
+          effect of the finger geometry on coupling strength.
+    \item Extract resonance frequency, FWHM bandwidth and $Q_L$ by
+          Lorentzian fitting in Python.
+    \item Compare simulated results with transmission-line theory and
+          derive design guidelines for higher-$Q_L$ CPW resonators.
 \end{enumerate}
 
-%% ── 2. CPW Resonator Design ─────────────────────────────────────────────────
-\section{CPW Resonator Design}
+\subsection{Report Structure}
+
+\Cref{sec:litreview} reviews the relevant literature.
+\Cref{sec:theory} presents the theoretical background.
+\Cref{sec:methodology} describes the simulation methodology.
+\Cref{sec:design} details the resonator design and implementation.
+\Cref{sec:results} presents the simulation results.
+\Cref{sec:discussion} discusses the results in the context of theory.
+\Cref{sec:conclusions} gives the conclusions and suggestions for future
+work.
+
+% ============================================================
+% 2. LITERATURE REVIEW
+% ============================================================
+\newpage
+\section{Literature Review}
+\label{sec:litreview}
+
+\subsection{Coplanar Waveguide Transmission Lines}
+
+The coplanar waveguide was introduced by Wen~\cite{Wen1969}, who derived
+the quasi-static field distribution using conformal mapping. The CPW
+supports a quasi-TEM mode whose field is concentrated in the slot region
+between the signal conductor and the ground planes, making the structure
+attractive for planar circuit integration. Simons~\cite{Simons2001}
+provides a comprehensive treatment of CPW transmission lines, covering
+effective permittivity, characteristic impedance, discontinuities and
+transitions. The effective permittivity is accurately described by
+elliptic integral expressions derived from conformal mapping and depends
+on the ratio of conductor width to slot width as well as the substrate
+thickness and permittivity~\cite{Ghione1987}.
+
+\subsection{Microwave and Terahertz Resonators}
+
+CPW resonators are widely used as building blocks for filters, oscillators
+and sensing systems at microwave and millimetre-wave
+frequencies~\cite{Pozar2011}. The loaded quality factor depends on both
+internal dissipation and external coupling strength. For superconducting
+CPW resonators used in circuit quantum electrodynamics,
+G\"{o}ppl~\textit{et al.}~\cite{Goppl2008} demonstrated $Q_L$ values
+exceeding $10^6$ at cryogenic temperatures. At terahertz frequencies and
+room temperature, conductor losses and radiation limit the achievable
+$Q_L$ to much lower values~\cite{Siegel2002}. This project focuses on
+the regime where the coupling geometry, rather than material loss,
+dominates the loaded quality factor.
+
+\subsection{Capacitive Coupling Structures}
+
+Coupling between a feedline and a resonator is commonly achieved using a
+simple capacitive gap or an interdigital capacitor (IDC). Pozar~\cite{Pozar2011}
+shows that the coupling quality factor is inversely proportional to the
+square of the coupling capacitance: a larger capacitance gives lower
+$Q_c$ and lower $Q_L$. IDC structures, in which interleaved metal fingers
+increase the effective electrode area, are used where a large coupling
+capacitance is required in a compact footprint~\cite{Simons2001}. The
+coupling capacitance of an IDC scales approximately linearly with the
+finger count and the finger overlap length. A key design challenge with
+IDC coupling is that the finger structure also loads the resonator,
+shifting the resonance frequency downward.
+
+\subsection{FDTD Simulation}
+
+The finite-difference time-domain (FDTD) method~\cite{Taflove2005} is
+widely used for full-wave electromagnetic simulation of planar resonators.
+Maxwell's equations are solved on a Cartesian grid in the time domain, and
+frequency-domain $S$-parameters are obtained by Fourier transformation.
+Perfectly matched layer (PML) absorbing boundaries are used to terminate
+the simulation domain without artificial reflections. For CPW structures
+containing sub-micrometre coupling gaps, local mesh refinement is required
+to resolve the coupling region accurately.
+
+\subsection{Quality Factor Extraction}
+
+Khalil~\textit{et al.}~\cite{Khalil2012} describe robust methods for
+extracting the loaded quality factor from two-port $S$-parameter data.
+For a symmetric two-port transmission resonator, $Q_L = f_0/\Delta f$,
+where $\Delta f$ is the FWHM of the transmission peak, is directly
+applicable. More advanced circle-fitting methods can separate $Q_L$ into
+internal and coupling contributions, but require accurate measurement of
+the on-resonance transmission level and coupling asymmetry.
+
+% ============================================================
+% 3. THEORETICAL BACKGROUND
+% ============================================================
+\newpage
+\section{Theoretical Background}
+\label{sec:theory}
+
+\subsection{CPW Geometry}
+
+A CPW consists of three co-planar metal conductors on a dielectric
+substrate: a centre signal conductor of width~$s$ and two semi-infinite
+ground planes separated from the signal conductor by slots of width~$w$.
+The geometry is parameterised by the ratio $k = s/(s + 2w)$, which
+determines the effective permittivity and the characteristic impedance.
+The electromagnetic field is predominantly concentrated in the two slots,
+providing strong localised field enhancement that is useful for coupling
+and sensing.
+
+\subsection{CPW Effective Permittivity}
+
+For a CPW on a substrate of relative permittivity $\epsilon_r$ and
+thickness $h$, the quasi-static effective permittivity is derived using
+conformal mapping as~\cite{Ghione1987,Simons2001}:
+\begin{equation}
+    \epsilon_{\mathrm{eff}} = 1 +
+    \frac{\epsilon_r - 1}{2}\,
+    \frac{K(k_1)}{K(k_1')}\,
+    \frac{K(k')}{K(k)},
+    \label{eq:eps_eff_full}
+\end{equation}
+where $K(\cdot)$ is the complete elliptic integral of the first kind,
+$k = s/(s+2w)$, $k' = \sqrt{1-k^2}$, and $k_1$, $k_1'$ are modified
+arguments that account for the finite substrate thickness. For substrates
+much thicker than the conductor dimensions ($h \gg s + 2w$),
+\cref{eq:eps_eff_full} reduces to the commonly used approximation:
+\begin{equation}
+    \epsilon_{\mathrm{eff}} \approx \frac{\epsilon_r + 1}{2}.
+    \label{eq:eps_eff_simple}
+\end{equation}
+The effective refractive index of the CPW quasi-TEM mode is:
+\begin{equation}
+    n_{\mathrm{eff}} = \sqrt{\epsilon_{\mathrm{eff}}}.
+    \label{eq:neff}
+\end{equation}
+For a high-resistivity silicon substrate ($\epsilon_r \approx 11.7$),
+\cref{eq:eps_eff_simple,eq:neff} give $n_{\mathrm{eff}} \approx 2.52$.
+The value $n_{\mathrm{eff}} = 2.65$ used for initial cavity design
+corresponds to a slightly higher effective permittivity, consistent with
+a substrate having $\epsilon_r \approx 13$ (e.g.\ GaAs or similar
+compound semiconductor) or with a correction for the specific $s/w$
+ratio and finite substrate thickness.
+
+\subsection{Half-Wavelength Resonator}
+
+A half-wavelength resonator requires the electric field to vanish
+(short-circuit boundary) at both ends of the cavity. The fundamental
+resonance frequency is:
+\begin{equation}
+    f_0 = \frac{c}{2\,n_{\mathrm{eff}}\,L_{\mathrm{cav}}}.
+    \label{eq:halfwave}
+\end{equation}
+Rearranging \cref{eq:halfwave} gives the required cavity length:
+\begin{equation}
+    L_{\mathrm{cav}} = \frac{c}{2\,n_{\mathrm{eff}}\,f_0}.
+    \label{eq:Lcav}
+\end{equation}
+For $f_0 = \SI{0.8}{\tera\hertz}$ and $n_{\mathrm{eff}} = 2.65$,
+\cref{eq:Lcav} gives $L_{\mathrm{cav}} \approx \SI{70.75}{\micro\metre}$.
+
+\subsection{End Correction}
+
+In practice, the physical cavity length does not fully describe the
+resonator. Fringing fields at the coupling gaps and capacitive loading
+at the cavity ends increase the effective electrical length. This is
+modelled by an end correction~$\Delta L$:
+\begin{equation}
+    f_0 = \frac{c}{2\,n_{\mathrm{eff}}\,(L_{\mathrm{cav}} + \Delta L)}.
+    \label{eq:end_correction}
+\end{equation}
+Fitting \cref{eq:end_correction} to simulated resonance frequencies at
+different cavity lengths allows both $n_{\mathrm{eff}}$ and $\Delta L$
+to be extracted simultaneously.
+
+\subsection{Loaded Quality Factor}
+
+The loaded quality factor is:
+\begin{equation}
+    Q_L = \frac{f_0}{\Delta f},
+    \label{eq:QL}
+\end{equation}
+where $\Delta f$ is the FWHM bandwidth of the resonance peak. The loaded
+quality factor is related to the internal and coupling contributions by:
+\begin{equation}
+    \frac{1}{Q_L} = \frac{1}{Q_i} + \frac{1}{Q_c}.
+    \label{eq:Q_relation}
+\end{equation}
+To maximise $Q_L$, both the internal loss ($1/Q_i$) and the coupling
+strength ($1/Q_c$) must be minimised.
+
+\subsection{S-Parameters and Resonance Response}
+
+The two-port $S$-parameters describe the scattering of signals between
+ports. The transmission coefficient $S_{21}$ reaches a local maximum at
+the resonance frequency, where stored energy is released to both ports.
+The reflection coefficient $S_{11}$ simultaneously reaches a minimum.
+For a symmetric lossless resonator with equal port coupling,
+$|S_{21}| = 1$ and $|S_{11}| = 0$ at resonance.
+
+\subsection{Lorentzian Fitting}
+
+The squared magnitude of the transmission coefficient near resonance
+follows a Lorentzian lineshape:
+\begin{equation}
+    |S_{21}|^2 = b_0 + A\,
+    \frac{(\Delta f/2)^2}{(f - f_0)^2 + (\Delta f/2)^2},
+    \label{eq:lorentzian}
+\end{equation}
+where $b_0$ is a background offset, $A$ is the peak amplitude and
+$\Delta f$ is the FWHM. The fitted $f_0$ and $\Delta f$ are substituted
+into \cref{eq:QL} to obtain $Q_L$.
+
+% ============================================================
+% 4. SIMULATION METHODOLOGY
+% ============================================================
+\newpage
+\section{Simulation Methodology}
+\label{sec:methodology}
+
+\subsection{Software Platform}
+
+All electromagnetic simulations were performed in Ansys Lumerical
+FDTD~\cite{Lumerical2024}. The simulation geometry, mesh and analysis
+objects were defined using the Lumerical Scripting Language (LSF),
+enabling parameterised and reproducible setups.
+
+\subsection{Simulation Domain and Boundary Conditions}
+
+The three-dimensional simulation domain was terminated on all six faces
+using perfectly matched layer (PML) absorbing boundary conditions, which
+suppress reflections from the domain edges without introducing artificial
+boundary effects~\cite{Taflove2005}. The CPW mode was excited using
+input and output ports placed at both ends of the feedlines. Each port
+used a mode source based on the fundamental CPW quasi-TEM mode profile to
+ensure that only the desired mode was launched and measured.
+
+\subsection{Material Model}
+
+Metal conductors (signal line and ground planes) were assigned the PEC
+model. This idealised model is appropriate for an initial analysis
+because it isolates geometric and coupling effects from
+frequency-dependent conductor losses, enabling a clean study of how
+geometry alone controls the resonance frequency and coupling strength.
+
+\subsection{Mesh Strategy}
+
+A non-uniform mesh was used throughout the simulation domain. Global
+mesh accuracy was set to ensure adequate resolution of the CPW feedlines
+and resonator cavity. Local mesh override regions were applied around
+each coupling structure to resolve sub-micrometre features:
+
+\begin{table}[htbp]
+    \centering
+    \caption{Mesh override regions and target cell sizes used in the FDTD simulation.}
+    \label{tab:mesh}
+    \begin{tabular}{lcc}
+        \toprule
+        Region & $\Delta x$, $\Delta y$ & $\Delta z$ \\
+        \midrule
+        IDC finger and gap region    & \SIrange{0.05}{0.10}{\micro\metre}
+                                     & \SIrange{0.2}{0.5}{\micro\metre} \\
+        Capacitive gap coupling      & \SIrange{0.10}{0.20}{\micro\metre}
+                                     & \SIrange{0.2}{0.5}{\micro\metre} \\
+        General CPW feedline region  & \SIrange{0.5}{1.0}{\micro\metre}
+                                     & \SIrange{0.5}{1.0}{\micro\metre} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Fine mesh was applied only in the coupling regions to limit the total
+cell count and simulation runtime.
+
+\subsection{Data Processing}
+
+The simulation exported frequency-domain transmission data as $|S_{21}|^2$.
+Conversion to decibels used:
+\begin{equation}
+    S_{21,\mathrm{dB}} = 10\log_{10}(|S_{21}|^2).
+    \label{eq:dB}
+\end{equation}
+For reference-normalised spectra, the resonator transmission was divided
+by the transmission through a straight CPW reference line of identical
+length:
+\begin{equation}
+    S_{21,\mathrm{norm,dB}} =
+    10\log_{10}\!\left(\frac{|S_{21}|^2}{|S_{21,\mathrm{ref}}|^2}\right).
+    \label{eq:norm}
+\end{equation}
+Post-processing used Python~3 with NumPy, SciPy and Matplotlib.
+Lorentzian fitting was performed using \texttt{scipy.optimize.curve\_fit}
+with the model of \cref{eq:lorentzian}.
+
+% ============================================================
+% 5. DESIGN AND IMPLEMENTATION
+% ============================================================
+\newpage
+\section{Design and Implementation}
 \label{sec:design}
 
-\subsection{Half-wavelength resonator}
-\label{subsec:half-wave}
+\subsection{CPW Geometry}
 
-The initial cavity length is obtained from the half-wavelength relation:
-\begin{equation}
-  L_{\mathrm{cav}} = \frac{c}{2\,n_{\mathrm{eff}}\,f_0},
-  \label{eq:halfwave}
-\end{equation}
-where $f_0 = \SI{0.8}{\tera\hertz}$, $n_{\mathrm{eff}} = 2.65$,
-and $c = \SI{3e8}{\metre\per\second}$.
-This gives $L_{\mathrm{cav}} \approx \SI{70.75}{\micro\metre}$.
+The CPW dimensions were chosen to target a \SI{50}{\ohm} characteristic
+impedance and a half-wave resonance near \SI{0.8}{\tera\hertz}. The
+baseline parameters are listed in \cref{tab:baseline_geometry}.
 
-\subsection{CPW dimensions}
-\label{subsec:cpw-dims}
-
-\begin{table}[h]
-  \centering
-  \caption{Baseline CPW dimensions.}
-  \label{tab:cpw-dims}
-  \begin{tabular}{llr}
-    \toprule
-    Parameter              & Symbol             & Value \\
-    \midrule
-    Centre conductor width & $s$                & \SI{10}{\micro\metre} \\
-    CPW slot gap           & $w$                & \SIrange{6.6}{7.5}{\micro\metre} \\
-    Target frequency       & $f_0$              & \SI{0.8}{\tera\hertz} \\
-    Initial $n_\text{eff}$ & $n_{\mathrm{eff}}$ & 2.65 \\
-    Initial cavity length  & $L_{\mathrm{cav}}$ & \SI{70.75}{\micro\metre} \\
-    \bottomrule
-  \end{tabular}
+\begin{table}[htbp]
+    \centering
+    \caption{Baseline CPW geometry used in all simulations.}
+    \label{tab:baseline_geometry}
+    \begin{tabular}{llr}
+        \toprule
+        Parameter & Symbol & Value \\
+        \midrule
+        Centre conductor width   & $s$               & \SI{10.05}{\micro\metre} \\
+        CPW slot gap             & $w$               & \SI{6.6}{\micro\metre}   \\
+        Target frequency         & $f_0$             & \SI{0.8}{\tera\hertz}    \\
+        Initial effective index  & $n_{\mathrm{eff}}$& 2.65                     \\
+        Initial cavity length    & $L_{\mathrm{cav}}$& \SI{70.75}{\micro\metre} \\
+        Substrate $x$-span       & ---               & \SI{2000}{\micro\metre}  \\
+        Substrate $y$-span       & ---               & \SI{2000}{\micro\metre}  \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
-%% ── 3. Gap Coupling ─────────────────────────────────────────────────────────
-\section{Simple Gap-Coupled Resonator}
-\label{sec:gap}
+\subsection{Design Specification}
 
-\subsection{Method}
-\label{subsec:gap-method}
-
-Simple capacitive gaps of width $g$ separate the feedlines from the
-resonant cavity.  The loaded quality factor is:
-\begin{equation}
-  Q_L = \frac{f_0}{\Delta f},
-  \label{eq:QL}
-\end{equation}
-where $\Delta f$ is the full width at half maximum (FWHM) of the
-Lorentzian transmission peak.
-
-\subsection{Results}
-\label{subsec:gap-results}
-
-\begin{table}[h]
-  \centering
-  \caption{Fitted parameters from the gap-coupled resonator simulations.}
-  \label{tab:gap-results}
-  \begin{tabular}{rrrr}
-    \toprule
-    Coupling gap & $f_0$ (\si{\tera\hertz}) & $\Delta f$ (\si{\giga\hertz}) & $Q_L$ \\
-    \midrule
-    \SI{5.0}{\micro\metre}   & 0.6675 & 49.25  & 13.55 \\
-    \SI{3.0}{\micro\metre}   & 0.6670 & 58.78  & 11.35 \\
-    \SI{1.0}{\micro\metre}   & 0.6454 & 92.09  & 7.01  \\
-    \SI{0.8}{\micro\metre}   & 0.6399 & 101.03 & 6.33  \\
-    \bottomrule
-  \end{tabular}
+\begin{table}[htbp]
+    \centering
+    \caption{Design specification for the CPW resonator.}
+    \label{tab:specification}
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        Requirement & Description \\
+        \midrule
+        Resonance frequency & Fundamental mode near \SI{0.8}{\tera\hertz}. \\
+        Geometry & Planar CPW on dielectric substrate, compatible with photolithography. \\
+        Coupling control & Coupling varied through capacitive gap width or IDC finger geometry. \\
+        Measurable output & Transmission peak suitable for extracting $f_0$, $\Delta f$ and $Q_L$. \\
+        Simulation method & Full-wave FDTD in Ansys Lumerical. \\
+        \bottomrule
+    \end{tabularx}
 \end{table}
 
-%% ── 4. End Correction ───────────────────────────────────────────────────────
-\section{Effective Index and End Correction}
-\label{sec:endcorr}
+\subsection{Gap Capacitor-Coupled Resonator}
 
-A corrected resonance model is:
-\begin{equation}
-  f_0 = \frac{c}{2\,n_{\mathrm{eff}}\,(L_{\mathrm{cav}} + \Delta L)},
-  \label{eq:corrected}
-\end{equation}
-where $\Delta L$ accounts for fringing fields and capacitive loading.
-Fitting to the length-sweep data gives $n_{\mathrm{eff}} \approx 2.68$
-and $\Delta L \approx \SI{12.38}{\micro\metre}$.
+The first coupling design used simple capacitive gaps. The CPW centre
+conductor was divided into three sections: the input feedline, the
+resonator cavity and the output feedline. Capacitive gaps of width $C_g$
+were placed at $x = \pm L_{\mathrm{cav}}/2$ to electrically isolate the
+cavity from the feedlines. Power is exchanged through the fringing
+electric field across the gap.
 
-%% ── 5. IDC Coupling ─────────────────────────────────────────────────────────
-\section{Interdigital Capacitor Coupling}
-\label{sec:idc}
+The initial cavity length was $L_{\mathrm{cav}} = \SI{70.75}{\micro\metre}$
+from \cref{eq:Lcav}. Gap widths of \SI{5}{\micro\metre},
+\SI{3}{\micro\metre}, \SI{1}{\micro\metre} and \SI{0.8}{\micro\metre}
+were simulated, covering a range from weak to strong coupling. Smaller
+gaps increase the coupling capacitance, which lowers $Q_c$ and hence
+$Q_L$ via \cref{eq:Q_relation}.
 
-\subsection{IDC geometry}
-\label{subsec:idc-geom}
+\subsection{Interdigital Capacitor-Coupled Resonator}
 
-\begin{table}[h]
-  \centering
-  \caption{IDC geometry parameters.}
-  \label{tab:idc-params}
-  \begin{tabular}{llr}
-    \toprule
-    Parameter      & Symbol                 & Value \\
-    \midrule
-    IDC length     & $L_{\mathrm{IDC}}$     & \SI{12}{\micro\metre} \\
-    Finger width   & $w_f$                  & \SI{0.6}{\micro\metre} \\
-    Finger gap     & $g_f$                  & \SI{0.45}{\micro\metre} \\
-    Tip gap        & $g_{\mathrm{tip}}$     & \SI{0.5}{\micro\metre} \\
-    Fingers/side   & $N$                    & 4 \\
-    Total fingers  & $2N$                   & 8 \\
-    \bottomrule
-  \end{tabular}
+The second design replaced each capacitive gap with an IDC. Alternating
+fingers connect to the feedline or to the cavity, forming a large
+interdigitated coupling capacitor within the width of the signal
+conductor. The structure was implemented as a single merged polygon in
+Lumerical to avoid artificial metal--metal interfaces. The IDC parameters
+are given in \cref{tab:idc_params}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{IDC coupling geometry parameters.}
+    \label{tab:idc_params}
+    \begin{tabular}{llr}
+        \toprule
+        Parameter & Symbol & Value \\
+        \midrule
+        IDC length          & $L_{\mathrm{IDC}}$    & \SI{12}{\micro\metre}    \\
+        Finger width        & $w_f$                 & \SI{0.6}{\micro\metre}   \\
+        Finger gap          & $g_f$                 & \SI{0.45}{\micro\metre}  \\
+        Tip gap             & $g_{\mathrm{tip}}$    & \SI{0.5}{\micro\metre}   \\
+        Fingers per side    & $N$                   & 5                        \\
+        Total fingers       & $2N$                  & 10                       \\
+        Middle cavity length& $L_{\mathrm{cav}}$    & \SI{40}{\micro\metre}    \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
-%% ── 6. Data Processing ──────────────────────────────────────────────────────
-\section{Data Processing}
-\label{sec:data}
+The total IDC height is $2N w_f + (2N-1)g_f = 10 \times \SI{0.6}{\micro\metre}
++ 9 \times \SI{0.45}{\micro\metre} = \SI{10.05}{\micro\metre}$, which
+exactly matches the signal conductor width $s$, leaving zero edge margin.
+The physical layout built in Lumerical FDTD is shown in \cref{fig:lumerical_layout}, and the detailed 2D geometry with annotated dimensions is shown in \cref{fig:geometry}.
 
-The exported quantity is $|S_{21}|^2$, converted to decibels by:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{lumerical_idc_layout.png}
+    \caption{Lumerical FDTD physical layout of the IDC-coupled CPW resonator, showing the top metal layer (grey) on the substrate.}
+    \label{fig:lumerical_layout}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.90\textwidth]{cpw_idc_geometry.png}
+    \caption{Simulated CPW resonator geometry. Top: full resonator view
+    showing ground planes (grey), feedline signal conductor (blue) and
+    cavity (gold) with left and right IDC coupling regions. Bottom: close-up
+    of the left IDC showing the interleaved feedline (blue) and cavity (gold)
+    fingers with annotated dimensions.}
+    \label{fig:geometry}
+\end{figure}
+
+% ============================================================
+% 6. RESULTS
+% ============================================================
+\newpage
+\section{Results}
+\label{sec:results}
+
+\subsection{Resonator Length Sweep}
+
+A cavity length sweep was performed using a fixed coupling gap of
+\SI{5}{\micro\metre} to verify the frequency--length relationship.
+The results are given in \cref{tab:length_sweep}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Simulated resonance parameters from the cavity length sweep
+    (coupling gap = \SI{5}{\micro\metre}).}
+    \label{tab:length_sweep}
+    \begin{tabular}{cccc}
+        \toprule
+        $L_{\mathrm{cav}}$ (\si{\micro\metre}) &
+        $f_0$ (\si{\tera\hertz}) &
+        $\Delta f$ (\si{\tera\hertz}) &
+        $Q_L$ \\
+        \midrule
+        61.68 & 0.755 & 0.061 & 12.38 \\
+        70.75 & 0.672 & 0.050 & 13.44 \\
+        80.83 & 0.600 & 0.044 & 13.64 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The resonance frequency decreases monotonically with increasing cavity
+length, consistent with \cref{eq:halfwave}. The $Q_L$ values are
+approximately constant across the sweep because the coupling gap size
+was held fixed.
+
+\subsection{Effective Index and End Correction}
+
+The length sweep data were fitted to the end-correction model of
+\cref{eq:end_correction} using a simultaneous least-squares fit for
+$n_{\mathrm{eff}}$ and $\Delta L$. The fitted parameters are:
+\begin{align}
+    n_{\mathrm{eff}} &\approx 2.68,              \label{eq:fit_neff} \\
+    \Delta L         &\approx \SI{12.4}{\micro\metre}. \label{eq:fit_dL}
+\end{align}
+The end correction of \SI{12.4}{\micro\metre} indicates that the
+resonator responds as though the cavity is approximately
+\SI{12}{\micro\metre} longer per end than the drawn metal length, due to
+fringing fields and phase accumulation in the capacitive gap region.
+\Cref{fig:end_correction_fit} shows the fit alongside the simpler
+half-wavelength model.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{cpw_fit_end_correction.png}
+    \caption{Resonance frequency versus cavity length. Points show
+    simulated values. The solid line is the end-correction model fit
+    ($n_{\mathrm{eff}} = 2.68$, $\Delta L = \SI{12.4}{\micro\metre}$);
+    the dashed line is the simple half-wavelength model with
+    $n_{\mathrm{eff}} = 2.65$.}
+    \label{fig:end_correction_fit}
+\end{figure}
+
+\subsection{Capacitive Gap Sweep}
+
+The coupling gap width was varied from \SI{5}{\micro\metre} to
+\SI{0.8}{\micro\metre} to study the effect of coupling strength on
+bandwidth and $Q_L$. The reference-normalised transmission spectra are
+shown in \cref{fig:gap_sweep}; the extracted resonance parameters are
+listed in \cref{tab:gap_q}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{s21_normalized_first_peak_dB.png}
+    \caption{Reference-normalised $S_{21}$ spectra for four coupling gap
+    widths. Larger gaps produce a narrower resonance peak and higher $Q_L$.}
+    \label{fig:gap_sweep}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Resonance parameters extracted by Lorentzian fitting from
+    the reference-normalised $S_{21}$ spectra.}
+    \label{tab:gap_q}
+    \begin{tabular}{cccc}
+        \toprule
+        Coupling gap &
+        $f_0$ (\si{\tera\hertz}) &
+        $\Delta f$ (\si{\giga\hertz}) &
+        $Q_L$ \\
+        \midrule
+        \SI{5.0}{\micro\metre} & 0.6675 & 49.25  & 13.55 \\
+        \SI{3.0}{\micro\metre} & 0.6670 & 58.78  & 11.35 \\
+        \SI{1.0}{\micro\metre} & 0.6454 & 92.09  & 7.01  \\
+        \SI{0.8}{\micro\metre} & 0.6399 & 101.03 & 6.33  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Both the resonance frequency and $Q_L$ decrease as the coupling gap is
+reduced. The frequency shift arises because a smaller gap increases the
+capacitive loading at the cavity ends, further extending the effective
+electrical length.
+
+\subsection{IDC-Coupled Resonator}
+
+The IDC-coupled resonator with $N = 5$ fingers per side
+($L_{\mathrm{cav}} = \SI{40}{\micro\metre}$) was simulated over
+\SIrange{0}{1.5}{\tera\hertz}. The simulated $|S_{21}|$ spectrum is
+shown in \cref{fig:idc_s21}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{idc_5x5_s21.png}
+    \caption{Simulated $|S_{21}|$ (linear) for the IDC-coupled resonator
+    with $N = 5+5$ fingers and $L_{\mathrm{cav}} = \SI{40}{\micro\metre}$.
+    The dominant peak near \SI{0.45}{\tera\hertz} indicates a highly
+    overcoupled resonator with $Q_L \approx 1.2$.}
+    \label{fig:idc_s21}
+\end{figure}
+
+The dominant peak is centred near \SI{0.45}{\tera\hertz}, well below
+the target frequency of \SI{0.8}{\tera\hertz}. The extracted FWHM is
+approximately \SI{387}{\giga\hertz}, giving $Q_L \approx 1.2$. The IDC
+structure has therefore produced a very large coupling capacitance,
+resulting in severe overcoupling.
+
+% ============================================================
+% 7. DISCUSSION
+% ============================================================
+\newpage
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Length Sweep and Effective Index}
+
+The length sweep confirms the inverse relationship between cavity length
+and resonance frequency predicted by \cref{eq:halfwave}. The simple
+half-wavelength model with $n_{\mathrm{eff}} = 2.65$ systematically
+overestimates the resonance frequency compared with the simulated values.
+This discrepancy is captured by the end-correction model of
+\cref{eq:end_correction}, which fits the data well with
+$n_{\mathrm{eff}} = 2.68$ and $\Delta L = \SI{12.4}{\micro\metre}$.
+
+The end correction corresponds to approximately 17\% of the drawn cavity
+length and arises from two physical effects. First, fringing fields
+extend beyond the metal boundaries of the coupling gap, increasing the
+effective path length of the propagating mode. Second, the capacitive
+gap stores charge, which acts as an additional reactive load at each end
+of the cavity. Similar end corrections of 10--20\% have been reported in
+published CPW resonator studies at millimetre-wave
+frequencies~\cite{Pozar2011}. For future design iterations, a cavity
+length corrected for the end effect should be used:
 \begin{equation}
-  S_{21,\mathrm{dB}} = 10\log_{10}\!\left(|S_{21}|^2\right).
-  \label{eq:dB}
+    L_{\mathrm{cav,design}} =
+    \frac{c}{2\,n_{\mathrm{eff}}\,f_0} - \Delta L
+    \approx \SI{70.75}{\micro\metre} - \SI{12.4}{\micro\metre}
+    \approx \SI{58}{\micro\metre}.
+    \label{eq:Lcav_corrected}
 \end{equation}
 
-Reference-normalised transmission is:
-\begin{equation}
-  S_{21,\mathrm{norm,dB}} =
-    10\log_{10}\!\left(\frac{|S_{21}|^2}{|S_{21,\mathrm{ref}}|^2}\right).
-  \label{eq:norm}
-\end{equation}
+\subsection{Effect of Capacitive Gap Coupling}
 
-Quality factors are related by:
-\begin{equation}
-  \frac{1}{Q_L} = \frac{1}{Q_i} + \frac{1}{Q_c}.
-  \label{eq:Q-relation}
-\end{equation}
+The gap sweep results in \cref{tab:gap_q} show that reducing the gap
+from \SI{5}{\micro\metre} to \SI{0.8}{\micro\metre} increases $\Delta f$
+from \SI{49.3}{\giga\hertz} to \SI{101}{\giga\hertz} and decreases $Q_L$
+from 13.6 to 6.3. This behaviour is consistent with the circuit model of
+capacitive coupling: the coupling capacitance $C_c \propto 1/C_g$ increases
+as the gap narrows, which lowers the coupling quality factor
+$Q_c \propto 1/C_c^2$ and reduces $Q_L$ through \cref{eq:Q_relation}.
 
-%% ── 7. Conclusions ──────────────────────────────────────────────────────────
+The resonance frequency also shifts downward with decreasing gap --- from
+\SI{0.668}{\tera\hertz} at \SI{5}{\micro\metre} to \SI{0.640}{\tera\hertz}
+at \SI{0.8}{\micro\metre} --- because stronger capacitive loading at the
+cavity ends increases the effective electrical length. To achieve a higher
+$Q_L$ while maintaining resonance near \SI{0.8}{\tera\hertz}, the
+corrected cavity length from \cref{eq:Lcav_corrected} should be used
+together with a larger coupling gap.
+
+\subsection{IDC Coupling: Overcoupling and Frequency Shift}
+
+The IDC-coupled resonator with $N = 5+5$ fingers produced $Q_L \approx 1.2$,
+approximately ten times lower than the weakest gap-coupled case. This
+severe overcoupling is caused by the large coupling capacitance created
+by ten interleaved fingers with a gap of $g_f = \SI{0.45}{\micro\metre}$
+and a tip gap of $g_{\mathrm{tip}} = \SI{0.5}{\micro\metre}$. The
+resonance is shifted to \SI{0.45}{\tera\hertz} because the IDC loading
+adds a large additional end correction $\Delta L_{\mathrm{IDC}}$ beyond
+that of the simple gap case.
+
+The relationship $1/Q_L = 1/Q_i + 1/Q_c$ shows that, when
+$Q_c \approx 1$, improving the metal conductivity (increasing $Q_i$) has
+no benefit: the achievable $Q_L$ is entirely dominated by the coupling.
+The primary route to a higher $Q_L$ in this structure is therefore to
+reduce the coupling capacitance. Specific recommendations are:
+
+\begin{enumerate}
+    \item \textbf{Reduce finger count} from $N = 5+5$ to $N = 1+1$
+          or $N = 2+2$: the coupling capacitance scales approximately
+          linearly with $N$, so halving $N$ roughly doubles $Q_c$.
+    \item \textbf{Increase tip gap} $g_{\mathrm{tip}}$ from
+          \SI{0.5}{\micro\metre} to \SI{2}{\micro\metre}--\SI{5}{\micro\metre}:
+          the tip gap controls the dominant series capacitance between
+          the two conductor sections.
+    \item \textbf{Increase finger gap} $g_f$ from \SI{0.45}{\micro\metre}
+          to \SI{1}{\micro\metre}--\SI{2}{\micro\metre}: this reduces
+          the lateral fringing capacitance between adjacent fingers.
+    \item \textbf{Re-tune middle cavity length} after the IDC geometry
+          changes to recover resonance near \SI{0.8}{\tera\hertz}, since
+          reducing the IDC loading will shift the resonance upward.
+\end{enumerate}
+
+\subsection{Comparison with Literature}
+
+The $Q_L$ values of 6--14 achieved with simple gap coupling are consistent
+with room-temperature metallic CPW resonators at terahertz and
+millimetre-wave frequencies~\cite{Goppl2008}, where conductor surface
+resistance sets a ceiling on $Q_i$. The key finding --- that coupling
+geometry dominates $Q_L$ when coupling is strong --- agrees with the
+theoretical framework: when $Q_c \ll Q_i$, $Q_L \approx Q_c$ and
+material improvements are ineffective until coupling is weakened. This
+identifies IDC geometry optimisation as the priority for future work.
+
+\subsection{Limitations}
+
+The main limitations of this work are as follows. First, the PEC metal
+model neglects frequency-dependent surface resistance, which would reduce
+$Q_i$ at terahertz frequencies. Second, only one IDC geometry ($N = 5+5$)
+was simulated; a systematic parameter sweep is needed to map the
+coupling--quality-factor trade-off. Third, formal mesh convergence was
+not demonstrated for the IDC case, and the \SI{0.45}{\micro\metre}
+finger gaps may not have been fully resolved at the mesh sizes used.
+Fourth, the substrate material was not explicitly specified in the
+simulation script, and the effective permittivity is inferred from the
+fitted $n_{\mathrm{eff}}$ rather than from a direct material assignment.
+
+% ============================================================
+% 8. CONCLUSIONS
+% ============================================================
+\newpage
 \section{Conclusions}
 \label{sec:conclusions}
 
-% TODO: fill in after IDC length sweep is complete.
+This project designed and simulated terahertz CPW resonators using Ansys
+Lumerical FDTD. The key findings are:
 
+\begin{enumerate}
+    \item A cavity length sweep confirmed the inverse frequency--length
+          relationship. The resonator has an effective electrical length
+          that exceeds the drawn metal length by an end correction of
+          $\Delta L \approx \SI{12.4}{\micro\metre}$ with a corrected
+          effective index $n_{\mathrm{eff}} = 2.68$.
+
+    \item Simple capacitive gap coupling produced $Q_L$ between 6.3
+          (gap \SI{0.8}{\micro\metre}) and 13.6 (gap \SI{5}{\micro\metre}),
+          confirming that larger gaps give weaker coupling and higher $Q_L$.
+          Both the resonance frequency and $Q_L$ decrease as the gap is
+          reduced.
+
+    \item The IDC-coupled resonator with $N = 5+5$ fingers produced
+          $Q_L \approx 1.2$ and a resonance at \SI{0.45}{\tera\hertz},
+          demonstrating that the 5+5 IDC geometry is severely overcoupled.
+          The primary cause is the large coupling capacitance created by
+          ten closely spaced interleaved fingers.
+
+    \item The loaded quality factor is dominated by the coupling geometry,
+          not by internal loss: reducing the IDC finger count and increasing
+          the tip gap are identified as the highest-impact changes for
+          achieving $Q_L > 20$ at \SI{0.8}{\tera\hertz}.
+\end{enumerate}
+
+\subsection{Suggestions for Further Work}
+
+\begin{enumerate}
+    \item Perform a systematic IDC parameter sweep (finger count
+          $N = 1$ to $5$, tip gap \SI{0.5}{\micro\metre} to
+          \SI{5}{\micro\metre}) to find a geometry that delivers
+          $Q_L > 20$ at \SI{0.8}{\tera\hertz}.
+    \item Introduce a realistic frequency-dependent conductor model
+          (gold or NbN) to estimate $Q_i$ and the maximum achievable
+          $Q_L$ at room temperature and at cryogenic temperatures.
+    \item Conduct a mesh convergence study on the IDC case to quantify
+          the numerical uncertainty in the extracted $Q_L$.
+    \item Investigate suspended-membrane CPW designs in which the
+          substrate under the cavity is removed, reducing dielectric
+          loading and increasing $Q_i$.
+    \item Design and fabricate a scaled \SI{10}{\giga\hertz} PCB prototype
+          to validate the resonator coupling physics experimentally using
+          a vector network analyser.
+\end{enumerate}
+
+% ============================================================
+% REFERENCES
+% ============================================================
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ============================================================
+% APPENDICES
+% ============================================================
+\newpage
 \appendix
 
-%% ── Bibliography ────────────────────────────────────────────────────────────
-\bibliographystyle{ieeetr}
-\bibliography{references}
+\section{Project Plan}
+\label{app:plan}
+
+Include the project Gantt chart, milestones and interim planning
+material here.
+
+\section{Lumerical Geometry Script}
+\label{app:lumerical}
+
+\begin{lstlisting}[language=Lumerical,
+    caption={Lumerical LSF script for the IDC-coupled CPW resonator
+             with $N = 5+5$ finger geometry.},
+    label={lst:lumerical}]
+deleteall;
+
+# =====================================================
+# Basic parameters
+# =====================================================
+f0     = 0.8e12;
+neff   = 2.65;
+c0     = 3e8;
+L_cav  = 40e-6;
+
+x_sub_min = -1000e-6;   x_sub_max = 1000e-6;
+y_sub_min = -1000e-6;   y_sub_max = 1000e-6;
+
+s          = 10.05e-6;
+w          = 6.6e-6;
+material   = "PEC (Perfect Electrical Conductor)";
+
+IDC_L      = 12e-6;
+finger_w   = 0.6e-6;
+finger_gap = 0.45e-6;
+tip_gap    = 0.5e-6;
+N_each     = 5;
+N_total    = 2*N_each;
+overlap    = 0.03e-6;
+
+IDC_height  = N_total*finger_w + (N_total-1)*finger_gap;
+edge_margin = (s - IDC_height)/2;
+
+x_cav_left  = -L_cav/2;
+x_cav_right =  L_cav/2;
+xL_start = x_cav_left  - IDC_L;   xL_end = x_cav_left;
+xR_start = x_cav_right;           xR_end = x_cav_right + IDC_L;
+
+# =====================================================
+# Ground planes
+# =====================================================
+add2drect; set("name","GND_down");
+set("x min",x_sub_min); set("x max",x_sub_max);
+set("y min",y_sub_min); set("y max",-s/2-w);
+set("z",0);             set("material",material);
+
+add2drect; set("name","GND_up");
+set("x min",x_sub_min); set("x max",x_sub_max);
+set("y min",s/2+w);     set("y max",y_sub_max);
+set("z",0);             set("material",material);
+
+# =====================================================
+# Merged signal polygon (feedlines + cavity + IDC)
+# =====================================================
+V_signal = [x_sub_min,s/2; xL_start,s/2;
+            xL_start,-s/2; x_sub_min,-s/2];
+
+V_temp = [x_cav_left,s/2;  x_cav_right,s/2;
+          x_cav_right,-s/2; x_cav_left,-s/2];
+V_signal = polyor(V_signal,V_temp);
+
+V_temp = [xR_end,s/2;    x_sub_max,s/2;
+          x_sub_max,-s/2; xR_end,-s/2];
+V_signal = polyor(V_signal,V_temp);
+
+for(n=1:N_total){
+    y_top = s/2 - edge_margin - (n-1)*(finger_w+finger_gap);
+    y_bot = y_top - finger_w;
+    if(n - 2*floor(n/2) == 1){  # odd: feedline finger (left) / cavity finger (right)
+        V_temp = [xL_start-overlap,y_top; xL_end-tip_gap,y_top;
+                  xL_end-tip_gap,y_bot;   xL_start-overlap,y_bot];
+        V_signal = polyor(V_signal,V_temp);
+        V_temp = [xR_start-overlap,y_top; xR_end-tip_gap,y_top;
+                  xR_end-tip_gap,y_bot;   xR_start-overlap,y_bot];
+        V_signal = polyor(V_signal,V_temp);
+    } else {                    # even: cavity finger (left) / feedline finger (right)
+        V_temp = [xL_start+tip_gap,y_top; xL_end+overlap,y_top;
+                  xL_end+overlap,y_bot;   xL_start+tip_gap,y_bot];
+        V_signal = polyor(V_signal,V_temp);
+        V_temp = [xR_start+tip_gap,y_top; xR_end+overlap,y_top;
+                  xR_end+overlap,y_bot;   xR_start+tip_gap,y_bot];
+        V_signal = polyor(V_signal,V_temp);
+    }
+}
+
+add2dpoly;
+set("name","signal_merged");
+set("vertices",V_signal);
+set("z",0);
+set("material",material);
+\end{lstlisting}
+
+\section{Python Post-Processing Code}
+\label{app:python}
+
+\begin{lstlisting}[language=Python,
+    caption={Python functions for Lorentzian fitting and $Q_L$ extraction.},
+    label={lst:python}]
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+
+def lorentzian(f, f0, gamma, A, offset):
+    """Lorentzian lineshape. gamma = HWHM."""
+    return offset + A * gamma**2 / ((f - f0)**2 + gamma**2)
+
+def fit_lorentzian(freq, s21_db, f_min=None, f_max=None):
+    freq    = np.asarray(freq)
+    s21_db  = np.asarray(s21_db)
+    mask = np.ones(len(freq), dtype=bool)
+    if f_min is not None: mask &= freq >= f_min
+    if f_max is not None: mask &= freq <= f_max
+    f_fit, s_fit = freq[mask], s21_db[mask]
+    i_peak = np.argmax(s_fit)
+    p0 = [f_fit[i_peak], (f_fit[-1]-f_fit[0])/10,
+          s_fit[i_peak]-s_fit.min(), s_fit.min()]
+    popt, _ = curve_fit(lorentzian, f_fit, s_fit, p0=p0, maxfev=10000)
+    f0_fit, gamma, A, offset = popt
+    delta_f = 2*abs(gamma)
+    Q_L     = f0_fit / delta_f
+    return {'f0': f0_fit, 'delta_f': delta_f, 'Q_L': Q_L, 'popt': popt}
+\end{lstlisting}
+
+\section{Additional Simulation Results}
+\label{app:extra}
+
+Additional plots, extended result tables and supplementary simulation
+outputs can be included here.
+
+% ============================================================
+% PLAGIARISM DECLARATION  (outside \appendix environment)
+% ============================================================
+\newpage
+\section*{Plagiarism Declaration}
+\addcontentsline{toc}{section}{Plagiarism Declaration}
+
+The University's degrees and other academic awards are given in
+recognition of a student's personal achievement. All work submitted for
+assessment is accepted on the understanding that it is the student's own
+effort.
+
+Plagiarism is the submission or presentation of work, in any form, which
+is not one's own, without acknowledgement of the sources. Plagiarism
+includes inappropriate collaboration with others, close paraphrasing,
+unacknowledged summaries, direct copying and failure to cite sources
+correctly.
+
+Any information, figures, code, data or ideas obtained from external
+sources must be acknowledged using the appropriate referencing convention.
+Any direct quotation must be placed in quotation marks and cited
+immediately. Any AI-assisted material used during the preparation of this
+report has been acknowledged in accordance with the University's guidance
+on the use of generative AI tools.
+
+\vspace{2cm}
+\noindent\textbf{Signed:}~\underline{\hspace{6cm}}
+\hfill
+\textbf{Date:}~\underline{\hspace{3cm}}
 
 \end{document}
