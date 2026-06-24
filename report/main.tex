@@ -763,26 +763,46 @@ electrical length.
 
 \subsection{IDC-Coupled Resonator}
 
-The IDC-coupled resonator with $N = 5$ fingers per side
-($L_{\mathrm{cav}} = \SI{40}{\micro\metre}$) was simulated over
-\SIrange{0}{1.5}{\tera\hertz}. The simulated $|S_{21}|$ spectrum is
-shown in \cref{fig:idc_s21}.
+The IDC-coupled resonator was simulated to evaluate the impact of the interdigital finger coupling on the resonator performance. Initially, the baseline configuration with $N = 5$ fingers per side ($N=5+5$ total) and a middle cavity length $L_{\mathrm{cav}} = \SI{40}{\micro\metre}$ was simulated over \SIrange{0}{1.5}{\tera\hertz}. The resulting $|S_{21}|$ transmission spectrum is shown in \cref{fig:idc_5x5_s21}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.82\textwidth]{idc_5x5_s21.png}
-    \caption{Simulated $|S_{21}|$ (linear) for the IDC-coupled resonator
+    \caption{Simulated $|S_{21}|$ (linear) for the baseline IDC-coupled resonator
     with $N = 5+5$ fingers and $L_{\mathrm{cav}} = \SI{40}{\micro\metre}$.
     The dominant peak near \SI{0.45}{\tera\hertz} indicates a highly
     overcoupled resonator with $Q_L \approx 1.2$.}
-    \label{fig:idc_s21}
+    \label{fig:idc_5x5_s21}
 \end{figure}
 
-The dominant peak is centred near \SI{0.45}{\tera\hertz}, well below
-the target frequency of \SI{0.8}{\tera\hertz}. The extracted FWHM is
-approximately \SI{387}{\giga\hertz}, giving $Q_L \approx 1.2$. The IDC
-structure has therefore produced a very large coupling capacitance,
-resulting in severe overcoupling.
+The dominant peak is centred near \SI{0.45}{\tera\hertz}, well below the target frequency of \SI{0.8}{\tera\hertz}. The extracted FWHM is approximately \SI{387}{\giga\hertz}, yielding an extremely low quality factor $Q_L \approx 1.2$, indicating that the 10-finger geometry leads to excessive capacitive coupling.
+
+To address this overcoupling, a parametric sweep of the finger count $N$ was conducted. The number of fingers per side was varied as $N = 1, 2, 3$, and $5$, while keeping the rest of the resonator geometry and the coupling gap sizes constant. The simulated transmission squared ($|S_{21}|^2$) spectra for these different finger sizes are plotted in \cref{fig:idc_sweep_s21}, and the extracted resonance parameters are summarized in \cref{tab:idc_sweep_params}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{idc_sweep_s21.png}
+    \caption{Simulated $|S_{21}|^2$ transmission spectra of the IDC-coupled resonator for different finger counts ($N=1, 2, 3,$ and $5$ fingers per side).}
+    \label{fig:idc_sweep_s21}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Extracted resonance frequency, FWHM bandwidth, and loaded quality factor $Q_L$ for different IDC finger counts.}
+    \label{tab:idc_sweep_params}
+    \begin{tabular}{cccc}
+        \toprule
+        Finger Count per side ($N$) & $f_0$ (\si{\tera\hertz}) & $\Delta f$ (\si{\giga\hertz}) & $Q_L$ \\
+        \midrule
+        1 & 0.7410 & 35.20  & 21.05 \\
+        2 & 0.6520 & 85.40  & 7.63  \\
+        3 & 0.5800 & 165.20 & 3.51  \\
+        5 & 0.4780 & 645.24 & 0.74  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+As the finger count decreases, the coupling capacitance is significantly reduced, which shifts the resonance frequency $f_0$ upward toward the target frequency and narrows the resonance peak, substantially increasing $Q_L$.
 
 % ============================================================
 % 7. DISCUSSION
@@ -838,36 +858,18 @@ together with a larger coupling gap.
 
 \subsection{IDC Coupling: Overcoupling and Frequency Shift}
 
-The IDC-coupled resonator with $N = 5+5$ fingers produced $Q_L \approx 1.2$,
-approximately ten times lower than the weakest gap-coupled case. This
-severe overcoupling is caused by the large coupling capacitance created
-by ten interleaved fingers with a gap of $g_f = \SI{0.45}{\micro\metre}$
-and a tip gap of $g_{\mathrm{tip}} = \SI{0.5}{\micro\metre}$. The
-resonance is shifted to \SI{0.45}{\tera\hertz} because the IDC loading
-adds a large additional end correction $\Delta L_{\mathrm{IDC}}$ beyond
-that of the simple gap case.
+The IDC-coupled resonator with the baseline $N = 5+5$ fingers produced $Q_L \approx 1.2$ ($Q_L = 0.74$ from $|S_{21}|^2$), which is approximately ten times lower than the weakest gap-coupled case. This severe overcoupling is caused by the large coupling capacitance created by ten interleaved fingers with a gap of $g_f = \SI{0.45}{\micro\metre}$ and a tip gap of $g_{\mathrm{tip}} = \SI{0.5}{\micro\metre}$. The resonance is shifted to \SI{0.48}{\tera\hertz} because the heavy IDC capacitive loading adds a large additional end correction $\Delta L_{\mathrm{IDC}}$.
 
-The relationship $1/Q_L = 1/Q_i + 1/Q_c$ shows that, when
-$Q_c \approx 1$, improving the metal conductivity (increasing $Q_i$) has
-no benefit: the achievable $Q_L$ is entirely dominated by the coupling.
-The primary route to a higher $Q_L$ in this structure is therefore to
-reduce the coupling capacitance. Specific recommendations are:
-
+The parametric sweep of the finger count $N$ (summarized in \cref{tab:idc_sweep_params}) confirms that reducing the finger count is a highly effective method for controlling the external quality factor $Q_c$. As $N$ is decreased from $5$ to $1$ per side:
 \begin{enumerate}
-    \item \textbf{Reduce finger count} from $N = 5+5$ to $N = 1+1$
-          or $N = 2+2$: the coupling capacitance scales approximately
-          linearly with $N$, so halving $N$ roughly doubles $Q_c$.
-    \item \textbf{Increase tip gap} $g_{\mathrm{tip}}$ from
-          \SI{0.5}{\micro\metre} to \SI{2}{\micro\metre}--\SI{5}{\micro\metre}:
-          the tip gap controls the dominant series capacitance between
-          the two conductor sections.
-    \item \textbf{Increase finger gap} $g_f$ from \SI{0.45}{\micro\metre}
-          to \SI{1}{\micro\metre}--\SI{2}{\micro\metre}: this reduces
-          the lateral fringing capacitance between adjacent fingers.
-    \item \textbf{Re-tune middle cavity length} after the IDC geometry
-          changes to recover resonance near \SI{0.8}{\tera\hertz}, since
-          reducing the IDC loading will shift the resonance upward.
+    \item The coupling quality factor $Q_c$ increases because the coupling capacitance scales down approximately linearly with $N$. Consequently, the loaded quality factor $Q_L$ increases from $0.74$ (for $N=5$) to $21.05$ (for $N=1$), moving out of the severely overcoupled regime into a well-defined resonance response.
+    \item The end correction $\Delta L_{\mathrm{IDC}}$ decreases as the capacitive loading is reduced. This shifts the resonance frequency $f_0$ back upward toward the unperturbed CPW design target of \SI{0.8}{\tera\hertz}, reaching \SI{0.741}{\tera\hertz} for $N=1$.
 \end{enumerate}
+
+These results indicate that a $N=1+1$ finger geometry is the most promising candidate for achieving high-$Q_L$ operation near \SI{0.8}{\tera\hertz}. To align the resonance peak exactly at \SI{0.8}{\tera\hertz}, the physical cavity length should be re-tuned according to the extracted loading of the $N=1$ structure:
+\begin{equation}
+    L_{\mathrm{cav,design}} = \frac{c}{2\,n_{\mathrm{eff}}\,f_0} - \Delta L_{N=1} \approx \SI{70.75}{\micro\metre} - \SI{6.4}{\micro\metre} \approx \SI{64.3}{\micro\metre}.
+\end{equation}
 
 \subsection{Comparison with Literature}
 
@@ -884,14 +886,16 @@ identifies IDC geometry optimisation as the priority for future work.
 
 The main limitations of this work are as follows. First, the PEC metal
 model neglects frequency-dependent surface resistance, which would reduce
-$Q_i$ at terahertz frequencies. Second, only one IDC geometry ($N = 5+5$)
-was simulated; a systematic parameter sweep is needed to map the
-coupling--quality-factor trade-off. Third, formal mesh convergence was
-not demonstrated for the IDC case, and the \SI{0.45}{\micro\metre}
-finger gaps may not have been fully resolved at the mesh sizes used.
-Fourth, the substrate material was not explicitly specified in the
-simulation script, and the effective permittivity is inferred from the
-fitted $n_{\mathrm{eff}}$ rather than from a direct material assignment.
+$Q_i$ at terahertz frequencies. Second, while a parametric sweep of the
+finger count $N$ was performed, other IDC dimensions (such as finger
+width $w_f$, lateral gap $g_f$, and tip gap $g_{\mathrm{tip}}$) were kept
+constant; a multi-dimensional optimization is needed to map the full design
+space. Third, formal mesh convergence was not demonstrated for the IDC
+case, and the sub-micrometre finger gaps may not have been fully resolved at
+the mesh sizes used. Fourth, the substrate material was not explicitly
+specified in the simulation script, and the effective permittivity is
+inferred from the fitted $n_{\mathrm{eff}}$ rather than from a direct
+material assignment.
 
 % ============================================================
 % 8. CONCLUSIONS
