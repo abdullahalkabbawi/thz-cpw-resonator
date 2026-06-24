@@ -725,7 +725,7 @@ ax1.text(0.06, 0.74, annotation_text1, transform=ax1.transAxes,
          bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.25', alpha=0.9),
          fontsize=7.5, color='#333333')
 ax1.set_xlabel('Frequency (THz)', fontweight='medium')
-ax1.set_ylabel('Amplitude (Y)', fontweight='medium')
+ax1.set_ylabel(r'$|S_{21}|^2$', fontweight='medium')
 ax1.set_title('(a) IDC: $N=7+7$ Fingers', pad=8, fontweight='bold', fontsize=9)
 ax1.grid(True, which='both', linestyle='--', alpha=0.3)
 ax1.set_xlim(0.1, 1.5)
