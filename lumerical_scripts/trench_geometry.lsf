@@ -7,19 +7,33 @@
 #   - Ground planes (surface + buried sidewalls)
 #   - Air-filled trench volumes (upper and lower trenches)
 #
-# Required variables (set before calling this script):
-#   s          – signal conductor width (m)
-#   w          – slot/gap width (m)
-#   C_g        – coupling gap length (m)
-#   cav_L      – cavity length (m)
-#   y_height   – extra y-offset above ground edge (m)
-#   L_burried  – trench depth in y (m)
-#   h_burried  – trench depth in z (m)
-#   material   – conductor material string
-#   air        – air material string
+# Variable definitions (match Lumerical user properties panel):
+#   s          = 10  µm  – signal conductor width
+#   w          =  5  µm  – slot width
+#   C_g        =  3  µm  – coupling gap length
+#   cav_L      = 120 µm  – cavity length
+#   L_burried  =  5  µm  – trench width in y
+#   y_height   =  5  µm  – extra ground offset above slot
+#   h_burried  = 50  µm  – trench depth in z
+#   material   = PEC (Perfect Electric Conductor)
+#   air        = etch material
 # =============================================================
 
+# -------------------------------------------------------------
+# VARIABLE DEFINITIONS
+# -------------------------------------------------------------
+s          = 10e-6;     # signal conductor width   (m)
+w          = 5e-6;      # slot width                (m)
+C_g        = 3e-6;      # coupling gap length       (m)
+cav_L      = 120e-6;    # cavity length             (m)
+L_burried  = 5e-6;      # trench width in y         (m)
+y_height   = 5e-6;      # ground offset above slot  (m)
+h_burried  = 50e-6;     # trench depth in z         (m)
+material   = "PEC (Perfect Electrical Conductor)";
+air        = "etch";
+
 deleteall;
+
 
 # -------------------------------------------------------------
 # SIGNAL LINE  (3 segments: left feed | cavity | right feed)
