@@ -777,12 +777,12 @@ The IDC-coupled resonator was simulated to evaluate the impact of the interdigit
 
 The dominant peak is centred near \SI{0.45}{\tera\hertz}, well below the target frequency of \SI{0.8}{\tera\hertz}. The extracted FWHM is approximately \SI{387}{\giga\hertz}, yielding an extremely low quality factor $Q_L \approx 1.2$, indicating that the 10-finger geometry leads to excessive capacitive coupling.
 
-To address this overcoupling, a parametric sweep of the finger count $N$ was conducted. The number of fingers per side was varied as $N = 1, 2, 3, 4, 5$, and $7$, while keeping the rest of the resonator geometry and the coupling gap sizes constant. The simulated transmission squared ($|S_{21}|^2$) spectra for these different finger sizes are plotted in \cref{fig:idc_sweep_s21}, and the extracted resonance parameters are summarized in \cref{tab:idc_sweep_params}.
+To address this overcoupling, a parametric sweep of the finger count $N$ was conducted. The number of fingers per side was varied as $N = 3, 5$, and $7$, while keeping the rest of the resonator geometry and the coupling gap sizes constant. The simulated transmission squared ($|S_{21}|^2$) spectra for these three configurations are plotted in \cref{fig:idc_sweep_s21}, and the extracted resonance parameters are summarised in \cref{tab:idc_sweep_params}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.82\textwidth]{idc_sweep_s21.png}
-    \caption{Simulated $|S_{21}|^2$ transmission spectra of the IDC-coupled resonator for different finger counts ($N=1, 2, 3, 4, 5,$ and $7$ fingers per side).}
+    \caption{Simulated $|S_{21}|^2$ transmission spectra of the IDC-coupled resonator for three finger counts ($N = 3, 5$, and $7$ fingers per side). All three configurations exhibit broad, low-contrast resonances characteristic of an overcoupled system ($Q_L < 1$).}
     \label{fig:idc_sweep_s21}
 \end{figure}
 
@@ -794,21 +794,16 @@ To address this overcoupling, a parametric sweep of the finger count $N$ was con
         \toprule
         Finger Count per side ($N$) & $f_0$ (\si{\tera\hertz}) & $\Delta f$ (\si{\giga\hertz}) & $Q_L$ \\
         \midrule
-        1 & 0.7500 & 37.50  & 20.00 \\
-        2 & 0.6700 & 167.50 & 4.00  \\
-        3 & 0.6000 & 400.00 & 1.50  \\
-        4 & 0.5430 & 587.00 & 0.93  \\
-        5 & 0.4750 & 645.20 & 0.74  \\
-        7 & 0.4290 & 627.10 & 0.68  \\
+        3 & 0.543 & 587.0 & 0.93 \\
+        5 & 0.475 & 645.2 & 0.74 \\
+        7 & 0.429 & 627.1 & 0.68 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-The results in \cref{tab:idc_sweep_params} reveal a clear monotonic trend: as the number of fingers $N$ is reduced, the coupling capacitance $C_\mathrm{IDC}$ decreases, which reduces the capacitive loading on the resonator cavity. This has two direct consequences. First, the resonance frequency $f_0$ shifts upward, from \SI{0.429}{\tera\hertz} at $N=7$ to \SI{0.750}{\tera\hertz} at $N=1$, as the reduced loading shortens the effective electrical length of the cavity. Second, the FWHM bandwidth $\Delta f$ narrows sharply---from \SI{645.2}{\giga\hertz} at $N=5$ down to just \SI{37.5}{\giga\hertz} at $N=1$---because fewer fingers reduce the energy coupled out of the resonator per cycle, increasing the photon lifetime.
+The results in \cref{tab:idc_sweep_params} show a clear trend: as the number of fingers $N$ decreases, the coupling capacitance $C_\mathrm{IDC}$ is reduced, lowering the capacitive loading on the resonator cavity. This produces two direct consequences. First, the resonance frequency $f_0$ shifts upward, from \SI{0.429}{\tera\hertz} at $N=7$ to \SI{0.543}{\tera\hertz} at $N=3$, since reduced loading shortens the effective electrical length of the cavity. Second, the FWHM bandwidth $\Delta f$ is widest at $N=5$ (\SI{645.2}{\giga\hertz}) and slightly narrower at $N=3$ (\SI{587.0}{\giga\hertz}) and $N=7$ (\SI{627.1}{\giga\hertz}), indicating that the coupling loss peaks near $N=5$ for this particular geometry.
 
-The corresponding quality factor $Q_L$ therefore improves by more than an order of magnitude across the sweep: from $Q_L = 0.68$ at $N=7$ to $Q_L = 20.0$ at $N=1$. A value of $Q_L < 1$ (seen for $N = 4, 5, 7$) indicates severe overcoupling, where the resonator radiates energy faster than it can store it, leading to the broad, low-contrast transmission peaks visible in \cref{fig:idc_sweep_s21}. In contrast, the $N=1$ and $N=2$ configurations enter a regime where the resonance is well-defined and the quality factor reaches practically useful values.
-
-It should also be noted that the resonance frequency tuning with finger count is non-linear. The largest shift in $f_0$ occurs when going from $N=7$ to $N=4$ (\SI{114}{\giga\hertz} shift), while the jump from $N=2$ to $N=1$ yields a comparatively smaller shift (\SI{80}{\giga\hertz}), consistent with the logarithmic dependence of IDC capacitance on finger geometry. The $N=4$ case ($f_0 = \SI{0.543}{\tera\hertz}$, $Q_L = 0.93$) represents the closest approach to the target frequency of \SI{0.8}{\tera\hertz} among the overcoupled configurations, while $N=1$ ($f_0 = \SI{0.750}{\tera\hertz}$, $Q_L = 20.0$) achieves the highest quality factor but requires further geometry optimisation to reach exactly \SI{0.8}{\tera\hertz}. These results suggest that $N = 1$ or $N = 2$ fingers per side, combined with a cavity length adjustment guided by the end-correction model (\cref{eq:Lcav_corrected}), constitutes the most promising design direction for achieving both the target frequency and a usable $Q_L$.
+All three simulated configurations exhibit $Q_L < 1$, confirming severe overcoupling across the entire sweep. The highest $Q_L = 0.93$ is achieved at $N=3$, while the lowest $Q_L = 0.68$ occurs at $N=7$. A quality factor below unity means the resonator loses energy to the ports faster than it can store it, which manifests as the broad, low-contrast transmission peaks visible in \cref{fig:idc_sweep_s21}. Despite this overcoupling, the $N=3$ configuration ($f_0 = \SI{0.543}{\tera\hertz}$, $Q_L = 0.93$) yields both the highest resonance frequency and the best quality factor among the three cases simulated. These results indicate that further reducing the finger count below $N=3$, or redesigning the IDC geometry (e.g.\ reducing finger length or increasing the finger gap $g_f$), is necessary to simultaneously approach the target frequency of \SI{0.8}{\tera\hertz} and achieve a $Q_L$ suitable for sensing applications.
 
 % ============================================================
 % 7. DISCUSSION
