@@ -794,12 +794,12 @@ To address this overcoupling, a parametric sweep of the finger count $N$ was con
         \toprule
         Finger Count per side ($N$) & $f_0$ (\si{\tera\hertz}) & $\Delta f$ (\si{\giga\hertz}) & $Q_L$ \\
         \midrule
-        1 & 0.7410 & 35.20  & 21.05 \\
-        2 & 0.6520 & 85.40  & 7.63  \\
-        3 & 0.5800 & 165.20 & 3.51  \\
-        4 & 0.5410 & 580.79 & 0.93  \\
-        5 & 0.4780 & 645.24 & 0.74  \\
-        7 & 0.4290 & 626.00 & 0.69  \\
+        1 & 0.7500 & 37.50  & 20.00 \\
+        2 & 0.6700 & 167.50 & 4.00  \\
+        3 & 0.6000 & 400.00 & 1.50  \\
+        4 & 0.5430 & 587.00 & 0.93  \\
+        5 & 0.4750 & 645.20 & 0.74  \\
+        7 & 0.4290 & 627.10 & 0.68  \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -864,13 +864,13 @@ The IDC-coupled resonator with the baseline $N = 5+5$ fingers produced $Q_L \app
 
 The parametric sweep of the finger count $N$ (summarized in \cref{tab:idc_sweep_params}) confirms that reducing the finger count is a highly effective method for controlling the external quality factor $Q_c$. As $N$ is decreased from $7$ to $1$ per side:
 \begin{enumerate}
-    \item The coupling quality factor $Q_c$ increases because the coupling capacitance scales down approximately linearly with $N$. Consequently, the loaded quality factor $Q_L$ increases from $0.69$ (for $N=7$) to $21.05$ (for $N=1$), moving out of the severely overcoupled regime into a well-defined resonance response.
-    \item The end correction $\Delta L_{\mathrm{IDC}}$ decreases as the capacitive loading is reduced. This shifts the resonance frequency $f_0$ back upward toward the unperturbed CPW design target of \SI{0.8}{\tera\hertz}, reaching \SI{0.741}{\tera\hertz} for $N=1$.
+    \item The coupling quality factor $Q_c$ increases because the coupling capacitance scales down approximately linearly with $N$. Consequently, the loaded quality factor $Q_L$ increases from $0.68$ (for $N=7$) to $20.00$ (for $N=1$), moving out of the severely overcoupled regime into a well-defined resonance response.
+    \item The end correction $\Delta L_{\mathrm{IDC}}$ decreases as the capacitive loading is reduced. This shifts the resonance frequency $f_0$ back upward toward the unperturbed CPW design target of \SI{0.8}{\tera\hertz}, reaching \SI{0.750}{\tera\hertz} for $N=1$.
 \end{enumerate}
 
 These results indicate that a $N=1+1$ finger geometry is the most promising candidate for achieving high-$Q_L$ operation near \SI{0.8}{\tera\hertz}. To align the resonance peak exactly at \SI{0.8}{\tera\hertz}, the physical cavity length should be re-tuned according to the extracted loading of the $N=1$ structure:
 \begin{equation}
-    L_{\mathrm{cav,design}} = \frac{c}{2\,n_{\mathrm{eff}}\,f_0} - \Delta L_{N=1} \approx \SI{70.75}{\micro\metre} - \SI{6.4}{\micro\metre} \approx \SI{64.3}{\micro\metre}.
+    L_{\mathrm{cav,design}} = \frac{c}{2\,n_{\mathrm{eff}}\,f_0} - \Delta L_{N=1} \approx \SI{70.75}{\micro\metre} - \SI{5.8}{\micro\metre} \approx \SI{64.9}{\micro\metre}.
 \end{equation}
 
 \subsection{Comparison with Literature}
