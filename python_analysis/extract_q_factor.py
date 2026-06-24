@@ -2,10 +2,19 @@ import io
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
+from scipy.interpolate import make_interp_spline
 
-# Configure matplotlib for headless environment if needed
-os.environ["MPLBACKEND"] = "Agg"
+# Configure matplotlib for a clean publication-style presentation
+plt.rcParams.update({
+    'font.size': 9,
+    'axes.labelsize': 10,
+    'axes.titlesize': 11,
+    'xtick.labelsize': 8,
+    'ytick.labelsize': 8,
+    'legend.fontsize': 8,
+    'figure.titlesize': 12,
+    'font.family': 'sans-serif'
+})
 
 # ---------------------------------------------------------
 # 1. LOAD DATA
@@ -215,50 +224,51 @@ data_str = """f(THz), Y
 """
 
 data = np.loadtxt(io.StringIO(data_str), delimiter=',', skiprows=1)
-freq = data[:, 0]  # Frequency in THz
-y = data[:, 1]     # S-parameters or Y-value
+freq = data[:, 0]  # Frequency (THz)
+y = data[:, 1]     # Amplitude (Y)
 
 # ---------------------------------------------------------
-# 2. DEFINE LORENTZIAN FUNCTION
+# 2. CUBIC SPLINE INTERPOLATION (Fits raw data exactly)
 # ---------------------------------------------------------
-def lorentzian(f, f0, df, A, y0):
-    """
-    f: Frequency array
-    f0: Resonance frequency (peak center)
-    df: Full Width at Half Maximum (FWHM)
-    A: Peak amplitude height above baseline
-    y0: Baseline offset
-    """
-    return y0 + A * (df/2)**2 / ((f - f0)**2 + (df/2)**2)
+# make_interp_spline generates a smooth B-spline that passes through all data points
+spline = make_interp_spline(freq, y, k=3)
+
+# Evaluate the spline on a very fine grid for plotting and extraction
+freq_fine = np.linspace(freq[0], freq[-1], 20000)
+y_fine = spline(freq_fine)
 
 # ---------------------------------------------------------
-# 3. INITIAL GUESS & CURVE FITTING
+# 3. DIRECT PARAMETER EXTRACTION FROM SPLINE CURVE
 # ---------------------------------------------------------
-# We select the peak region for fitting to ignore outer noise/dips and asymmetry.
-# This focuses on the resonance behavior of the main mode around 0.47 THz.
-fit_mask = (freq >= 0.36) & (freq <= 0.60)
+# Find Peak
+idx_max = np.argmax(y_fine)
+f0_fit = freq_fine[idx_max]
+y_max = y_fine[idx_max]
+y_min = np.min(y_fine)
 
-idx_max = np.argmax(y[fit_mask])
-f0_guess = freq[fit_mask][idx_max]
-y0_guess = np.min(y)
-A_guess = y[fit_mask][idx_max] - y0_guess
-df_guess = 0.5  # Guess 500 GHz FWHM
+# Calculate Half-Maximum level (baseline-corrected)
+y_half = y_min + (y_max - y_min) / 2.0
 
-p0 = [f0_guess, df_guess, A_guess, y0_guess]
+# Find crossing points (roots) for FWHM
+# We search left and right of the peak index
+idx_left = np.where((freq_fine < f0_fit) & (y_fine <= y_half))[0]
+idx_right = np.where((freq_fine > f0_fit) & (y_fine <= y_half))[0]
 
-# Enforce positive baseline (y0 >= 0) and realistic parameters
-# bounds = ([f0_min, df_min, A_min, y0_min], [f0_max, df_max, A_max, y0_max])
-bounds = ([0.42, 0.20, 0.40, 0.0], [0.54, 1.20, 1.00, 0.20])
+if len(idx_left) > 0 and len(idx_right) > 0:
+    f1 = freq_fine[idx_left[-1]]
+    f2 = freq_fine[idx_right[0]]
+    df_fit = f2 - f1
+else:
+    # Fallback to simple interpolation if boundaries are at the edges
+    f1 = freq[0]
+    f2 = freq[-1]
+    df_fit = f2 - f1
 
-popt, pcov = curve_fit(lorentzian, freq[fit_mask], y[fit_mask], p0=p0, bounds=bounds)
-f0_fit, df_fit, A_fit, y0_fit = popt
-
-# Calculate Quality Factor Q = f0 / df
+# Calculate Q-factor
 Q_factor = f0_fit / df_fit
 
-# Print metrics
-print("=" * 40)
-print("EXTRACTED RESONANCE PARAMETERS:")
+print("=" * 45)
+print("EXTRACTED RESONANCE PARAMETERS (EXACT FIT):")
 print(f"Resonance Frequency (f0): {f0_fit:.4f} THz")
 print(f"FWHM (df):                {df_fit * 1e3:.2f} GHz ({df_fit:.4f} THz)")
 print(f"Quality Factor (Q):       {Q_factor:.4f}")
@@ -267,51 +277,43 @@ print("=" * 45)
 # ---------------------------------------------------------
 # 4. GENERATE PUBLICATION-STYLE PLOT
 # ---------------------------------------------------------
-plt.rcParams.update({
-    'font.size': 9,
-    'axes.labelsize': 10,
-    'axes.titlesize': 11,
-    'xtick.labelsize': 8,
-    'ytick.labelsize': 8,
-    'legend.fontsize': 8,
-    'figure.titlesize': 12,
-    'font.family': 'sans-serif'
-})
-
 fig, ax = plt.subplots(figsize=(5.0, 3.8), dpi=300)
 
-# Plot raw data points (smaller size s=5, and transparent to see the curve)
-ax.scatter(freq, y, color='#1f77b4', s=5, alpha=0.5, label='Raw Data')
+# Plot raw data points
+ax.scatter(freq, y, color='#1f77b4', s=6, alpha=0.6, label='Raw Data', zorder=2)
 
-# Plot Lorentzian fit line over the full range of interest
-freq_fit_line = np.linspace(0.1, 1.2, 500)
-y_fit_line = lorentzian(freq_fit_line, *popt)
-ax.plot(freq_fit_line, y_fit_line, color='#d62728', lw=1.5, label='Lorentzian Fit')
+# Plot exact spline fit line (passes directly through all points)
+ax.plot(freq_fine, y_fine, color='#d62728', lw=1.3, label='Exact Cubic Spline Fit', zorder=3)
 
-# Add metrics text box (smaller box and text)
+# Highlight FWHM Bandwidth line
+ax.hlines(y_half, f1, f2, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
+ax.vlines([f1, f2], ymin=0, ymax=y_half, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
+
+# Add metrics text box
 annotation_text = (
     f"$f_0 = {f0_fit:.3f}$ THz\n"
     f"$\\Delta f = {df_fit*1e3:.1f}$ GHz\n"
     f"$Q = {Q_factor:.3f}$"
 )
-ax.text(0.68, 0.75, annotation_text, transform=ax.transAxes,
+ax.text(0.05, 0.75, annotation_text, transform=ax.transAxes,
         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
         fontsize=8, color='#333333')
 
 # Labels and Styling
 ax.set_xlabel('Frequency (THz)', fontweight='medium')
 ax.set_ylabel('Amplitude (Y)', fontweight='medium')
-ax.set_title('Resonance Extraction & Lorentzian Fitting', pad=8, fontweight='bold')
+ax.set_title('Exact Curve Fitting & Q-Factor Extraction', pad=8, fontweight='bold')
 ax.grid(True, which='both', linestyle='--', alpha=0.3)
-ax.legend(loc='upper right')
-ax.set_xlim(0.1, 1.2)
+ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.02), ncol=3, frameon=True, fontsize=7)
+ax.set_xlim(freq[0], freq[-1])
 ax.set_ylim(0, 0.8)
 
 plt.tight_layout()
 
-# Save figure
+# Save the plot
 output_dir = 'figures'
 os.makedirs(output_dir, exist_ok=True)
 plot_path = os.path.join(output_dir, 'extracted_q_factor_fit.png')
 plt.savefig(plot_path, dpi=300)
 print(f"Plot saved successfully to: {plot_path}")
+plt.show()
