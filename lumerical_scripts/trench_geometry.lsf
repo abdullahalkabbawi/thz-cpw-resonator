@@ -1,0 +1,200 @@
+# =============================================================
+# trench_geometry.lsf
+# MSc Project — THz CPW Resonator
+#
+# Builds the trench geometry in Lumerical FDTD:
+#   - CPW signal line (split at coupling gap)
+#   - Ground planes (surface + buried sidewalls)
+#   - Air-filled trench volumes (upper and lower trenches)
+#
+# Required variables (set before calling this script):
+#   s          – signal conductor width (m)
+#   w          – slot/gap width (m)
+#   C_g        – coupling gap length (m)
+#   cav_L      – cavity length (m)
+#   y_height   – extra y-offset above ground edge (m)
+#   L_burried  – trench depth in y (m)
+#   h_burried  – trench depth in z (m)
+#   material   – conductor material string
+#   air        – air material string
+# =============================================================
+
+deleteall;
+
+# -------------------------------------------------------------
+# SIGNAL LINE  (3 segments: left feed | cavity | right feed)
+# -------------------------------------------------------------
+
+# Left feed
+add2drect;
+set("name","signal");
+set("y min", -s/2);
+set("y max",  s/2);
+set("x min", -2000e-6);
+set("x max", -C_g/2);
+set("z", 0e-6);
+set("material", material);
+
+# Cavity segment
+add2drect;
+set("name","signal2");
+set("y min", -s/2);
+set("y max",  s/2);
+set("x min",  C_g/2);
+set("x max",  C_g/2 + cav_L - C_g/2);
+set("z", 0);
+set("material", material);
+
+# Right feed
+add2drect;
+set("name","signal3");
+set("y min", -s/2);
+set("y max",  s/2);
+set("x min",  C_g/2 + cav_L + C_g/2);
+set("x max",  2000e-6);
+set("z", 0);
+set("material", material);
+
+# -------------------------------------------------------------
+# GROUND PLANES — surface layer (4 rectangles)
+# -------------------------------------------------------------
+
+# Lower ground — deep buried section
+add2drect;
+set("name","GND_down");
+set("y min", -1000e-6);
+set("y max", -(s/2 + w + y_height + L_burried));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z", 0e-6);
+set("material", material);
+
+# Lower ground — trench inner face
+add2drect;
+set("name","GND_down_inner");
+set("y min", -(s/2 + w + y_height));
+set("y max", -(s/2 + w));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z", 0e-6);
+set("material", material);
+
+# Upper ground — deep buried section
+add2drect;
+set("name","GND_up");
+set("y max",  1000e-6);
+set("y min",  (s/2 + w + y_height + L_burried));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z", 0e-6);
+set("material", material);
+
+# Upper ground — trench inner face
+add2drect;
+set("name","GND_up_inner");
+set("y max",  (s/2 + w + y_height));
+set("y min",  (s/2 + w));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z", 0e-6);
+set("material", material);
+
+# -------------------------------------------------------------
+# TRENCH SIDEWALLS — bottom faces (z-normal, buried in z)
+# -------------------------------------------------------------
+
+# Upper trench — bottom face (inner wall)
+add2drect;
+set("name","trench_upper_bot_inner");
+set("surface normal", 2);   # y-normal
+set("y",  (s/2 + w + y_height));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# Upper trench — bottom face (outer wall)
+add2drect;
+set("name","trench_upper_bot_outer");
+set("surface normal", 2);   # y-normal
+set("y",  (s/2 + w + y_height + L_burried));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# Lower trench — bottom face (inner wall)
+add2drect;
+set("name","trench_lower_bot_inner");
+set("surface normal", 2);   # y-normal
+set("y", -(s/2 + w + y_height));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# Lower trench — bottom face (outer wall)
+add2drect;
+set("name","trench_lower_bot_outer");
+set("surface normal", 2);   # y-normal
+set("y", -(s/2 + w + y_height + L_burried));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# -------------------------------------------------------------
+# TRENCH HORIZONTAL FLOORS — metal at bottom of trench
+# -------------------------------------------------------------
+
+# Upper trench floor
+add2drect;
+set("name","trench_upper_floor");
+set("y min",  (s/2 + w + y_height));
+set("y max",  (s/2 + w + y_height + L_burried));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# Lower trench floor
+add2drect;
+set("name","trench_lower_floor");
+set("y min", -(s/2 + w + y_height + L_burried));
+set("y max", -(s/2 + w + y_height));
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", material);
+
+# -------------------------------------------------------------
+# AIR-FILLED TRENCH VOLUMES
+# -------------------------------------------------------------
+
+# Upper air trench
+addrect;
+set("name","air1");
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("y min",  (s/2 + w + y_height));
+set("y max",  (s/2 + w + y_height + L_burried));
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", air);
+
+# Lower air trench
+addrect;
+set("name","air2");
+set("x min", -2000e-6);
+set("x max",  2000e-6);
+set("y min", -(s/2 + w + y_height + L_burried));
+set("y max", -(s/2 + w + y_height));
+set("z min", -h_burried);
+set("z max",  0e-6);
+set("material", air);
