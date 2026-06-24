@@ -7,19 +7,226 @@ from scipy.interpolate import make_interp_spline
 # Configure matplotlib for a clean publication-style presentation
 plt.rcParams.update({
     'font.size': 9,
-    'axes.labelsize': 10,
-    'axes.titlesize': 11,
+    'axes.labelsize': 9,
+    'axes.titlesize': 10,
     'xtick.labelsize': 8,
     'ytick.labelsize': 8,
-    'legend.fontsize': 8,
-    'figure.titlesize': 12,
+    'legend.fontsize': 7,
+    'figure.titlesize': 11,
     'font.family': 'sans-serif'
 })
 
 # ---------------------------------------------------------
-# 1. LOAD DATASET 1 (5+5 Fingers)
+# 1. LOAD DATASET 1 (7+7 Fingers)
 # ---------------------------------------------------------
 data_str1 = """f(THz), Y
+0.1, 0.0533802
+0.107, 0.0642855
+0.114, 0.0776529
+0.121, 0.0905129
+0.128, 0.105929
+0.135, 0.120472
+0.142, 0.137241
+0.149, 0.153157
+0.156, 0.170808
+0.163, 0.188
+0.17, 0.206046
+0.177, 0.224134
+0.184, 0.242278
+0.191, 0.261002
+0.198, 0.278977
+0.205, 0.297749
+0.212, 0.315222
+0.219, 0.333916
+0.226, 0.350804
+0.233, 0.368984
+0.24, 0.385188
+0.247, 0.402668
+0.254, 0.418183
+0.261, 0.434709
+0.268, 0.449423
+0.275, 0.464612
+0.282, 0.478537
+0.289, 0.492199
+0.296, 0.505363
+0.303, 0.517291
+0.31, 0.529362
+0.317, 0.539919
+0.324, 0.550981
+0.331, 0.560136
+0.338, 0.569911
+0.345, 0.57779
+0.352, 0.586106
+0.359, 0.592779
+0.366, 0.599515
+0.373, 0.604983
+0.38, 0.610119
+0.387, 0.614347
+0.394, 0.618034
+0.401, 0.621178
+0.408, 0.623443
+0.415, 0.625321
+0.422, 0.626149
+0.429, 0.626785
+0.436, 0.626244
+0.443, 0.625907
+0.45, 0.624433
+0.457, 0.623081
+0.464, 0.620563
+0.471, 0.61816
+0.478, 0.614811
+0.485, 0.611436
+0.492, 0.607654
+0.499, 0.603648
+0.506, 0.599464
+0.513, 0.594761
+0.52, 0.590188
+0.527, 0.584944
+0.534, 0.579975
+0.541, 0.574453
+0.548, 0.56918
+0.555, 0.56342
+0.562, 0.55774
+0.569, 0.551787
+0.576, 0.545757
+0.583, 0.539602
+0.59, 0.533392
+0.597, 0.527054
+0.604, 0.52056
+0.611, 0.51401
+0.618, 0.507459
+0.625, 0.500715
+0.632, 0.494024
+0.639, 0.487287
+0.646, 0.480442
+0.653, 0.473709
+0.66, 0.46663
+0.667, 0.459929
+0.674, 0.452559
+0.681, 0.445705
+0.688, 0.438038
+0.695, 0.430497
+0.702, 0.421919
+0.709, 0.411743
+0.716, 0.399258
+0.723, 0.382327
+0.73, 0.372917
+0.737, 0.368481
+0.744, 0.365469
+0.751, 0.370882
+0.758, 0.372022
+0.765, 0.367707
+0.772, 0.364017
+0.779, 0.358293
+0.786, 0.353587
+0.793, 0.347995
+0.8, 0.342706
+0.807, 0.337499
+0.814, 0.331879
+0.821, 0.326959
+0.828, 0.321328
+0.835, 0.316496
+0.842, 0.311121
+0.849, 0.306141
+0.856, 0.301129
+0.863, 0.295965
+0.87, 0.291243
+0.877, 0.286018
+0.884, 0.281355
+0.891, 0.276264
+0.898, 0.271442
+0.905, 0.266619
+0.912, 0.261567
+0.919, 0.256965
+0.926, 0.251755
+0.933, 0.247113
+0.94, 0.241988
+0.947, 0.237129
+0.954, 0.232286
+0.961, 0.227129
+0.968, 0.222565
+0.975, 0.217182
+0.982, 0.212589
+0.989, 0.207337
+0.996, 0.202514
+1.003, 0.19766
+1.01, 0.192445
+1.017, 0.187978
+1.024, 0.182374
+1.031, 0.177803
+1.038, 0.172202
+1.045, 0.166968
+1.052, 0.161499
+1.059, 0.154783
+1.066, 0.148691
+1.073, 0.139137
+1.08, 0.12921
+1.087, 0.113483
+1.094, 0.0910592
+1.101, 0.060854
+1.108, 0.0198489
+1.115, 0.000981259
+1.122, 0.0111861
+1.129, 0.0287045
+1.136, 0.0461083
+1.143, 0.0566281
+1.15, 0.0637798
+1.157, 0.068018
+1.164, 0.0695891
+1.171, 0.0709775
+1.178, 0.0703133
+1.185, 0.070076
+1.192, 0.0688061
+1.199, 0.0674711
+1.206, 0.0661924
+1.213, 0.0642357
+1.22, 0.0629154
+1.227, 0.0608275
+1.234, 0.0593318
+1.241, 0.0574951
+1.248, 0.0557471
+1.255, 0.0542579
+1.262, 0.0523559
+1.269, 0.0510352
+1.276, 0.0492209
+1.283, 0.047911
+1.29, 0.0464025
+1.297, 0.0449836
+1.304, 0.043802
+1.311, 0.0422972
+1.318, 0.0412566
+1.325, 0.0398437
+1.332, 0.0387983
+1.339, 0.037639
+1.346, 0.036489
+1.353, 0.0355956
+1.36, 0.0343748
+1.367, 0.0335766
+1.374, 0.0324685
+1.381, 0.0316247
+1.388, 0.0307711
+1.395, 0.0297978
+1.402, 0.0291845
+1.409, 0.0281478
+1.416, 0.0275998
+1.423, 0.0267462
+1.43, 0.0261195
+1.437, 0.0256516
+1.444, 0.0248768
+1.451, 0.0247639
+1.458, 0.02384
+1.465, 0.0233979
+1.472, 0.0212862
+1.479, 0.0150168
+1.486, 0.0136502
+1.493, 0.0185417
+1.5, 0.0208868
+"""
+
+# ---------------------------------------------------------
+# 2. LOAD DATASET 2 (5+5 Fingers)
+# ---------------------------------------------------------
+data_str2 = """f(THz), Y
 0.1, 0.058458
 0.107, 0.0680156
 0.114, 0.0773864
@@ -224,9 +431,9 @@ data_str1 = """f(THz), Y
 """
 
 # ---------------------------------------------------------
-# 2. LOAD DATASET 2 (e.g. 3+3 Fingers / Smaller Size)
+# 3. LOAD DATASET 3 (4+4 Fingers)
 # ---------------------------------------------------------
-data_str2 = """f(THz), Y
+data_str3 = """f(THz), Y
 0.1, 0.0185674
 0.107, 0.0214884
 0.114, 0.024687
@@ -466,7 +673,7 @@ def extract_resonance_metrics(freq_array, y_array):
     Q = f0 / df
     return f0, df, Q, f1, f2, y_half, freq_fine, y_fine
 
-# Extract parameters for both datasets
+# Extract parameters for all three datasets
 f0_1, df_1, Q_1, f1_1, f2_1, y_half_1, freq_fine1, y_fine1 = extract_resonance_metrics(
     np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 0],
     np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 1]
@@ -477,69 +684,89 @@ f0_2, df_2, Q_2, f1_2, f2_2, y_half_2, freq_fine2, y_fine2 = extract_resonance_m
     np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 1]
 )
 
+f0_3, df_3, Q_3, f1_3, f2_3, y_half_3, freq_fine3, y_fine3 = extract_resonance_metrics(
+    np.loadtxt(io.StringIO(data_str3), delimiter=',', skiprows=1)[:, 0],
+    np.loadtxt(io.StringIO(data_str3), delimiter=',', skiprows=1)[:, 1]
+)
+
 # Print metrics to terminal
-print("=" * 55)
-print("DATASET 1 (Baseline - 5+5 Fingers):")
+print("=" * 60)
+print("DATASET 1 (Baseline - 7+7 Fingers):")
 print(f"  Resonance Frequency (f0): {f0_1:.4f} THz")
 print(f"  FWHM (df):                {df_1 * 1e3:.2f} GHz ({df_1:.4f} THz)")
 print(f"  Quality Factor (Q):       {Q_1:.4f}")
-print("-" * 55)
-print("DATASET 2 (Reduced - e.g. 3+3 Fingers):")
+print("-" * 60)
+print("DATASET 2 (Baseline - 5+5 Fingers):")
 print(f"  Resonance Frequency (f0): {f0_2:.4f} THz")
 print(f"  FWHM (df):                {df_2 * 1e3:.2f} GHz ({df_2:.4f} THz)")
 print(f"  Quality Factor (Q):       {Q_2:.4f}")
-print("=" * 55)
+print("-" * 60)
+print("DATASET 3 (Reduced - 4+4 Fingers):")
+print(f"  Resonance Frequency (f0): {f0_3:.4f} THz")
+print(f"  FWHM (df):                {df_3 * 1e3:.2f} GHz ({df_3:.4f} THz)")
+print(f"  Quality Factor (Q):       {Q_3:.4f}")
+print("=" * 60)
 
 # ---------------------------------------------------------
-# 3. GENERATE SIDE-BY-SIDE PLOTS (Publication Style)
+# 3. GENERATE THREE-PANEL SIDE-BY-SIDE PLOTS (Publication Style)
 # ---------------------------------------------------------
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.0, 3.8), dpi=300)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12.0, 3.8), dpi=300)
 
-# Dataset 1 Plot (Left Panel)
-ax1.scatter(
-    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 0],
-    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 1],
-    color='#1f77b4', s=5, alpha=0.5, label='Raw Data', zorder=2
-)
-ax1.plot(freq_fine1, y_fine1, color='#d62728', lw=1.3, label='Spline Fit', zorder=3)
-ax1.hlines(y_half_1, f1_1, f2_1, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
-ax1.vlines([f1_1, f2_1], ymin=0, ymax=y_half_1, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
+# Dataset 1 Plot (Left Panel - 7+7 Fingers)
+freq1 = np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 0]
+y1 = np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 1]
+ax1.scatter(freq1, y1, color='#1f77b4', s=4, alpha=0.5, label='Raw Data', zorder=2)
+ax1.plot(freq_fine1, y_fine1, color='#d62728', lw=1.2, label='Spline Fit', zorder=3)
+ax1.hlines(y_half_1, f1_1, f2_1, colors='#2ca02c', linestyles='--', lw=1.0, label='FWHM Bandwidth', zorder=4)
+ax1.vlines([f1_1, f2_1], ymin=0, ymax=y_half_1, colors='#2ca02c', linestyles=':', lw=0.9, zorder=4)
 
 annotation_text1 = f"$f_0 = {f0_1:.3f}$ THz\n$\\Delta f = {df_1*1e3:.1f}$ GHz\n$Q = {Q_1:.3f}$"
-ax1.text(0.06, 0.72, annotation_text1, transform=ax1.transAxes,
-         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
-         fontsize=8, color='#333333')
-
+ax1.text(0.06, 0.74, annotation_text1, transform=ax1.transAxes,
+         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.25', alpha=0.9),
+         fontsize=7.5, color='#333333')
 ax1.set_xlabel('Frequency (THz)', fontweight='medium')
 ax1.set_ylabel('Amplitude (Y)', fontweight='medium')
-ax1.set_title('(a) IDC: $N=5+5$ Fingers', pad=8, fontweight='bold', fontsize=10)
+ax1.set_title('(a) IDC: $N=7+7$ Fingers', pad=8, fontweight='bold', fontsize=9)
 ax1.grid(True, which='both', linestyle='--', alpha=0.3)
 ax1.set_xlim(0.1, 1.5)
 ax1.set_ylim(0, 0.8)
-ax1.legend(loc='lower center', frameon=True, fontsize=7)
+ax1.legend(loc='lower center', frameon=True, fontsize=6.5)
 
-# Dataset 2 Plot (Right Panel)
-ax2.scatter(
-    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 0],
-    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 1],
-    color='#1f77b4', s=5, alpha=0.5, label='Raw Data', zorder=2
-)
-ax2.plot(freq_fine2, y_fine2, color='#d62728', lw=1.3, label='Spline Fit', zorder=3)
-ax2.hlines(y_half_2, f1_2, f2_2, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
-ax2.vlines([f1_2, f2_2], ymin=0, ymax=y_half_2, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
+# Dataset 2 Plot (Middle Panel - 5+5 Fingers)
+freq2 = np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 0]
+y2 = np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 1]
+ax2.scatter(freq2, y2, color='#1f77b4', s=4, alpha=0.5, zorder=2)
+ax2.plot(freq_fine2, y_fine2, color='#d62728', lw=1.2, zorder=3)
+ax2.hlines(y_half_2, f1_2, f2_2, colors='#2ca02c', linestyles='--', lw=1.0, zorder=4)
+ax2.vlines([f1_2, f2_2], ymin=0, ymax=y_half_2, colors='#2ca02c', linestyles=':', lw=0.9, zorder=4)
 
 annotation_text2 = f"$f_0 = {f0_2:.3f}$ THz\n$\\Delta f = {df_2*1e3:.1f}$ GHz\n$Q = {Q_2:.3f}$"
-ax2.text(0.06, 0.72, annotation_text2, transform=ax2.transAxes,
-         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
-         fontsize=8, color='#333333')
-
+ax2.text(0.06, 0.74, annotation_text2, transform=ax2.transAxes,
+         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.25', alpha=0.9),
+         fontsize=7.5, color='#333333')
 ax2.set_xlabel('Frequency (THz)', fontweight='medium')
-ax2.set_ylabel('Amplitude (Y)', fontweight='medium')
-ax2.set_title('(b) IDC: $N=3+3$ Fingers', pad=8, fontweight='bold', fontsize=10)
+ax2.set_title('(b) IDC: $N=5+5$ Fingers', pad=8, fontweight='bold', fontsize=9)
 ax2.grid(True, which='both', linestyle='--', alpha=0.3)
 ax2.set_xlim(0.1, 1.5)
 ax2.set_ylim(0, 0.8)
-ax2.legend(loc='lower center', frameon=True, fontsize=7)
+
+# Dataset 3 Plot (Right Panel - 4+4 Fingers)
+freq3 = np.loadtxt(io.StringIO(data_str3), delimiter=',', skiprows=1)[:, 0]
+y3 = np.loadtxt(io.StringIO(data_str3), delimiter=',', skiprows=1)[:, 1]
+ax3.scatter(freq3, y3, color='#1f77b4', s=4, alpha=0.5, zorder=2)
+ax3.plot(freq_fine3, y_fine3, color='#d62728', lw=1.2, zorder=3)
+ax3.hlines(y_half_3, f1_3, f2_3, colors='#2ca02c', linestyles='--', lw=1.0, zorder=4)
+ax3.vlines([f1_3, f2_3], ymin=0, ymax=y_half_3, colors='#2ca02c', linestyles=':', lw=0.9, zorder=4)
+
+annotation_text3 = f"$f_0 = {f0_3:.3f}$ THz\n$\\Delta f = {df_3*1e3:.1f}$ GHz\n$Q = {Q_3:.3f}$"
+ax3.text(0.06, 0.74, annotation_text3, transform=ax3.transAxes,
+         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.25', alpha=0.9),
+         fontsize=7.5, color='#333333')
+ax3.set_xlabel('Frequency (THz)', fontweight='medium')
+ax3.set_title('(c) IDC: $N=4+4$ Fingers', pad=8, fontweight='bold', fontsize=9)
+ax3.grid(True, which='both', linestyle='--', alpha=0.3)
+ax3.set_xlim(0.1, 1.5)
+ax3.set_ylim(0, 0.8)
 
 plt.tight_layout()
 
