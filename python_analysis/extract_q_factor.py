@@ -17,9 +17,9 @@ plt.rcParams.update({
 })
 
 # ---------------------------------------------------------
-# 1. LOAD DATA
+# 1. LOAD DATASET 1 (5+5 Fingers)
 # ---------------------------------------------------------
-data_str = """f(THz), Y
+data_str1 = """f(THz), Y
 0.1, 0.058458
 0.107, 0.0680156
 0.114, 0.0773864
@@ -223,90 +223,323 @@ data_str = """f(THz), Y
 1.5, 0.0477633
 """
 
-data = np.loadtxt(io.StringIO(data_str), delimiter=',', skiprows=1)
-freq = data[:, 0]  # Frequency (THz)
-y = data[:, 1]     # Amplitude (Y)
-
 # ---------------------------------------------------------
-# 2. CUBIC SPLINE INTERPOLATION (Fits raw data exactly)
+# 2. LOAD DATASET 2 (e.g. 3+3 Fingers / Smaller Size)
 # ---------------------------------------------------------
-# make_interp_spline generates a smooth B-spline that passes through all data points
-spline = make_interp_spline(freq, y, k=3)
+data_str2 = """f(THz), Y
+0.1, 0.0185674
+0.107, 0.0214884
+0.114, 0.024687
+0.121, 0.0280496
+0.128, 0.0317538
+0.135, 0.0356142
+0.142, 0.0398493
+0.149, 0.0442361
+0.156, 0.0491553
+0.163, 0.0542609
+0.17, 0.0598355
+0.177, 0.0656138
+0.184, 0.0718588
+0.191, 0.0784067
+0.198, 0.0853502
+0.205, 0.0926332
+0.212, 0.100267
+0.219, 0.108442
+0.226, 0.116887
+0.233, 0.125937
+0.24, 0.135259
+0.247, 0.145265
+0.254, 0.155515
+0.261, 0.166503
+0.268, 0.177711
+0.275, 0.189616
+0.282, 0.201829
+0.289, 0.214622
+0.296, 0.227993
+0.303, 0.24155
+0.31, 0.255495
+0.317, 0.269978
+0.324, 0.284987
+0.331, 0.300201
+0.338, 0.316011
+0.345, 0.331834
+0.352, 0.348203
+0.359, 0.364464
+0.366, 0.381152
+0.373, 0.397646
+0.38, 0.414343
+0.387, 0.430804
+0.394, 0.447138
+0.401, 0.463171
+0.408, 0.478793
+0.415, 0.494105
+0.422, 0.508714
+0.429, 0.522941
+0.436, 0.536217
+0.443, 0.549093
+0.45, 0.560878
+0.457, 0.572049
+0.464, 0.582033
+0.471, 0.591275
+0.478, 0.599354
+0.485, 0.606573
+0.492, 0.612953
+0.499, 0.618435
+0.506, 0.622988
+0.513, 0.626531
+0.52, 0.629287
+0.527, 0.631018
+0.534, 0.632109
+0.541, 0.632476
+0.548, 0.632322
+0.555, 0.631241
+0.562, 0.629679
+0.569, 0.627299
+0.576, 0.624482
+0.583, 0.620976
+0.59, 0.617288
+0.597, 0.612943
+0.604, 0.608021
+0.611, 0.60296
+0.618, 0.597455
+0.625, 0.591717
+0.632, 0.585628
+0.639, 0.579582
+0.646, 0.573174
+0.653, 0.566729
+0.66, 0.560028
+0.667, 0.553307
+0.674, 0.546411
+0.681, 0.539562
+0.688, 0.532774
+0.695, 0.52598
+0.702, 0.519178
+0.709, 0.512348
+0.716, 0.505566
+0.723, 0.498735
+0.73, 0.492065
+0.737, 0.485462
+0.744, 0.478973
+0.751, 0.472427
+0.758, 0.465994
+0.765, 0.459517
+0.772, 0.45314
+0.779, 0.446842
+0.786, 0.44073
+0.793, 0.434631
+0.8, 0.428571
+0.807, 0.422562
+0.814, 0.416561
+0.821, 0.410643
+0.828, 0.404837
+0.835, 0.399226
+0.842, 0.39358
+0.849, 0.388017
+0.856, 0.382417
+0.863, 0.376883
+0.87, 0.371323
+0.877, 0.365934
+0.884, 0.360588
+0.891, 0.355224
+0.898, 0.349829
+0.905, 0.344393
+0.912, 0.338934
+0.919, 0.333415
+0.926, 0.327987
+0.933, 0.322513
+0.94, 0.316995
+0.947, 0.311387
+0.954, 0.305746
+0.961, 0.300015
+0.968, 0.29427
+0.975, 0.288544
+0.982, 0.282826
+0.989, 0.277033
+0.996, 0.271241
+1.003, 0.265406
+1.01, 0.259563
+1.017, 0.253723
+1.024, 0.247959
+1.031, 0.242239
+1.038, 0.236485
+1.045, 0.230797
+1.052, 0.22509
+1.059, 0.21945
+1.066, 0.21383
+1.073, 0.20835
+1.08, 0.202921
+1.087, 0.197531
+1.094, 0.192211
+1.101, 0.186943
+1.108, 0.181745
+1.115, 0.176643
+1.122, 0.171662
+1.129, 0.16679
+1.136, 0.161967
+1.143, 0.15726
+1.15, 0.152632
+1.157, 0.148096
+1.164, 0.143708
+1.171, 0.139418
+1.178, 0.135304
+1.185, 0.131213
+1.192, 0.127312
+1.199, 0.123454
+1.206, 0.119749
+1.213, 0.116167
+1.22, 0.11269
+1.227, 0.109386
+1.234, 0.106098
+1.241, 0.103017
+1.248, 0.0999574
+1.255, 0.0970607
+1.262, 0.0942774
+1.269, 0.0915756
+1.276, 0.0890622
+1.283, 0.0865284
+1.29, 0.0842034
+1.297, 0.0818642
+1.304, 0.0796304
+1.311, 0.0775177
+1.318, 0.075325
+1.325, 0.0733944
+1.332, 0.0712005
+1.339, 0.0693081
+1.346, 0.0671644
+1.353, 0.0650853
+1.36, 0.0630264
+1.367, 0.0604355
+1.374, 0.0581413
+1.381, 0.0542069
+1.388, 0.0498828
+1.395, 0.0403351
+1.402, 0.027407
+1.409, 0.025717
+1.416, 0.0300595
+1.423, 0.0339406
+1.43, 0.0389007
+1.437, 0.0412412
+1.444, 0.0428364
+1.451, 0.0436491
+1.458, 0.043891
+1.465, 0.044552
+1.472, 0.0444852
+1.479, 0.0450675
+1.486, 0.0450283
+1.493, 0.0451923
+1.5, 0.0450459
+"""
 
-# Evaluate the spline on a very fine grid for plotting and extraction
-freq_fine = np.linspace(freq[0], freq[-1], 20000)
-y_fine = spline(freq_fine)
+def extract_resonance_metrics(freq_array, y_array):
+    """
+    Fits raw data to a cubic spline and extracts:
+    - Resonance Frequency (f0)
+    - FWHM bandwidth (df)
+    - Loaded Quality Factor (Q)
+    - Interpolated grid for plotting
+    """
+    spline = make_interp_spline(freq_array, y_array, k=3)
+    freq_fine = np.linspace(freq_array[0], freq_array[-1], 20000)
+    y_fine = spline(freq_fine)
+    
+    # Locate peak
+    idx_max = np.argmax(y_fine)
+    f0 = freq_fine[idx_max]
+    y_max = y_fine[idx_max]
+    y_min = np.min(y_fine)
+    
+    # Calculate half-maximum level (baseline-corrected)
+    y_half = y_min + (y_max - y_min) / 2.0
+    
+    # Find FWHM crossings left and right of the peak
+    idx_left = np.where((freq_fine < f0) & (y_fine <= y_half))[0]
+    idx_right = np.where((freq_fine > f0) & (y_fine <= y_half))[0]
+    
+    if len(idx_left) > 0 and len(idx_right) > 0:
+        f1 = freq_fine[idx_left[-1]]
+        f2 = freq_fine[idx_right[0]]
+        df = f2 - f1
+    else:
+        f1, f2 = freq_array[0], freq_array[-1]
+        df = f2 - f1
+        
+    Q = f0 / df
+    return f0, df, Q, f1, f2, y_half, freq_fine, y_fine
 
-# ---------------------------------------------------------
-# 3. DIRECT PARAMETER EXTRACTION FROM SPLINE CURVE
-# ---------------------------------------------------------
-# Find Peak
-idx_max = np.argmax(y_fine)
-f0_fit = freq_fine[idx_max]
-y_max = y_fine[idx_max]
-y_min = np.min(y_fine)
-
-# Calculate Half-Maximum level (baseline-corrected)
-y_half = y_min + (y_max - y_min) / 2.0
-
-# Find crossing points (roots) for FWHM
-# We search left and right of the peak index
-idx_left = np.where((freq_fine < f0_fit) & (y_fine <= y_half))[0]
-idx_right = np.where((freq_fine > f0_fit) & (y_fine <= y_half))[0]
-
-if len(idx_left) > 0 and len(idx_right) > 0:
-    f1 = freq_fine[idx_left[-1]]
-    f2 = freq_fine[idx_right[0]]
-    df_fit = f2 - f1
-else:
-    # Fallback to simple interpolation if boundaries are at the edges
-    f1 = freq[0]
-    f2 = freq[-1]
-    df_fit = f2 - f1
-
-# Calculate Q-factor
-Q_factor = f0_fit / df_fit
-
-print("=" * 45)
-print("EXTRACTED RESONANCE PARAMETERS (EXACT FIT):")
-print(f"Resonance Frequency (f0): {f0_fit:.4f} THz")
-print(f"FWHM (df):                {df_fit * 1e3:.2f} GHz ({df_fit:.4f} THz)")
-print(f"Quality Factor (Q):       {Q_factor:.4f}")
-print("=" * 45)
-
-# ---------------------------------------------------------
-# 4. GENERATE PUBLICATION-STYLE PLOT
-# ---------------------------------------------------------
-fig, ax = plt.subplots(figsize=(5.0, 3.8), dpi=300)
-
-# Plot raw data points
-ax.scatter(freq, y, color='#1f77b4', s=6, alpha=0.6, label='Raw Data', zorder=2)
-
-# Plot exact spline fit line (passes directly through all points)
-ax.plot(freq_fine, y_fine, color='#d62728', lw=1.3, label='Exact Cubic Spline Fit', zorder=3)
-
-# Highlight FWHM Bandwidth line
-ax.hlines(y_half, f1, f2, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
-ax.vlines([f1, f2], ymin=0, ymax=y_half, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
-
-# Add metrics text box
-annotation_text = (
-    f"$f_0 = {f0_fit:.3f}$ THz\n"
-    f"$\\Delta f = {df_fit*1e3:.1f}$ GHz\n"
-    f"$Q = {Q_factor:.3f}$"
+# Extract parameters for both datasets
+f0_1, df_1, Q_1, f1_1, f2_1, y_half_1, freq_fine1, y_fine1 = extract_resonance_metrics(
+    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 0],
+    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 1]
 )
-ax.text(0.05, 0.75, annotation_text, transform=ax.transAxes,
-        bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
-        fontsize=8, color='#333333')
 
-# Labels and Styling
-ax.set_xlabel('Frequency (THz)', fontweight='medium')
-ax.set_ylabel('Amplitude (Y)', fontweight='medium')
-ax.set_title('Exact Curve Fitting & Q-Factor Extraction', pad=8, fontweight='bold')
-ax.grid(True, which='both', linestyle='--', alpha=0.3)
-ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.02), ncol=3, frameon=True, fontsize=7)
-ax.set_xlim(freq[0], freq[-1])
-ax.set_ylim(0, 0.8)
+f0_2, df_2, Q_2, f1_2, f2_2, y_half_2, freq_fine2, y_fine2 = extract_resonance_metrics(
+    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 0],
+    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 1]
+)
+
+# Print metrics to terminal
+print("=" * 55)
+print("DATASET 1 (Baseline - 5+5 Fingers):")
+print(f"  Resonance Frequency (f0): {f0_1:.4f} THz")
+print(f"  FWHM (df):                {df_1 * 1e3:.2f} GHz ({df_1:.4f} THz)")
+print(f"  Quality Factor (Q):       {Q_1:.4f}")
+print("-" * 55)
+print("DATASET 2 (Reduced - e.g. 3+3 Fingers):")
+print(f"  Resonance Frequency (f0): {f0_2:.4f} THz")
+print(f"  FWHM (df):                {df_2 * 1e3:.2f} GHz ({df_2:.4f} THz)")
+print(f"  Quality Factor (Q):       {Q_2:.4f}")
+print("=" * 55)
+
+# ---------------------------------------------------------
+# 3. GENERATE SIDE-BY-SIDE PLOTS (Publication Style)
+# ---------------------------------------------------------
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.0, 3.8), dpi=300)
+
+# Dataset 1 Plot (Left Panel)
+ax1.scatter(
+    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 0],
+    np.loadtxt(io.StringIO(data_str1), delimiter=',', skiprows=1)[:, 1],
+    color='#1f77b4', s=5, alpha=0.5, label='Raw Data', zorder=2
+)
+ax1.plot(freq_fine1, y_fine1, color='#d62728', lw=1.3, label='Spline Fit', zorder=3)
+ax1.hlines(y_half_1, f1_1, f2_1, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
+ax1.vlines([f1_1, f2_1], ymin=0, ymax=y_half_1, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
+
+annotation_text1 = f"$f_0 = {f0_1:.3f}$ THz\n$\\Delta f = {df_1*1e3:.1f}$ GHz\n$Q = {Q_1:.3f}$"
+ax1.text(0.06, 0.72, annotation_text1, transform=ax1.transAxes,
+         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
+         fontsize=8, color='#333333')
+
+ax1.set_xlabel('Frequency (THz)', fontweight='medium')
+ax1.set_ylabel('Amplitude (Y)', fontweight='medium')
+ax1.set_title('(a) IDC: $N=5+5$ Fingers', pad=8, fontweight='bold', fontsize=10)
+ax1.grid(True, which='both', linestyle='--', alpha=0.3)
+ax1.set_xlim(0.1, 1.5)
+ax1.set_ylim(0, 0.8)
+ax1.legend(loc='lower center', frameon=True, fontsize=7)
+
+# Dataset 2 Plot (Right Panel)
+ax2.scatter(
+    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 0],
+    np.loadtxt(io.StringIO(data_str2), delimiter=',', skiprows=1)[:, 1],
+    color='#1f77b4', s=5, alpha=0.5, label='Raw Data', zorder=2
+)
+ax2.plot(freq_fine2, y_fine2, color='#d62728', lw=1.3, label='Spline Fit', zorder=3)
+ax2.hlines(y_half_2, f1_2, f2_2, colors='#2ca02c', linestyles='--', lw=1.2, label='FWHM Bandwidth', zorder=4)
+ax2.vlines([f1_2, f2_2], ymin=0, ymax=y_half_2, colors='#2ca02c', linestyles=':', lw=1.0, zorder=4)
+
+annotation_text2 = f"$f_0 = {f0_2:.3f}$ THz\n$\\Delta f = {df_2*1e3:.1f}$ GHz\n$Q = {Q_2:.3f}$"
+ax2.text(0.06, 0.72, annotation_text2, transform=ax2.transAxes,
+         bbox=dict(facecolor='white', edgecolor='#dddddd', boxstyle='round,pad=0.3', alpha=0.9),
+         fontsize=8, color='#333333')
+
+ax2.set_xlabel('Frequency (THz)', fontweight='medium')
+ax2.set_ylabel('Amplitude (Y)', fontweight='medium')
+ax2.set_title('(b) IDC: $N=3+3$ Fingers', pad=8, fontweight='bold', fontsize=10)
+ax2.grid(True, which='both', linestyle='--', alpha=0.3)
+ax2.set_xlim(0.1, 1.5)
+ax2.set_ylim(0, 0.8)
+ax2.legend(loc='lower center', frameon=True, fontsize=7)
 
 plt.tight_layout()
 
