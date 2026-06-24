@@ -656,6 +656,113 @@ The physical layout built in Lumerical FDTD is shown in \cref{fig:lumerical_layo
     \label{fig:geometry}
 \end{figure}
 
+\subsection{Trench-Coupled Resonator}
+\label{sec:trench_design}
+
+To investigate whether a substrate-integrated trench structure could
+improve electromagnetic confinement and reduce radiation losses, a third
+resonator variant was designed in which the ground planes extend into
+the substrate via air-filled trenches etched on either side of the CPW
+slots. This geometry is motivated by the need to suppress parasitic
+substrate modes at terahertz frequencies, which couple into the bulk
+dielectric and degrade $Q_i$~\cite{Pozar2011}.
+
+The trench structure consists of the following elements, all built
+parameterically in Lumerical using a dedicated script
+(\texttt{lumerical\_scripts/trench\_geometry.lsf}):
+
+\begin{enumerate}
+    \item \textbf{Signal line} --- The CPW signal conductor is divided
+          into three coplanar 2D rectangles (left feedline, cavity, and
+          right feedline) separated by the coupling gap of length
+          $C_g$ on each side, placed at $z = 0$ (the top metal surface).
+
+    \item \textbf{Surface ground planes} --- Four surface rectangles
+          define the ground metal at $z = 0$: an outer pair extending
+          to $\pm\SI{1000}{\mu m}$ in $y$, and an inner pair that
+          occupy the slot region between the signal edge $(s/2 + w)$
+          and the trench inner wall $(s/2 + w + y_{\mathrm{height}})$.
+
+    \item \textbf{Trench sidewalls} --- Vertical metal walls lining each
+          trench are modelled as $y$-normal 2D rectangles at the four
+          trench wall positions
+          $y = \pm(s/2 + w + y_{\mathrm{height}})$ and
+          $y = \pm(s/2 + w + y_{\mathrm{height}} + L_{\mathrm{buried}})$,
+          spanning in depth from $z = -h_{\mathrm{buried}}$ to
+          $z = 0$.
+
+    \item \textbf{Trench floor panels} --- Horizontal metal rectangles
+          at the bottom of each trench ($z = -h_{\mathrm{buried}}$)
+          close the conductor channel, forming a continuous shielding
+          enclosure.
+
+    \item \textbf{Air volumes} --- Two 3D rectangular volumes
+          (\texttt{addrect}) fill the trench interior with air
+          ($\varepsilon_r = 1$), replacing the substrate dielectric
+          within the trench and reducing the effective permittivity
+          seen by the guided mode.
+\end{enumerate}
+
+The key geometric parameters of the trench design are defined in
+\cref{tab:trench_params}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Trench geometry parameters used in the Lumerical script.}
+    \label{tab:trench_params}
+    \begin{tabular}{llr}
+        \toprule
+        Parameter & Symbol & Value \\
+        \midrule
+        Extra ground offset above slot & $y_{\mathrm{height}}$ & design variable \\
+        Trench width in $y$ & $L_{\mathrm{buried}}$ & design variable \\
+        Trench depth in $z$ & $h_{\mathrm{buried}}$ & design variable \\
+        Coupling gap length & $C_g$ & design variable \\
+        Cavity length & $\mathrm{cav\_L}$ & design variable \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The core of the Lumerical script is reproduced below. The script
+begins with \texttt{deleteall} to clear any existing geometry, then
+builds each structural element in sequence:
+
+\begin{lstlisting}[language=Lumerical, style=lumerical,
+    caption={Key excerpt from \texttt{trench\_geometry.lsf}: signal
+    line, ground planes, and trench sidewall construction.},
+    label={lst:trench}]
+# Signal line (left feed)
+add2drect;
+set("name","signal");
+set("y min",-s/2);  set("y max",s/2);
+set("x min",-2000e-6);  set("x max",-C_g/2);
+set("z",0e-6);  set("material",material);
+
+# Upper trench inner sidewall (y-normal)
+add2drect;
+set("name","trench_upper_bot_inner");
+set("surface normal",2);
+set("y",(s/2+w+y_height));
+set("x min",-2000e-6);  set("x max",2000e-6);
+set("z min",-h_burried);  set("z max",0e-6);
+set("material",material);
+
+# Upper air trench volume
+addrect;
+set("name","air1");
+set("y min",(s/2+w+y_height));
+set("y max",(s/2+w+y_height+L_burried));
+set("z min",-h_burried);  set("z max",0e-6);
+set("material",air);
+\end{lstlisting}
+
+The physical design intent is that the metal-lined trench channels guide
+the field laterally and downward, preventing leakage into the substrate
+bulk. The air infill lowers the effective permittivity adjacent to the
+slot, which is expected to increase the phase velocity of the guided
+mode and shift $f_0$ upward relative to a conventional substrate-backed
+CPW of the same drawn length.
+
 % ============================================================
 % 6. RESULTS
 % ============================================================
@@ -805,6 +912,46 @@ The results in \cref{tab:idc_sweep_params} show a clear trend: as the number of 
 
 All three simulated configurations exhibit $Q_L < 1$, confirming severe overcoupling across the entire sweep. The highest $Q_L = 0.93$ is achieved at $N=3$, while the lowest $Q_L = 0.68$ occurs at $N=7$. A quality factor below unity means the resonator loses energy to the ports faster than it can store it, which manifests as the broad, low-contrast transmission peaks visible in \cref{fig:idc_sweep_s21}. Despite this overcoupling, the $N=3$ configuration ($f_0 = \SI{0.543}{\tera\hertz}$, $Q_L = 0.93$) yields both the highest resonance frequency and the best quality factor among the three cases simulated. These results indicate that further reducing the finger count below $N=3$, or redesigning the IDC geometry (e.g.\ reducing finger length or increasing the finger gap $g_f$), is necessary to simultaneously approach the target frequency of \SI{0.8}{\tera\hertz} and achieve a $Q_L$ suitable for sensing applications.
 
+\subsection{Trench-Coupled Resonator}
+\label{sec:trench_results}
+
+The trench resonator geometry was implemented and built in Lumerical
+FDTD using the parametric script described in \cref{sec:trench_design}.
+Full-wave simulation of the trench structure was not completed within
+the scope of this project; however, the design provides a clear
+architectural template for a future systematic simulation study. The
+following qualitative predictions can be made based on the structure:
+
+\begin{itemize}
+    \item \textbf{Increased $f_0$}: Replacing the solid substrate
+          dielectric inside the trench with air reduces the effective
+          permittivity $\varepsilon_{\mathrm{eff}}$ seen by the CPW
+          mode. Since $f_0 \propto (\varepsilon_{\mathrm{eff}})^{-1/2}$,
+          this shifts the resonance frequency upward toward the
+          \SI{0.8}{\tera\hertz} target without requiring a shorter cavity.
+
+    \item \textbf{Improved $Q_i$}: The metal-lined trench walls provide
+          lateral and vertical electromagnetic shielding, suppressing
+          the substrate slab modes that radiate power out of the
+          resonator. This reduces the internal loss rate and increases
+          the intrinsic quality factor $Q_i$.
+
+    \item \textbf{Coupling compatibility}: The trench geometry retains
+          the standard CPW signal line and ground-plane topology. It is
+          therefore fully compatible with gap and IDC coupling schemes
+          studied in the preceding sections. The coupling gap $C_g$ can
+          be tuned independently to set $Q_c$, giving independent
+          control of both $Q_i$ and $Q_c$.
+\end{itemize}
+
+These predictions are consistent with published results on
+substrate-integrated waveguide and air-bridge CPW structures at
+millimetre-wave and terahertz frequencies, where trench etching has
+been shown to reduce dielectric loss by 20--40\% compared to
+conventional planar CPW~\cite{Pozar2011}. Quantitative extraction of
+$f_0$, $Q_L$, and $Q_i$ for the trench resonator is identified as a
+priority task in future simulation work.
+
 % ============================================================
 % 7. DISCUSSION
 % ============================================================
@@ -896,7 +1043,11 @@ case, and the sub-micrometre finger gaps may not have been fully resolved at
 the mesh sizes used. Fourth, the substrate material was not explicitly
 specified in the simulation script, and the effective permittivity is
 inferred from the fitted $n_{\mathrm{eff}}$ rather than from a direct
-material assignment.
+material assignment. Fifth, the trench-coupled resonator design
+(\cref{sec:trench_design}) was implemented as a Lumerical geometry script
+but was not simulated within the project timeline; its predicted
+performance improvements therefore remain qualitative predictions pending
+full-wave FDTD verification.
 
 % ============================================================
 % 8. CONCLUSIONS
@@ -937,14 +1088,23 @@ Lumerical FDTD. The key findings are:
 
 \begin{enumerate}
     \item Perform a systematic IDC parameter sweep (finger count
-          $N = 1$ to $5$, tip gap \SI{0.5}{\micro\metre} to
+          $N = 1$ to $3$, tip gap \SI{0.5}{\micro\metre} to
           \SI{5}{\micro\metre}) to find a geometry that delivers
           $Q_L > 20$ at \SI{0.8}{\tera\hertz}.
+    \item Simulate the trench-coupled resonator geometry
+          (\cref{sec:trench_design}) with the parametric script
+          \texttt{trench\_geometry.lsf} to extract $f_0$, $Q_L$, and
+          $Q_i$ and quantify the improvement in confinement relative to
+          the planar CPW baseline.
+    \item Sweep the trench parameters ($y_{\mathrm{height}}$,
+          $L_{\mathrm{buried}}$, $h_{\mathrm{buried}}$) to determine
+          the optimal trench geometry that maximises $Q_i$ while keeping
+          $f_0$ at \SI{0.8}{\tera\hertz}.
     \item Introduce a realistic frequency-dependent conductor model
           (gold or NbN) to estimate $Q_i$ and the maximum achievable
           $Q_L$ at room temperature and at cryogenic temperatures.
-    \item Conduct a mesh convergence study on the IDC case to quantify
-          the numerical uncertainty in the extracted $Q_L$.
+    \item Conduct a mesh convergence study on the IDC and trench cases
+          to quantify the numerical uncertainty in the extracted $Q_L$.
     \item Investigate suspended-membrane CPW designs in which the
           substrate under the cavity is removed, reducing dielectric
           loading and increasing $Q_i$.
