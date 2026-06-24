@@ -128,8 +128,8 @@ set("surface normal", 2);   # y-normal
 set("y",  (s/2 + w + y_height));
 set("x min", -2000e-6);
 set("x max",  2000e-6);
-set("z min", -h_burried);
-set("z max",  0e-6);
+set("z", -h_burried/2);
+set("z span", h_burried);
 set("material", material);
 
 # Upper trench — bottom face (outer wall)
@@ -139,8 +139,8 @@ set("surface normal", 2);   # y-normal
 set("y",  (s/2 + w + y_height + L_burried));
 set("x min", -2000e-6);
 set("x max",  2000e-6);
-set("z min", -h_burried);
-set("z max",  0e-6);
+set("z", -h_burried/2);
+set("z span", h_burried);
 set("material", material);
 
 # Lower trench — bottom face (inner wall)
@@ -150,8 +150,8 @@ set("surface normal", 2);   # y-normal
 set("y", -(s/2 + w + y_height));
 set("x min", -2000e-6);
 set("x max",  2000e-6);
-set("z min", -h_burried);
-set("z max",  0e-6);
+set("z", -h_burried/2);
+set("z span", h_burried);
 set("material", material);
 
 # Lower trench — bottom face (outer wall)
@@ -161,8 +161,8 @@ set("surface normal", 2);   # y-normal
 set("y", -(s/2 + w + y_height + L_burried));
 set("x min", -2000e-6);
 set("x max",  2000e-6);
-set("z min", -h_burried);
-set("z max",  0e-6);
+set("z", -h_burried/2);
+set("z span", h_burried);
 set("material", material);
 
 # -------------------------------------------------------------
