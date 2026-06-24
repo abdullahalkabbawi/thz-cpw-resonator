@@ -234,19 +234,23 @@ def lorentzian(f, f0, df, A, y0):
 # ---------------------------------------------------------
 # 3. INITIAL GUESS & CURVE FITTING
 # ---------------------------------------------------------
-# We select the peak region for fitting to ignore outer noise/dips (e.g. the notch at 1.32 THz)
+# We select the peak region for fitting to ignore outer noise/dips and asymmetry.
 # This focuses on the resonance behavior of the main mode around 0.47 THz.
-fit_mask = (freq >= 0.2) & (freq <= 0.8)
+fit_mask = (freq >= 0.36) & (freq <= 0.60)
 
-idx_max = np.argmax(y)
-f0_guess = freq[idx_max]
+idx_max = np.argmax(y[fit_mask])
+f0_guess = freq[fit_mask][idx_max]
 y0_guess = np.min(y)
-A_guess = y[idx_max] - y0_guess
-df_guess = 0.4  # Guess 400 GHz FWHM
+A_guess = y[fit_mask][idx_max] - y0_guess
+df_guess = 0.5  # Guess 500 GHz FWHM
 
 p0 = [f0_guess, df_guess, A_guess, y0_guess]
 
-popt, pcov = curve_fit(lorentzian, freq[fit_mask], y[fit_mask], p0=p0)
+# Enforce positive baseline (y0 >= 0) and realistic parameters
+# bounds = ([f0_min, df_min, A_min, y0_min], [f0_max, df_max, A_max, y0_max])
+bounds = ([0.42, 0.20, 0.40, 0.0], [0.54, 1.20, 1.00, 0.20])
+
+popt, pcov = curve_fit(lorentzian, freq[fit_mask], y[fit_mask], p0=p0, bounds=bounds)
 f0_fit, df_fit, A_fit, y0_fit = popt
 
 # Calculate Quality Factor Q = f0 / df
