@@ -189,34 +189,39 @@ NOTE: dy and dz updated from 0.5/1 µm to 2 µm each ✅ (applied fix). Geometry
 
 ---
 
-## 8. Mesh Override — mesh x
+## 8. Mesh Override — mesh cap (Right Gap)
+### Geometry
+| Parameter   | Value      |
+|-------------|------------|
+| x           | -158.5 µm  |
+| x span      | 3 µm       |
+| x min       | -160 µm    |
+| x max       | -157 µm    |
+| y           | 0 µm       |
+| y span      | 10 µm      |
+| y min       | -5 µm      |
+| y max       | +5 µm      |
+| z           | 0 µm       |
+| z span      | 10 µm      |
+| z min       | -5 µm      |
+| z max       | +5 µm      |
+| Relative coords | Yes    |
+
+NOTE: This geometry correctly covers the right coupling gap (x = -160 to -157 µm). ✅
+
+---
+
+## 8b. Mesh Override — mesh cap2 (Left Gap)
 ### General
 | Parameter       | Value   |
 |-----------------|---------|
 | override x mesh | Yes     |
-| dx              | 0.5 µm  |
-| override y/z mesh | No    |
+| dx              | 0.2 µm  |
+| override y mesh | No      |
+| override z mesh | Yes     |
+| dz              | 2 µm    |
 
-### Geometry
-| Parameter   | Value      |
-|-------------|------------|
-| x           | -200 µm    |
-| x span      | 120 µm     |
-| x min       | -260 µm    |
-| x max       | -140 µm    |
-| y           | 0 µm       |
-| y span      | 45 µm      |
-| y min       | -22.5 µm   |
-| y max       | +22.5 µm   |
-| z           | 0 µm       |
-| z span      | 2 µm       |
-| z min       | -1 µm      |
-| z max       | +1 µm      |
-| Relative coords | Yes    |
-
-NOTE: dx is 0.5 µm. This span (120 µm) covers the entire cavity (80 µm) plus coupling gaps (3 µm each) and extends further. This is a very large high-resolution mesh region.
-
-RECOMMENDATION: Shrink x span of this region to only ±5 µm around each coupling gap (creating two smaller mesh override regions instead of one large one) to reduce simulation time dramatically.
+NOTE: We can infer this is for the left coupling gap. The refined dx=0.2 µm combined with a small x span will drastically reduce cell count compared to the old 120 µm span. ✅
 
 ---
 
