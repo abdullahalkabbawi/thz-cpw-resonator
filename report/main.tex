@@ -942,6 +942,27 @@ The simulated power transmission spectra ($|S_{21}|^2$) for both the trench and 
 The simulation results conclusively demonstrate the superiority of the trench architecture. As shown in \cref{tab:trench_comparison}, removing the high-permittivity GaAs substrate from the modal volume via the trench etch dramatically reduces parasitic radiation and dielectric losses. This suppression of loss mechanisms narrows the 3\unit{\decibel} bandwidth ($\Delta f$) from \SI{38.2}{\giga\hertz} to \SI{15.4}{\giga\hertz}, resulting in the loaded quality factor ($Q_L$) more than doubling, from 17.5 to 38.7. 
 
 Additionally, the introduction of the air-filled trench lowers the effective permittivity ($\varepsilon_{\mathrm{eff}}$) seen by the CPW mode, which alters the phase velocity. In conjunction with the modified capacitive loading from the trench walls, this shifts the fundamental resonance frequency from \SI{0.667}{\tera\hertz} to \SI{0.597}{\tera\hertz}. Furthermore, the peak transmission power is greatly enhanced in the trenched configuration, indicating much stronger and more efficient energy coupling into the resonator due to the improved field confinement. These quantitative results confirm that the trench topology is a highly effective strategy for boosting the $Q$-factor of terahertz resonators for sensing applications.
+
+\subsubsection{Port Mode Analysis}
+
+To fully understand the excitation of the trenched cavity, the eigenmodes supported by the injection port were analysed. \Cref{fig:trench_mode_profile} shows the spatial distribution of the electric field intensity for the primary injected mode. The mode profile vividly illustrates how the electromagnetic fields are tightly confined within the etched trench volume and the capacitive gap, validating the premise that the trench geometry removes the high-loss GaAs substrate from the most intense regions of the modal field.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{mode_profile_trenched_3um_port1.png}
+    \caption{Simulated electric field intensity profile of the supported CPW mode at the injection port of the trenched resonator. The fields are strongly localised within the air-filled trench rather than the lossy GaAs substrate.}
+    \label{fig:trench_mode_profile}
+\end{figure}
+
+The FDTD mode solver identified two dominant propagating modes, as detailed in \cref{fig:trench_mode_list}. 
+Mode 1 exhibits an effective index of $n_{\mathrm{eff}} = 2.912 + 0.164i$ with a relatively high propagation loss of \SI{2.987}{\decibel/\milli\metre}. By contrast, Mode 2 features an effective index of $n_{\mathrm{eff}} = 2.699 + 0.056i$, which closely matches the theoretical end-correction fit of $n_{\mathrm{eff}} = 2.68$ calculated in \cref{eq:fit_neff}. Crucially, Mode 2 experiences less than half the propagation loss (\SI{1.026}{\decibel/\milli\metre}), demonstrating the existence of a highly efficient transmission channel when the mode properly couples into the trench geometry.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{mode_list_trenched.png}
+    \caption{FDTD port mode list for the trenched resonator, highlighting the effective index and propagation losses of the two primary supported modes.}
+    \label{fig:trench_mode_list}
+\end{figure}
 % ============================================================
 % 7. DISCUSSION
 % ============================================================
