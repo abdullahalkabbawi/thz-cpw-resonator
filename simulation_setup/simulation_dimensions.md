@@ -6,21 +6,30 @@
 ---
 
 ## 1. Substrate (Rectangle object)
-| Parameter   | Value        |
-|-------------|--------------|
-| x           | 0 µm         |
-| x min       | -2000 µm     |
-| x max       | +2000 µm     |
-| x span      | 4000 µm      |
-| y           | 0 µm         |
-| y min       | -1000 µm     |
-| y max       | +1000 µm     |
-| y span      | 2000 µm      |
-| z           | -250 µm      |
-| z min       | -500 µm      |
-| z max       | 0 µm         |
-| z span      | 500 µm       |
-| Top surface | z = 0 (CPW metal plane) |
+| Parameter      | Value                  |
+|----------------|------------------------|
+| x              | 0 µm                   |
+| x min          | -2000 µm               |
+| x max          | +2000 µm               |
+| x span         | 4000 µm                |
+| y              | 0 µm                   |
+| y min          | -1000 µm               |
+| y max          | +1000 µm               |
+| y span         | 2000 µm                |
+| z              | -250 µm                |
+| z min          | -500 µm                |
+| z max          | 0 µm                   |
+| z span         | 500 µm                 |
+| Top surface    | z = 0 (CPW metal plane)|
+| Material       | Si hires - THz (High-Resistivity Silicon, from Lumerical material database) |
+| Mesh order     | 2                      |
+| Rotations      | None (all axes = none) |
+| Render type    | Detailed, alpha = 1    |
+| Relative coords| Yes                    |
+
+NOTE: Si hires - THz has permittivity ε ≈ 11.7, refractive index n ≈ 3.42.
+This significantly slows the guided mode (lower phase velocity) and shifts
+the resonance frequency downward compared to an air substrate.
 
 ---
 
