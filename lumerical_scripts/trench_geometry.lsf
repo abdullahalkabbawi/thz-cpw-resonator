@@ -1,61 +1,59 @@
 # =============================================================
 # trench_geometry.lsf
 # MSc Project — THz CPW Resonator
-#
-# Builds the trench geometry in Lumerical FDTD:
-#   - CPW signal line (split at coupling gap)
-#   - Ground planes (surface + buried sidewalls)
-#   - Air-filled trench volumes (upper and lower trenches)
-#
-# Variable definitions (match Lumerical user properties panel):
-#   s          = 10   µm  – signal conductor width
-#   w          =  7.5 µm  – slot width
-#   C_g        =  3   µm  – coupling gap length
-#   cav_L      = 80   µm  – cavity length
-#   L_burried  =  5   µm  – trench width in y
-#   y_height   =  5   µm  – extra ground offset above slot
-#   h_burried  = 50   µm  – trench depth in z
-#   x_offset   = -200 µm  – cavity centre x position
-#   material   = PEC (Perfect Electrical Conductor)
-#   air        = etch material
 # =============================================================
 
 # -------------------------------------------------------------
 # VARIABLE DEFINITIONS
 # -------------------------------------------------------------
+# CPW Dimensions
 s          = 10e-6;     # signal conductor width   (m)
 w          = 7.5e-6;    # slot width                (m)
 C_g        = 3e-6;      # coupling gap length       (m)
 cav_L      = 80e-6;     # cavity length             (m)
+x_offset   = -200e-6;   # shifts the entire cavity (m)
+
+# Trench Dimensions
 L_burried  = 5e-6;      # trench width in y         (m)
 y_height   = 5e-6;      # ground offset above slot  (m)
 h_burried  = 50e-6;     # trench depth in z         (m)
-x_offset   = -200e-6;   # cavity centre x position     (m)
+
+# --- NEW: Substrate Bounds (Adjust these to fit your new substrate model!) ---
+sub_x_min  = -2000e-6;  
+sub_x_max  =  2000e-6;  
+sub_y_min  = -1000e-6;  
+sub_y_max  =  1000e-6;  
+
+# Materials
 material   = "PEC (Perfect Electrical Conductor)";
 air        = "etch";
 
-deleteall;
-
+# -------------------------------------------------------------
+# SAFELY DELETE OLD GEOMETRY 
+# (Warning: never use `deleteall;` unless you want to delete your FDTD region and Ports!)
+# -------------------------------------------------------------
+selectpartial("signal"); 
+selectpartial("GND"); 
+selectpartial("trench"); 
+selectpartial("air");
+delete;
 
 # -------------------------------------------------------------
 # SIGNAL LINE  (3 segments: left feed | cavity | right feed)
 # -------------------------------------------------------------
-# We centre the cavity at x = x_offset.
-# The cavity spans from x = x_offset - cav_L/2 to x_offset + cav_L/2.
-
 # Left feed
 add2drect;
-set("name","signal");
+set("name","signal_left");
 set("y min", -s/2);
 set("y max",  s/2);
-set("x min", -2000e-6);
+set("x min", sub_x_min);
 set("x max", x_offset - cav_L/2 - C_g);
 set("z", 0e-6);
 set("material", material);
 
 # Cavity segment
 add2drect;
-set("name","signal2");
+set("name","signal_cavity");
 set("y min", -s/2);
 set("y max",  s/2);
 set("x min", x_offset - cav_L/2);
@@ -65,25 +63,24 @@ set("material", material);
 
 # Right feed
 add2drect;
-set("name","signal3");
+set("name","signal_right");
 set("y min", -s/2);
 set("y max",  s/2);
 set("x min", x_offset + cav_L/2 + C_g);
-set("x max",  2000e-6);
+set("x max", sub_x_max);
 set("z", 0);
 set("material", material);
 
 # -------------------------------------------------------------
 # GROUND PLANES — surface layer (4 rectangles)
 # -------------------------------------------------------------
-
 # Lower ground — deep buried section
 add2drect;
 set("name","GND_down");
-set("y min", -1000e-6);
+set("y min", sub_y_min);
 set("y max", -(s/2 + w + y_height + L_burried));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", 0e-6);
 set("material", material);
 
@@ -92,18 +89,18 @@ add2drect;
 set("name","GND_down_inner");
 set("y min", -(s/2 + w + y_height));
 set("y max", -(s/2 + w));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", 0e-6);
 set("material", material);
 
 # Upper ground — deep buried section
 add2drect;
 set("name","GND_up");
-set("y max",  1000e-6);
+set("y max", sub_y_max);
 set("y min",  (s/2 + w + y_height + L_burried));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", 0e-6);
 set("material", material);
 
@@ -112,22 +109,21 @@ add2drect;
 set("name","GND_up_inner");
 set("y max",  (s/2 + w + y_height));
 set("y min",  (s/2 + w));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", 0e-6);
 set("material", material);
 
 # -------------------------------------------------------------
 # TRENCH SIDEWALLS — bottom faces (z-normal, buried in z)
 # -------------------------------------------------------------
-
 # Upper trench — bottom face (inner wall)
 add2drect;
 set("name","trench_upper_bot_inner");
 set("surface normal", 2);   # y-normal
 set("y",  (s/2 + w + y_height));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried/2);
 set("z span", h_burried);
 set("material", material);
@@ -137,8 +133,8 @@ add2drect;
 set("name","trench_upper_bot_outer");
 set("surface normal", 2);   # y-normal
 set("y",  (s/2 + w + y_height + L_burried));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried/2);
 set("z span", h_burried);
 set("material", material);
@@ -148,8 +144,8 @@ add2drect;
 set("name","trench_lower_bot_inner");
 set("surface normal", 2);   # y-normal
 set("y", -(s/2 + w + y_height));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried/2);
 set("z span", h_burried);
 set("material", material);
@@ -159,8 +155,8 @@ add2drect;
 set("name","trench_lower_bot_outer");
 set("surface normal", 2);   # y-normal
 set("y", -(s/2 + w + y_height + L_burried));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried/2);
 set("z span", h_burried);
 set("material", material);
@@ -168,14 +164,13 @@ set("material", material);
 # -------------------------------------------------------------
 # TRENCH HORIZONTAL FLOORS — metal at bottom of trench
 # -------------------------------------------------------------
-
 # Upper trench floor
 add2drect;
 set("name","trench_upper_floor");
 set("y min",  (s/2 + w + y_height));
 set("y max",  (s/2 + w + y_height + L_burried));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried);
 set("material", material);
 
@@ -184,33 +179,36 @@ add2drect;
 set("name","trench_lower_floor");
 set("y min", -(s/2 + w + y_height + L_burried));
 set("y max", -(s/2 + w + y_height));
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("z", -h_burried);
 set("material", material);
 
 # -------------------------------------------------------------
 # AIR-FILLED TRENCH VOLUMES
 # -------------------------------------------------------------
-
 # Upper air trench
 addrect;
-set("name","air1");
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("name","air1_trench");
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("y min",  (s/2 + w + y_height));
 set("y max",  (s/2 + w + y_height + L_burried));
 set("z min", -h_burried);
 set("z max",  0e-6);
 set("material", air);
+set("override mesh order from material database", 1);
+set("mesh order", 1); # CRITICAL: Forces air to overwrite silicon substrate
 
 # Lower air trench
 addrect;
-set("name","air2");
-set("x min", -2000e-6);
-set("x max",  2000e-6);
+set("name","air2_trench");
+set("x min", sub_x_min);
+set("x max", sub_x_max);
 set("y min", -(s/2 + w + y_height + L_burried));
 set("y max", -(s/2 + w + y_height));
 set("z min", -h_burried);
 set("z max",  0e-6);
 set("material", air);
+set("override mesh order from material database", 1);
+set("mesh order", 1); # CRITICAL: Forces air to overwrite silicon substrate
