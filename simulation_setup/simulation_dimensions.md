@@ -159,6 +159,7 @@ NOTE: y span (40 µm) covers signal s=10 µm + both slots w=7.5 µm = 25 µm tot
 ---
 
 ## 7. Mesh Override — mesh port2
+### General
 | Parameter       | Value  |
 |-----------------|--------|
 | override x mesh | No     |
@@ -167,36 +168,82 @@ NOTE: y span (40 µm) covers signal s=10 µm + both slots w=7.5 µm = 25 µm tot
 | override z mesh | Yes    |
 | dz              | 2 µm   |
 
-NOTE: Geometry not yet captured — send screenshot to verify.
+### Geometry
+| Parameter   | Value      |
+|-------------|------------|
+| x           | 50 µm      |
+| x span      | 1 µm       |
+| x min       | 49.5 µm    |
+| x max       | 50.5 µm    |
+| y           | 0 µm       |
+| y span      | 40 µm      |
+| y min       | -20 µm     |
+| y max       | +20 µm     |
+| z           | -24 µm     |
+| z span      | 52 µm      |
+| z min       | -50 µm     |
+| z max       | +2 µm      |
+| Relative coords | Yes    |
+
+NOTE: dy and dz updated from 0.5/1 µm to 2 µm each ✅ (applied fix). Geometry mirrors port 1 ✅.
 
 ---
 
 ## 8. Mesh Override — mesh x
+### General
 | Parameter       | Value   |
 |-----------------|---------|
 | override x mesh | Yes     |
-| dx              | 0.2 µm  |
-| override y mesh | No      |
-| override z mesh | No      |
+| dx              | 0.5 µm  |
+| override y/z mesh | No    |
 
-RECOMMENDATION: Shrink x span of this region to only ±5 µm around each
-coupling gap (two small regions), or increase dx → 1 µm to reduce
-simulation time dramatically.
+### Geometry
+| Parameter   | Value      |
+|-------------|------------|
+| x           | -200 µm    |
+| x span      | 120 µm     |
+| x min       | -260 µm    |
+| x max       | -140 µm    |
+| y           | 0 µm       |
+| y span      | 45 µm      |
+| y min       | -22.5 µm   |
+| y max       | +22.5 µm   |
+| z           | 0 µm       |
+| z span      | 2 µm       |
+| z min       | -1 µm      |
+| z max       | +1 µm      |
+| Relative coords | Yes    |
+
+NOTE: dx is 0.5 µm. This span (120 µm) covers the entire cavity (80 µm) plus coupling gaps (3 µm each) and extends further. This is a very large high-resolution mesh region.
+
+RECOMMENDATION: Shrink x span of this region to only ±5 µm around each coupling gap (creating two smaller mesh override regions instead of one large one) to reduce simulation time dramatically.
 
 ---
 
-## 9. Frequency Domain Monitor
+## 9. Frequency Domain Monitor (monitor)
+### General & Geometry
 | Parameter          | Value         |
 |--------------------|---------------|
-| Name               | monitor       |
+| Monitor type       | 2D Z-normal   |
+| x                  | -220 µm       |
+| x span             | 290 µm        |
+| y                  | 0 µm          |
+| y span             | 80 µm         |
+| z                  | -0.1 µm       |
+| Relative coords    | Yes           |
 | Simulation type    | All           |
 | Sample spacing     | Uniform       |
 | Use source limits  | Yes           |
-| Min frequency      | 0.1 THz       |
-| Max frequency      | 1.5 THz       |
 | Frequency points   | 201           |
 
----
+### Data to record & Advanced
+| Parameter          | Value         |
+|--------------------|---------------|
+| Standard Fourier   | Yes           |
+| Fields             | Ex, Ey, Ez, Hx, Hy, Hz |
+| Poynting & Power   | output power  |
+| Apodization        | None          |
+| Spatial interp.    | specified position |-
 
 ## Port Group Settings
 | Parameter        | Value  |
