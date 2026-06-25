@@ -1,0 +1,174 @@
+# Lumerical FDTD Simulation Dimensions
+# CPW Buried Trench Resonator — MSc Project
+# Last updated: 2026-06-25
+# Source: User screenshots from Lumerical FDTD GUI
+
+---
+
+## 1. Substrate (Rectangle object)
+| Parameter   | Value        |
+|-------------|--------------|
+| x           | 0 µm         |
+| x min       | -2000 µm     |
+| x max       | +2000 µm     |
+| x span      | 4000 µm      |
+| y           | 0 µm         |
+| y min       | -1000 µm     |
+| y max       | +1000 µm     |
+| y span      | 2000 µm      |
+| z           | -250 µm      |
+| z min       | -500 µm      |
+| z max       | 0 µm         |
+| z span      | 500 µm       |
+| Top surface | z = 0 (CPW metal plane) |
+
+---
+
+## 2. CPW Buried Trench (trench_geometry.lsf — user properties panel)
+| Parameter       | Symbol        | Value  | Unit |
+|-----------------|---------------|--------|------|
+| Signal width     | s             | 10     | µm   |
+| Slot width       | w             | 7.5    | µm   |
+| Coupling gap     | C_g           | 3      | µm   |
+| Cavity length    | cav_L         | 80     | µm   |
+| Trench width (y) | L_burried     | 5      | µm   |
+| Ground offset    | y_height      | 5      | µm   |
+| Trench depth (z) | h_burried     | 50     | µm   |
+| Cavity x-offset  | x_offset      | -150   | µm   |
+| Conductor        | material      | PEC (Perfect Electrical Conductor) |  |
+| Trench fill      | air           | etch   |      |
+
+Cavity spans from x = (x_offset - cav_L/2) = -190 µm to (x_offset + cav_L/2) = -110 µm.
+Left gap:  x = -193 µm to -190 µm (width = C_g = 3 µm)
+Right gap: x = -110 µm to -107 µm (width = C_g = 3 µm)
+
+---
+
+## 3. FDTD Simulation Region
+| Parameter             | Value        |
+|-----------------------|--------------|
+| Dimension             | 3D           |
+| Simulation time       | 100,000 fs (100 ps) |
+| Temperature           | 300 K        |
+| Background material   | Object defined dielectric |
+| Background index      | 1            |
+| x centre              | -150 µm      |
+| x min                 | -1000 µm     |
+| x max                 | +700 µm      |
+| x span                | 1700 µm      |
+| y centre              | 0 µm         |
+| y min                 | -200 µm      |
+| y max                 | +200 µm      |
+| y span                | 400 µm       |
+| z centre              | -200 µm      |
+| z min                 | -500 µm      |
+| z max                 | +100 µm      |
+| z span                | 600 µm       |
+
+---
+
+## 4. Port 1
+| Parameter  | Value     |
+|------------|-----------|
+| x          | -500 µm   |
+| x span     | 0         |
+| y          | 0 µm      |
+| y min      | -125 µm   |
+| y max      | +125 µm   |
+| y span     | 250 µm    |
+| z centre   | -55 µm    |
+| z min      | -210 µm   |
+| z max      | +100 µm   |
+| z span     | 310 µm    |
+
+---
+
+## 5. Port 2
+| Parameter  | Value     |
+|------------|-----------|
+| x          | +250 µm   |
+| x span     | 0         |
+| y          | 0 µm      |
+| y min      | -125 µm   |
+| y max      | +125 µm   |
+| y span     | 250 µm    |
+| z centre   | -10 µm    |
+| z min      | -210 µm   |
+| z max      | +190 µm   |
+| z span     | 400 µm    |
+
+NOTE: z max of Port 2 (190 µm) EXCEEDS the FDTD z max (100 µm).
+      This must be corrected to z max = 100 µm to prevent simulation crash.
+
+---
+
+## 6. Mesh Override — mesh port1
+| Parameter       | Value   |
+|-----------------|---------|
+| override x mesh | No      |
+| override y mesh | Yes     |
+| dy              | 0.5 µm  |
+| override z mesh | Yes     |
+| dz              | 1 µm    |
+
+RECOMMENDATION: Shrink geometry to y span = 30 µm, z span = 20 µm, and
+increase dy → 2 µm, dz → 2 µm to reduce simulation time.
+
+---
+
+## 7. Mesh Override — mesh port2
+| Parameter       | Value   |
+|-----------------|---------|
+| override x mesh | No      |
+| override y mesh | Yes     |
+| dy              | 0.5 µm  |
+| override z mesh | Yes     |
+| dz              | 1 µm    |
+
+RECOMMENDATION: Same as mesh port1.
+
+---
+
+## 8. Mesh Override — mesh x
+| Parameter       | Value   |
+|-----------------|---------|
+| override x mesh | Yes     |
+| dx              | 0.2 µm  |
+| override y mesh | No      |
+| override z mesh | No      |
+
+RECOMMENDATION: Shrink x span of this region to only ±5 µm around each
+coupling gap (two small regions), or increase dx → 1 µm to reduce
+simulation time dramatically.
+
+---
+
+## 9. Frequency Domain Monitor
+| Parameter          | Value         |
+|--------------------|---------------|
+| Name               | monitor       |
+| Simulation type    | All           |
+| Sample spacing     | Uniform       |
+| Use source limits  | Yes           |
+| Min frequency      | 0.1 THz       |
+| Max frequency      | 1.5 THz       |
+| Frequency points   | 201           |
+
+---
+
+## Port Group Settings
+| Parameter        | Value  |
+|------------------|--------|
+| Source port      | Port 1 |
+| Source mode      | Mode 1 |
+| Frequency points | 201    |
+| Calculate group delay | No |
+
+---
+
+## Notes / Known Issues
+- Port 2 z max (190 µm) exceeds FDTD z max (100 µm) — fix z max to 100 µm
+- mesh x dx=0.2 µm over large x span is the main cause of slow simulation
+- mesh port1/port2 dy=0.5 µm over 250 µm y span creates excessive cell count
+- FDTD region is not symmetric in x (centre at -150 µm, not 0)
+- Cavity is centred at x = -150 µm (set by x_offset in script)
