@@ -470,7 +470,11 @@ into \cref{eq:QL} to obtain $Q_L$.
 All electromagnetic simulations were performed in Ansys Lumerical
 FDTD~\cite{Lumerical2024}. The simulation geometry, mesh and analysis
 objects were defined using the Lumerical Scripting Language (LSF),
-enabling parameterised and reproducible setups.
+enabling parameterised and reproducible setups. The maximum FDTD simulation
+time was set to \SI{100}{\pico\second} (\num{100000}~fs) for all simulated
+geometries to ensure sufficient time for the high-Q resonant fields to
+decay, allowing the early auto-shutoff mechanism to trigger only when the
+fields reached the required threshold.
 
 \subsection{Simulation Domain and Boundary Conditions}
 
