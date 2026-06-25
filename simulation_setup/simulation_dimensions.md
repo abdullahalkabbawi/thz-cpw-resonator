@@ -108,30 +108,66 @@ Right gap: x = -160 µm to -157 µm (width = C_g = 3 µm)
 
 ---
 
-## 6. Mesh Override — mesh port1
-| Parameter       | Value   |
-|-----------------|---------|
-| override x mesh | No      |
-| override y mesh | Yes     |
-| dy              | 0.5 µm  |
-| override z mesh | Yes     |
-| dz              | 1 µm    |
+## 5b. Global Source Settings
+| Parameter               | Value         |
+|-------------------------|---------------|
+| Mode                    | Frequency/Wavelength |
+| Frequency start         | 0.1 THz       |
+| Frequency stop          | 1.5 THz       |
+| Pulse type              | Broadband     |
+| Center frequency        | 0.8 THz       |
+| Pulse length            | 1332.45 fs    |
+| Offset                  | 3777.91 fs    |
+| Bandwidth               | 1.4 THz       |
+| Eliminate discontinuities | Yes         |
+| Optimize for short pulse | Yes          |
+| Eliminate DC            | Yes           |
 
-RECOMMENDATION: Shrink geometry to y span = 30 µm, z span = 20 µm, and
-increase dy → 2 µm, dz → 2 µm to reduce simulation time.
+---
+
+## 6. Mesh Override — mesh port1
+### General
+| Parameter       | Value  |
+|-----------------|--------|
+| override x mesh | No     |
+| override y mesh | Yes    |
+| dy              | 2 µm   |
+| override z mesh | Yes    |
+| dz              | 2 µm   |
+
+### Geometry
+| Parameter   | Value      |
+|-------------|------------|
+| x           | -450 µm    |
+| x span      | 1 µm       |
+| x min       | -450.5 µm  |
+| x max       | -449.5 µm  |
+| y           | 0 µm       |
+| y span      | 40 µm      |
+| y min       | -20 µm     |
+| y max       | +20 µm     |
+| z           | -24 µm     |
+| z span      | 52 µm      |
+| z min       | -50 µm     |
+| z max       | +2 µm      |
+| Relative coords | Yes    |
+
+NOTE: y span (40 µm) covers signal s=10 µm + both slots w=7.5 µm = 25 µm total — good.
+      z span (52 µm) covers surface (z=0) down to trench depth h_burried=50 µm — good.
+      dy and dz updated from 0.5/1 µm to 2 µm each ✅ (applied fix)
 
 ---
 
 ## 7. Mesh Override — mesh port2
-| Parameter       | Value   |
-|-----------------|---------|
-| override x mesh | No      |
-| override y mesh | Yes     |
-| dy              | 0.5 µm  |
-| override z mesh | Yes     |
-| dz              | 1 µm    |
+| Parameter       | Value  |
+|-----------------|--------|
+| override x mesh | No     |
+| override y mesh | Yes    |
+| dy              | 2 µm   |
+| override z mesh | Yes    |
+| dz              | 2 µm   |
 
-RECOMMENDATION: Same as mesh port1.
+NOTE: Geometry not yet captured — send screenshot to verify.
 
 ---
 
