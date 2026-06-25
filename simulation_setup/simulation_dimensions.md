@@ -103,11 +103,8 @@ Right gap: x = -160 µm to -157 µm (width = C_g = 3 µm)
 | y span     | 250 µm    |
 | z centre   | -10 µm    |
 | z min      | -210 µm   |
-| z max      | +190 µm   |
-| z span     | 400 µm    |
-
-NOTE: z max of Port 2 (190 µm) EXCEEDS the FDTD z max (100 µm).
-      This must be corrected to z max = 100 µm to prevent simulation crash.
+| z max      | +100 µm   |
+| z span     | 310 µm    |
 
 ---
 
@@ -176,7 +173,7 @@ simulation time dramatically.
 ---
 
 ## Notes / Known Issues
-- Port 2 z max (190 µm) exceeds FDTD z max (100 µm) — fix z max to 100 µm
+- Port 2 corrected: z max set to 100 µm to match FDTD simulation region
 - mesh x dx=0.2 µm over large x span is the main cause of slow simulation
 - mesh port1/port2 dy=0.5 µm over 250 µm y span creates excessive cell count
 - FDTD region is not symmetric in x (centre at -150 µm, not 0)
