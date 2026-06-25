@@ -79,7 +79,7 @@ Right gap: x = -160 µm to -157 µm (width = C_g = 3 µm)
 ## 4. Port 1
 | Parameter  | Value     |
 |------------|-----------|
-| x          | -500 µm   |
+| x          | -450 µm   |
 | x span     | 0         |
 | y          | 0 µm      |
 | y min      | -125 µm   |
@@ -95,7 +95,7 @@ Right gap: x = -160 µm to -157 µm (width = C_g = 3 µm)
 ## 5. Port 2
 | Parameter  | Value     |
 |------------|-----------|
-| x          | +250 µm   |
+| x          | +50 µm    |
 | x span     | 0         |
 | y          | 0 µm      |
 | y min      | -125 µm   |
