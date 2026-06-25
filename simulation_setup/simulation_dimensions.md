@@ -261,8 +261,9 @@ NOTE: We can infer this is for the left coupling gap. The refined dx=0.2 µm com
 ---
 
 ## Notes / Known Issues
-- Port 2 corrected: z max set to 100 µm to match FDTD simulation region
-- mesh x dx=0.2 µm over large x span is the main cause of slow simulation
-- mesh port1/port2 dy=0.5 µm over 250 µm y span creates excessive cell count
-- FDTD region is not symmetric in x (centre at -150 µm, not 0)
-- Cavity is centred at x = -150 µm (set by x_offset in script)
+- ⚠️ **CRITICAL:** `z max` boundary condition is currently `Metal`. It should be `PML`. A metal lid 100 µm above the CPW will reflect radiated fields from the gaps and cause unphysical resonances.
+- ⚠️ Ensure Port 2 `z max` was updated to `100 µm` (or whatever FDTD z max is) so it doesn't exceed the simulation region.
+- ✅ PML layers fixed (reduced from 100).
+- ✅ Mesh x fixed (replaced by targeted gap meshes).
+- ✅ Mesh port1/2 fixed (dy=dz=2 µm).
+- ℹ️ FDTD region x-centre (-150 µm) is slightly offset from cavity x-centre (-200 µm), but this is fine as long as the structure is fully contained.
