@@ -8,14 +8,15 @@
 #   - Air-filled trench volumes (upper and lower trenches)
 #
 # Variable definitions (match Lumerical user properties panel):
-#   s          = 10  µm  – signal conductor width
-#   w          =  5  µm  – slot width
-#   C_g        =  3  µm  – coupling gap length
-#   cav_L      = 120 µm  – cavity length
-#   L_burried  =  5  µm  – trench width in y
-#   y_height   =  5  µm  – extra ground offset above slot
-#   h_burried  = 50  µm  – trench depth in z
-#   material   = PEC (Perfect Electric Conductor)
+#   s          = 10   µm  – signal conductor width
+#   w          =  7.5 µm  – slot width
+#   C_g        =  3   µm  – coupling gap length
+#   cav_L      = 80   µm  – cavity length
+#   L_burried  =  5   µm  – trench width in y
+#   y_height   =  5   µm  – extra ground offset above slot
+#   h_burried  = 50   µm  – trench depth in z
+#   x_offset   = -200 µm  – cavity centre x position
+#   material   = PEC (Perfect Electrical Conductor)
 #   air        = etch material
 # =============================================================
 
@@ -29,7 +30,7 @@ cav_L      = 80e-6;     # cavity length             (m)
 L_burried  = 5e-6;      # trench width in y         (m)
 y_height   = 5e-6;      # ground offset above slot  (m)
 h_burried  = 50e-6;     # trench depth in z         (m)
-x_offset   = -150e-6;   # shifts the entire cavity (m)
+x_offset   = -200e-6;   # cavity centre x position     (m)
 material   = "PEC (Perfect Electrical Conductor)";
 air        = "etch";
 

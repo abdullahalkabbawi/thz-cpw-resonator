@@ -43,13 +43,13 @@ the resonance frequency downward compared to an air substrate.
 | Trench width (y) | L_burried     | 5      | µm   |
 | Ground offset    | y_height      | 5      | µm   |
 | Trench depth (z) | h_burried     | 50     | µm   |
-| Cavity x-offset  | x_offset      | -150   | µm   |
+| Cavity x-offset  | x_offset      | -200   | µm   |
 | Conductor        | material      | PEC (Perfect Electrical Conductor) |  |
 | Trench fill      | air           | etch   |      |
 
-Cavity spans from x = (x_offset - cav_L/2) = -190 µm to (x_offset + cav_L/2) = -110 µm.
-Left gap:  x = -193 µm to -190 µm (width = C_g = 3 µm)
-Right gap: x = -110 µm to -107 µm (width = C_g = 3 µm)
+Cavity spans from x = (x_offset - cav_L/2) = -240 µm to (x_offset + cav_L/2) = -160 µm.
+Left gap:  x = -243 µm to -240 µm (width = C_g = 3 µm)
+Right gap: x = -160 µm to -157 µm (width = C_g = 3 µm)
 
 ---
 
