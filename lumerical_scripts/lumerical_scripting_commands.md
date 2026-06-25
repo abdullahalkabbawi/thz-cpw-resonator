@@ -411,3 +411,373 @@ Ansys Cloud Burst Compute™:
 ### FEEM & DGTD measurements
 * `modeexpansion`: Returns the mode expansion coefficients with respect to two FEEM solver results, or a FEEM solver result and a DGTD 2D frequency monitor result. 
 * `modeoverlap`: Returns the overlap between the respective mode profiles (modes) of two FEEM calculations, if given two FEEM solver result structs.
+
+## Far field projections
+### FDTD, MODE
+* `farfieldsettings` : Sets the parameters available in the Far field settings window for far field calculations.
+* `farfieldfilter` : Sets or gets the filter width for far field filter which is used to remove ripples in the far field projection due to clipping of the near fields.
+* `farfield2d` : Projects fields from a given power or field profile monitor or a rectilinear dataset to the far field in a 2D simulation. E intensity is returned.
+* `farfieldvector2d` : Farfieldvector2d is identical to farfield2d, however E field components in Cartesian coordinates (Ex, Ey and Ez) are returned.
+* `farfieldpolar2d` : Farfieldpolar2d is identical to farfield2d, however E field components in cylindrical coordinates (Er, Eθ and Ez) are returned.
+* `farfieldangle` : Returns the vector of angles, in degrees, corresponding to the data from farfield2d for a 2D simulation.
+* `farfield3d` : Projects a given power or field profile monitor or a rectilinear dataset to the far field in a 3D simulation. E intensity is returned.
+* `farfieldvector3d` : Farfieldvector3d is identical to farfield3d, however E field components in Cartesian coordinates (Ex, Ey and Ez) are returned.
+* `farfieldpolar3d` : Farfieldpolar3d is identical to farfield3d, however E field components in spherical coordinates (Er, Eθ and Eϕ) are returned.
+* `farfieldux` : Returns the matrix of ux corresponding to the far field data from farfield3d for a 3D simulation.
+* `farfielduy` : Returns the matrix of uy corresponding to the far field data from farfield3d for a 3D simulation.
+* `farfieldspherical` : Interpolates far field projection data from Cartensian to spherical coordinates: E(ux,uy) to E(θ,ϕ).
+* `farfieldexact2d` : Calculates the far field over a specified grid of positions.
+* `farfieldexact3d` : Calculates the far field at any specified grid of positions.
+* `farfieldexact` : Similar to farfieldexact2d and farfieldexact3d, however the far field is only evaluated at positions explicitly specified by the vector list.
+* `farfield2dintegrate` : Calculates the integral of the far field projection over some range of theta in 2D simulation.
+* `farfield3dintegrate` : Calculates the integral of the far field projection over a specified cone in 3D simulation.
+
+### DGTD
+* `near2far` : Calculates the far field at the specified points using the provided near field monitor data.
+* `createsphericalsurface` : Creates a triangulated spherical surface or a segmented circular arc.
+
+## Grating projections
+### FDTD, MODE
+* `grating` : Returns the fraction of transmitted power to each physical grating orders for a given simulation.
+* `gratingn` : Returns a vector of the grating order numbers.
+* `gratingm` : Returns a vector of the grating order numbers.
+* `gratingpolar` : Returns the relative strength of all physical grating orders in spherical coordinates.
+* `gratingvector` : Returns the relative strength of all physical grating orders in cartesian coordinates.
+* `gratingperiod1` : Returns grating period a 1 .
+* `gratingperiod2` : Returns grating period a 2 .
+* `gratingbloch1` : Returns bloch vector (k in_1 ).
+* `gratingbloch2` : Returns bloch vector (k in_2 ).
+* `gratingu1` : Returns first component of the unit vector u 1 .
+* `gratingu2` : Returns second component of the unit vector u 2 .
+* `gratingangle` : Returns the angle of each order.
+* `gratingordercount` : Returns the total number of supported grating numbers.
+
+### DGTD
+* `getperiodicity` : Returns the periodicity vector(s) associated with the active periodic boundary conditions in the specified solver.
+* `getsourcedirection` : Returns a unit vector in the direction of the specified source wave vector.
+* `gratingorders` : Returns a matrix data set with the propagating grating orders and and their corresponding grating angles.
+* `gratingprojection` : Returns a matrix data set with the propagating grating orders, grating angles and the relative power into each grating order.
+
+## Visualizing data
+Line and image plots are supported. These figures can be exported to jpeg images.
+
+### Plotting functions
+* `plot` : Makes line plots.
+* `plotxy` : Makes line plots, when data sets are sampled at different position vectors.
+* `polar` : Makes polar plots.
+* `polar2` : Makes polar plots, when data sets are sampled at different position vectors.
+* `polarimage` : Makes a 2D polar image plot.
+* `smithchart` : Makes an impedance Smith chart.
+* `histc` : Makes a histogram plot.
+* `bar` : Makes a bar chart.
+* `legend` : Adds a legend to a figure with line plots.
+* `image` : Makes 2D image plots.
+* `setplot` : Sets figure properties.
+* `visualize` : Sends data to the visualizer.
+* `add2visualizer` : Adds data to an existing visualizer
+* `vectorplot` : Makes vector plots.
+* `holdon` : Switches on the mode to hold multiple mathematical functions on the same figure.
+* `holdoff` : Switches off the mode to hold multiple mathematical functions on the same figure.
+
+### Miscellaneous plotting functions
+* `selectfigure` : Selects a figure.
+* `exportfigure` : Exports a figure.
+* `closeall` : Closes all figure windows. 
+
+## INTERCONNECT
+### Element library
+* `library` : Returns a list of elements available in the currently installed element libraries, including custom elements.
+* `addtolibrary` : Adds an element to the currently selected custom library.
+* `customlibrary` : Returns the path of the custom library.
+* `saveelement` : Saves an element to file.
+* `loadelement` : Loads an element from file.
+* `probe` : Places a probe analyzer at a specified port.
+* `loadcustom` : Redirects the location of the element library ‘Custom’ folder and reloads the contents of the folder.
+* `replacelibrary` : Replaces all instances of the current library in the Element Library.
+* `hideproperty` : Hides the ‘property’ of a given ‘element’.
+* `protectproperty` : Protects the 'property' of a given 'element'.
+* `hidecategory` : Hides all properties of a given ‘category' of a given ‘element’.
+* `annotateproperty` : Enables ‘property’ annotation on a given ‘element’.
+* `ispropertyactive` : Returns true if the property ‘property’ from element ‘element’ is active.
+* `parsebackannotation` : Parses the waveguide back annotation.
+* `parsewaveguidebackannotation` : Parses the waveguide back annotation at a given temperature in Celsius.
+
+### Design Kit Commands
+* `loaddesignkit` : Loads a design kit and directs its contents to a user defined path.
+* `enabledesignkit` : Enables a design kit in the Design Kits folder.
+* `disabledesignkit` : Disables a design kit in the Design Kits folder.
+* `removedesignkit` : Removes a design kit from the element library ‘Design kits’ folder.
+* `reloaddesignkit` : Reloads the contents of a design kit from the element library ‘Design kits’ folder.
+* `packagedesignkit` : Creates a design kit file from a Custom folder.
+* `installdesignkit` : Installs a design kit file to the Design Kits folder.
+* `uninstalldesignkit` : Uninstalls a design kit from the Design Kits folder.
+* `importlib` : Imports the .lib file for a CML in the Custom folder.
+* `exportlib` : Exports the .lib file for a CML in the Custom folder.
+* `renameport` : Renames the port name for a Compound or Scripted element.
+* `removecustom` : Removes a folder in the Custom folder in Element Library.
+
+### Measurements
+These commands allow users to validate/retrieve results from analyzers.
+* `validate` : Reruns the analysis of an analyzer.
+* `validateall` : Reruns the analysis of all analyzers in the simulation.
+
+These commands allow users to set the result for scripted elements and compound elements.
+* `setresult` : Sets the result of a Scripted or a Compound element.
+
+These commands allow users to get internal value for edacosimulation elements and N Port S-Parameter element.
+* `getresultdata` : Gets results from an analyzer as matrices.
+* `getvalue` : Gets an internal value for an ‘element’ internal ‘parameter’.
+* `setvalue` : Sets an internal value for an element internal parameter.
+
+These commands are used for creating scripted elements/ S-parameter element.
+* `popportdata`: Extracts the fist available data value from the input port.
+* `pushportdata` : Sends the data to the output port.
+* `cloneportdata` : Clones an existing data value.
+* `popportframe` : Returns a frame structure containing the input signal for a given input port.
+* `pushportframe` : Writes a frame structure containing the output signal for a given output port.
+* `getmonitorframe` : Reads the available frames from an analyzer input port.
+* `getmonitorwaveform` : Returns a structure containing a waveform from an analyzer input port.
+* `portdatasize` : Returns the number of data values available at the input port.
+* `setsparameter` : Sets the s-parameter between output and input port.
+* `importsparameter`: Imports the S-parameter data in the Script workspace to the S-parameter elements.
+* `setfir` : Initializes a FIR filter using the current s-parameters.
+* `seriir` : Initializes a IIR filter using the current s-parameters.
+* `getports` : Returns a list of ports in an element.
+
+These commands allow users to create user defined settings
+* `setsetting` : Sets the value a user defined setting.
+* `getsetting` : returns the value a user defined setting.
+
+These commands allow users to run optimization under user defined settings.
+* `runoptimization` : Runs optimization of a property from a chosen element under specified condition.
+
+These commands allow users to export the image of the current circuit schematic.
+* `exportimage` : Exports an image of the current circuit schematic.
+
+These commands allow users to construct a symmetric coding generator matrix.
+* `constructgeneratormatrix` : Constructs a symmetric coding generator matrix.
+
+These commands allow users to import a temperature map from Icepak simulation to the INTERCONNECT schematic design.
+* `importtemperaturemap`: Imports an Icepak data file to an INTERCONNECT schematic design.
+
+## Variables
+The following commands are used to create and access variables.
+* `=` : Assignment operator.
+* `:` : Array operator.
+* `[]` : Create matrix.
+* `%` : Create variable with space in the name
+* `linspace` : Creates a linear spaced array.
+* `matrix` : Creates a matrix filled with zeros.
+* `ones` : Creates a matrix filled with ones.
+* `zeros` : Creates a matrix filled with zeros.
+* `randmatrix` : Creates a matrix with all elements randomly set between 0 and 1
+* `randnmatrix` : Creates a matrix with all elements randomly distributed with mean 0 and standard distribution 1.
+* `histogram` : Create a matrix containing the histogram count of a yield analysis result.
+* `meshgridx` : Create a 2D meshgrid in x direction.
+* `meshgridy` : Create a 2D meshgrid in y direction.
+* `meshgrid3dx` : Create a 3D meshgrid in x direction.
+* `meshgrid3dy` : Create a 3D meshgrid in y direction.
+* `meshgrid3dz` : Create a 3D meshgrid in z direction.
+* `meshgrid4d` : Create a 4D meshgrid in any direction
+* `clear` : Clears all stored script variables from memory.
+* `clearfunctions` : Clears all stored functions.
+* `clearexcept` : Clears all workspace variables except the specified ones.
+* `print` : Prints a string.
+* `workspace` : Returns a string of all the currently defined scripting variables.
+* `Matrix elements` : How to assign and access matrix elements.
+* `Pre-defined constants` : List of pre-defined constants.
+* `eye` : Creates identity matrix
+* `struct` : Creates unstructured dataset
+* `cell` : Creates cell array variable
+
+The following commands are used to create, access and manipulate datasets. For an introduction to datasets, see the dataset introduction page.
+* `rectilineardataset` : Creates an empty rectilinear dataset associated with the coordinates x/y/z.
+* `matrixdataset` : Creates an empty matrix dataset.
+* `unstructureddataset` : Creates an empty unstructured dataset associated with the coordinates x/y/z and the connectivity matrix
+* `addparameter` : Adds a parameter to an existing dataset.
+* `addattribute` : Adds an attribute to an existing dataset.
+* `getresult` : Gets the dataset results from a monitor or analyzer.
+* `getparameter` : Get a parameter from an existing dataset.
+* `getattribute` : Get an attribute from an existing dataset.
+* `deleteattribute` : Deletes an attribute from an existing dataset.
+* `getmeshcontours` : Get information about the contours between different domains in an unstructured (finite-element) dataset.
+* `cscsparsediff` : Determine the sparse differences between two rectilinear Lumerical datasets.
+
+The following commands are INTERCONNECT specific.
+* `global` : Returns the value of a global variable specified. Global variables are root element properties.
+* `simulation` : Returns bandwidth and channel related simulation properties.
+
+## Functions
+Standard mathematical and matrix functions are listed in this page. Users have also the option to define their own custom functions using user defined functions
+
+### Trigonometric and complex
+* `sin` : Trigonometric sin function.
+* `cos` : Trigonometric cos function.
+* `tan` : Trigonometric tan function.
+* `asin` : Inverse trigonometric sin function.
+* `acos` : Inverse trigonometric cos function.
+* `atan` : Inverse trigonometric tan function.
+* `atan2` : Same as atan, but returns angle in correct quadrant.
+* `real` : Returns the real part of variable
+* `imag` : Returns the imaginary part of variable
+* `conj` : Complex conjugate
+* `abs` : Absolute value
+* `angle` : Phase of a complex number.
+* `unwrap` : Removes phase difference of more than 2π.
+
+### Logarithmic, exponential and power
+* `log` : The natural logarithm. Input can be complex or negative.
+* `log10` : The log, base 10. Input can be complex or negative.
+* `sqrt` : The square root.
+* `exp` : The exponential.
+
+### Matrix functions
+* `size` : Returns the dimensions of a matrix.
+* `length` : Returns the total number of elements in a matrix.
+* `pinch` : Remove singleton dimensions from a matrix.
+* `sum` : The sum of a matrix.
+* `prod` : The product of elements in a matrix.
+* `max` : The max value in a matrix.
+* `min` : The min value in a matrix.
+* `amax` : The maximum value in a specified dimension of a matrix.
+* `amin` : The minimum value in a specified dimension of a matrix.
+* `dot` : The dot product of two vectors.
+* `cross` : The cross product of two vectors.
+* `flip` : Flip a matrix in one dimension.
+* `interp` : Linear interpolation function.
+* `spline` : Cubic spline interpolation.
+* `polyfit` : Polynomial fit.
+* `normpdf` : Evaluate the normal (Gaussian) probability density function (PDF)
+* `pearson4pdf` : Evaluate the Pearson IV probability density function (PDF)
+* `lorentzpdf`: Evaluate the Lorentz (Cauchy) probability density function (PDF)
+* `fitnormpdf` : Fit to the normal (Gaussian) probability density function (PDF)
+* `fitpearson4pdf` : Fit to the Pearson IV probability density function (PDF)
+* `fitlorentzpdf`: Fit to the Lorentz (Cauchy) probability density function (PDF).
+* `integrate` : Integrate a matrix.
+* `integrate2` : Integrate a matrix, ignore singleton dimensions.
+* `find` : Find values that satisfy a condition in a matrix.
+* `findpeaks` : Find peaks in a matrix.
+* `findresonances` : Find the frequency, decay constant and Q-factor of resonances extracted from the time trace of a signal.
+* `transpose` : Transpose a matrix.
+* `ctranspose` : Transpose a matrix, and do complex conjugate.
+* `mult` : Perform matrix multiplication of two or more matrices.
+* `reshape` : Reshape the matrix to have different dimensions conserving the overall product of the dimensions.
+* `eig` : Calculate the eigenvalues and/or eigenvectors of a matrix.
+* `permute` : Rearrange the dimensions of a matrix.
+* `inv` : Calculate the inverse of a matrix.
+* `solve` : Solve a system of linear equations.
+* `mean` : Return the mean value of a matrix.
+* `var` : Returns the variance.
+* `std` : Returns the standard deviance.
+* `mapfind` : Returns a string value associated to specified point, given a file containing a map of values to a string.
+* `svd` : Returns a 3-cell array for the decomposition.
+* `chol` : Returns the lower triangular matrix.
+* `norm` : Returns the matrix y to the L2-norm.
+* `cov` : Calculates the covariance matrix.
+* `corrcoef` : Calculates the correlation matrix.
+* `scorrcoef` : Generates a spatial correlation matrix.
+* `crosscorrelation`: Calculates the cross-correlation of time domain signal.
+* `corrtransf` : Calculates the transformation matrix.
+* `chpts` : Samples function on a Chebyshev grid.
+* `chebin` : Returns Chebyshev interpolation of a sampled function.
+* `chebpol` : Chebpol is similar to chebin command, but it offers additional control over the interpolation process as it allows to specify the polynomial order.
+* `chebpol1` : Returns the first derivative of Chebyshev polynomials of a function sampled on the Chebyshev grid.
+* `sort` : Sorts a matrix in ascending or descending order.
+* `sortmap` : Sorts matrices in more complex ways than simply ascending or descending order of the array.
+* `conv2` : Convolves two 2-dimensional arrays.
+
+### String functions
+* `num2str` : Convert number to a string.
+* `str2num` : Convert a string into a floating point number.
+* `eval` : Execute string containing Lumerical scripting language.
+* `feval` : Run a Lumerical script file.
+* `length` : Returns the total length of the string.
+* `substring` : Returns a substring of a string, as a specified position and length.
+* `findstring` : Returns the position of a substring in a string.
+* `replace` : Replaces a part of a string with another, at a specified position.
+* `replacestring` : Replaces all instances of a substring with another string.
+* `splitstring` : Split a single long string into a cell (string) array based on a delimiting character.
+* `upper` : Convert a string to upper case.
+* `lower` : Convert a string to lower case.
+* `toscript` : Returns a string containing the equivalent script of a generate variable.
+
+### Frequency and time-domain
+* `fft` : Fast Fourier transform.
+* `fftw` : Returns the angular frequency vector.
+* `fftk` : Returns the spatial wavevector kx.
+* `invfft` : Inverse fft.
+* `czt` : Chirped z-transform.
+* `sroughness` : Returns a matrix containing a rough surface characterized by an RMS amplitude.
+
+### Line and polygon functions
+* `polyarea` : Returns the area of a polygon.
+* `centroid` : Returns the center of mass of a polygon.
+* `polyintersect` : Determines if two polygons intersect.
+* `inpoly` : Determines if a series of points are inside our outside a polygon.
+* `polyclean`: Return a simplified version of a polygon.
+* `polygrow` : Expands or shrinks a polygon by a specified amount.
+* `polyand` : Combines two polygons into one with an and operation.
+* `polyor` : Combines two polygons into one with an or operation.
+* `polydiff` : Combines two polygons into one by taking the difference.
+* `polystencil`: Returns the vertices of polygons formed by intersection of structures and specified z-normal planes
+* `polyxor` : Combines two polygons into one with a xor operation.
+* `lineintersect` : Returns the intersection of line segments.
+* `linecross` : Determines if line segments cross each other.
+
+### Colorimetry
+* `colormatchfunction` : Returns a set of color matching functions.
+* `colormatch` : Calculates the X, Y, Z tristimulus values for a set of color matching functions.
+* `colormatchxy` : Calculates the x, y chromaticity values for a set of color matching functions.
+* `colormatchuv` : Calculates the u, v chromaticity values for a set of color matching functions.
+
+### Multilayer stack calculations
+* `stackrt` : Calculates the reflection and transmission of a plane wave through a multi-layer stack using the analytic transfer matrix method.
+* `stackfield` : Calculates the fields within a multilayer stack illuminated from below by a plane wave using the analytic transfer matrix method.
+* `stackdipole` : Analytically calculates the dipole emission for a multilayer stack.
+* `stackpurcell`: Analytically calculates the Purcell factor and far-field emission power density for a multilayer stack
+
+### Multi-quantum well calculations
+* `mqwgain` : Calculates gain and spontaneous emission in multiple quantum well structures
+* `mqwindex` : Calculates complex index, gain, and spontaneous emission in multiple quantum well structures
+* `buildmqwmaterial` : Returns material properties of the type and format required by mqwgain and mqwindex
+
+### Ion implant doping calculations
+* `implantrange` : Calculates the range of the doping profile from ion implant.
+* `implantstraggle` : Calculates the straggle of the doping profile from ion implant.
+* `implantskewness` : Calculates the skewness of the doping profile from ion implant.
+* `implantkurtosis` : Calculates the kurtosis of the doping profile from ion implant.
+* `implantlateralscatter` : Calculates the lateral scatter of the doping profile from ion implant.
+
+### Miscellaneous
+* `ceil` : Round up.
+* `floor` : Round down.
+* `mod` : Modulus after division.
+* `round` : Rounds to the nearest integer.
+* `rand` : Returns a uniformly distributed random number between 0 and 1.
+* `lognrnd` : Returns a lognormal distributed random number.
+* `randn` : Returns a normally distributed random number.
+* `randreset` : Resets the random number seed.
+* `randpearson4` : Generates random number based on Pearson type IV distribution.
+* `finite` : Determines if a number is finite or NaN.
+* `solar` : Returns the solar power spectrum
+* `all` : Returns 1 if all of the specified matrix entries are nonzero and returns 0 otherwise.
+* `any` : Returns 1 if any of the specified matrix entries are nonzero and returns 0 otherwise.
+* `interptri` : Interpolates a data set from a triangular to a rectilinear grid.
+* `interptet` : Interpolates a data set in 3D from a tetrahedral to a rectangular grid.
+* `quadtri` : Returns approximated integration (first order quadrature) of data on a 2D finite element mesh.
+* `quadtet` : Returns approximated integration of data on a 3D finite element mesh.
+* `precision` : Returns truncated value to a user specified precision.
+* `erf` : Returns the error function.
+* `erfc` : Returns the complementary error function.
+* `erfinv` : Returns the inverse error function.
+* `erfcinv` : Returns the inverse complementary error function.
+* `unique` : Returns an array containing all unique values in a given matrix.
+* `uniquevertices` : Given a matrix of vertices, returns a matrix of unique vertices with differences in values larger than a specified tolerance.
+* `icht` : Takes the Chebyshev interpolation coefficients and returns the corresponding function samples
+* `dcht` : Returns the Chebyshev interpolation coefficients
+* `besselj` : Bessel function of the first kind
+* `bessely` : Bessel function of the second kind
+* `besseli` : Modified Bessel function of the first kind
+* `besselk` : Modified Bessel function of the second kind
+* `mie3d` : Analytically calculates scattering, absorption, and extinction coefficients of a spherical particle.
+* `mie3ds12` : Analytically calculates scattered farfield functions of a spherical particle.
