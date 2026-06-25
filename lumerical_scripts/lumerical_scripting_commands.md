@@ -781,3 +781,294 @@ Standard mathematical and matrix functions are listed in this page. Users have a
 * `besselk` : Modified Bessel function of the second kind
 * `mie3d` : Analytically calculates scattering, absorption, and extinction coefficients of a spherical particle.
 * `mie3ds12` : Analytically calculates scattered farfield functions of a spherical particle.
+
+## Operators
+Standard mathematical and string operators.
+
+### Algebraic operators
+* `*` : Multiplication. (Ex: y = x * z;)
+* `/` : Division. (Ex: y = x / z;)
+* `+` : Addition. (Ex: y = x + z;)
+* `-` : Subtraction. (Ex: y = x – z;)
+* `-` : Negative. (Ex: y = -x;)
+* `^` : Power. (Ex: y = x^3;) In expression A^B, if B is complex, the phase of A is evaluated from -pi to pi.
+* `\` : Solves a system of linear equations.
+
+### Logical and relational operators
+* `==` : Comparison.
+* `almostequal` : Almost equal comparison operator.
+* `!=` : Not equal.
+* `<=` : Less than or equal to.
+* `>=` : Greater than or equal to.
+* `<` : Less than.
+* `>` : Greater than.
+* `&` : AND.
+* `and` : AND.
+* `|` : OR.
+* `or` : OR.
+* `!` : NOT.
+* `~` : NOT.
+
+### Dataset operators
+* `.` : Retrieve the parameters and attributes of datasets.
+
+### String operators
+* `"` : Create a string variable.
+* `'` : Create a string variable.
+* `+` : Add strings
+* `endl` : end of line character.
+
+### Output to screen
+* `?` : Display output on screen.
+* `#` script file comments : Comment script files with #
+
+## Loop and conditional statements
+The scripting language currently supports FOR loops and IF statements. Other control structures such as while loops or case statements must be constructed from these.
+
+* `for` : For loop.
+* `if` : If statement.
+* `while` : A for loop must be used. See the for loop section.
+* `try` : Allows the execution of the script to continue even though an error occurs within a block.
+
+## System
+System commands for interacting with the OS file system, running script files, etc.
+
+### System commands
+* `newproject` : Creates a new layout environment.
+* `new` : Creates a new simulation project file.
+* `save` : Saves an fsp file or lms file.
+* `load` : Loads an fsp file or lms file.
+* `del` or `rm` : Deletes a file.
+* `ls` or `dir` : Lists the files in a directory.
+* `cd` : Changes the working directory.
+* `pwd` : Returns the current working directory.
+* `cp` : Copy a file.
+* `mv` : Move a file.
+* `exit` : Exit the application.
+* `system` : Run command prompts.
+* `fileexists` : Check if a file exists.
+* `currentfilename` : Get the current filename.
+* `currentscriptname` : Get the current script filename.
+* `filebasename` : Get the file base name from a string.
+* `filedirectory` : Get the file directory from a string.
+* `fileextension` : Get the file extension from a string.
+* `copytoclipboard` : Copy to system clipboard.
+* `pastefromclipboard` : Paste from system clipboard.
+* `hide` : Hides the GUI.
+* `show` : Shows the GUI.
+* `cls`/`clc`: Clears Script Prompt.
+* `history`: Returns the history of commands entered into Script Prompt.
+* `clearlogwindow` : Clears output log window.
+* `version` : Returns the current version of the application.
+* `versionfile` : Returns the current version of the file loaded by the application.
+* `fileexpand` : Expands a file name by replacing any environmental variables.
+* `autosaveon` : Automatically saves current project before running a simulation.
+* `autosaveoff` : The project will not be saved automatically before running a simulation.
+* `read` : Read data from a text file as a string.
+* `exist` : Check the existence of a variable, script or script file.
+* `exporthtml` : Generates an html file describing an element.
+* `help` : Opens the Lumerical knowledge base using the default web browser.
+* `logmessage` : This function sends messages from scripted elements to the INTERCONNECT output window.
+* `operatingsystem` : Returns the current operating system.
+* `setconnectionrouting` : Sets the connection routing for a given connection.
+* `findproperty` : Returns a cell containing all elements in the circuit that have a certain property.
+* `findpropertyvalue` : Returns a cell containing all elements in the circuit that have a certain property with a certain value.
+* `refresh` : Reloads the current project.
+* `runinitialize` : Initializes a step by step simulation.
+* `runstep` : Runs a single simulation step.
+* `runfinalize` : Finalizes a step by step simulation.
+* `waituntildone` : This function only returns after the current simulation is done.
+* `runstartupscripts` : Runs the start-up scripts.
+* `now`: Display the current UNIX time in seconds.
+
+### Encrypt script commands
+* `encryptscript` : Saves a copy of the specified script file in an encrypted format.
+
+### List of script commands
+* `getcommands` : Returns a list of available script commands.
+
+### Starting and stopping scripts
+* `scriptautorun` : Disable or enable running script files automatically by typing the script name.
+* `getpath` : Get the current path.
+* `addpath` : Add a directory to the path.
+* `clearpath` : Remove"directory" from the script path if it is there.
+* `which` : Where in the path is a file.
+* `pause` : Pauses program for a time.
+* `break` : Will stop a script file from executing at that line.
+* `ESCAPE key` : To interrupt a script file from running or a long block of commands from executing
+
+### Checking status
+* `issweep` : Checks if the simulation is in sweep mode.
+* `isstruct` : Determines whether input is a structure.
+* `iscell` : Determines whether input is a cell.
+* `isfield` : Determines whether input contains filed.
+* `getfield` : Returns the value of a field from a structure.
+* `setfield` : Assigns a value to a structure input field.
+
+### Debugging
+* `debug` : Opens the debug utility window.
+
+## File formats
+* `format` : Set the precision of the script interpreter.
+
+### CSV (Comma separated value) files
+* `exportcsvresults` : Exports simulation results to comma separated value formatted files.
+
+### fld (field) files
+* `asapexport` : Export monitor data to fld file.
+* `asapload` : Load data from fld file.
+* `asapimport` : Import data from fld file to Import source.
+
+### GDSII
+The following commands can be used to import and export GDSII files.
+* `gdsopen` : Opens a GDSII file for writing.
+* `gdsclose` : Closes a GDSII file for writing.
+* `gdsbegincell` : Starts a new cell in a GDSII file.
+* `gdsendcell` : Finishes a cell in a GDSII file.
+* `gdsaddpoly` : Adds a polygon element to a GDSII file stream.
+* `gdsaddcircle` : Adds an approximation of a circle to a GDSII file stream.
+* `gdsaddrect` : Adds a rectangle element to a GDSII file stream.
+* `gdsaddellipse`: Adds an ellipse element to a GDSII file stream
+* `gdsaddref` : Adds a reference to another cell to the current cell in the GDSII file stream.
+* `gdsaddpath` : Adds a segmented line path with a fixed width.
+* `gdsaddstencil`: Adds one or more polygon elements to the current gds cell based on a slice formed by the intersection of a given z-plane and structures with a specific material and a partial name.
+* `gdsaddtext` : Adds a text notation to a gds file at a specified position.
+* `gdsimport` : Imports a cell from a .gds file into the layout environment.
+* `gdsaddmultipoly`: Creates a set of polygons characterized by their vertices and places them by their reference onto a given set of 2D coordinates in a GDSII file.
+* `savegdsfile` : Creates a GDS file with the pattern geometry from a layer builder object.
+* `ocgetgeometry` : Generates a gds file for a given cell from Synopsys OptoCompiler™ and returns a structure with port information.
+
+### HDF5 files
+The following commands can be used to read Hierarchical Format Data, version 5 (HDF5) files.
+* `h5info` : Returns information about the structure of an HDF5 file.
+* `h5read` : Reads data from an HDF5 file.
+* `h5readattr` : Reads attributes from an HDF5 file.
+* `h5write` : Writes data to an HDF5 file.
+* `h5writeattr` : Writes attributes to an HDF5 file.
+
+### JSON files
+* `jsonsave` : Saves data to a JSON file.
+* `jsonsaves` : Saves a struct to s JSON format string.
+* `jsonload` : Returns the value of a JSON file.
+* `jsonloads` : Loads a JSON format string to the Script Workspace.
+* `jsonread`: Reads the value of a JSON file to a variable.
+* `jsonreads`: Reads the value of a JSON list string to a variable.
+* `jsonvalidate`: Validates a JSON file against a JSON schema.
+* `jsonwrite`: Writes Script Workspace variables to a JSON file.
+* `jsonwrites`: Writes a struct to a JSON list string. 
+
+### TDR files
+* `tdrinfo`: Reads a Sentaurus TDR file and outputs its information as a struct.
+* `tdraddregion`: Add a specific region from a geometry in a Sentaurus TDR file into Lumerical.
+* `tdrwritedataset`: Writes a Lumerical dataset to a Sentaurus TDR file.
+* `tdrimportdataset`: Imports a dataset from a Sentaurus TDR file into a corresponding currently selected Lumerical simulation object.
+
+### LDF files
+* `loaddata` : Load variables or d-card data from ldf file.
+* `savedata` : Save variables to ldf file.
+* `savedcard` : Saves d-card data to an ldf file.
+
+### Lookup tables
+The following commands can be used to generate and modify lookup tables.
+* `lookupclose` : Closes a file previously created with a lookupopen command.
+* `lookupopen` : Opens a file to write a lookup table.
+* `lookupread` : Finds the nearest extracted value from a file containing a lookup table of design and extracted parameters.
+* `lookupwrite` : Writes to a lookup table a design and an extracted parameter pair.
+* `lookupreadtable` : Returns an interpolated matrix from a file containing a lookup table of design and extracted parameters.
+* `lookupreadvalue` : Finds the value from a file containing a lookup table of design and extracted parameters.
+* `lookupreadnportsparameter` : Returns an interpolated s-parameter cell from a file containing a lookup table of design and extracted parameters.
+* `lookupappend` : Supports direct insertion of a new association into an existing table
+* `insert` : Inserts an object into an existing cell
+
+### MAT (Matlab) file
+Data from a Lumerical script can be exported to MATLAB (.mat) files for further analysis. Similarly, data stored in a .mat file can be loaded into Lumerical's scripting environment
+* `matlabload` : Loads from MATLAB .mat file into workspace.
+* `matlabsave` : Save workspace data to a Matlab .mat file.
+* `matlabsavelegacy` : Save workspace data to a legacy Matlab .mat file format.
+
+### Process files
+* `saveprocessfile`: Exports the process information in a layer builder object as a process file.
+
+### PSF folder
+* `setpsfoutput` : Specifies the location of the PSF folder
+
+### SPICE Netlist
+* `importnetlist` : Imports an optical SPICE netlist.
+* `exportnetlist` : Export a netlist for the current circuit.
+
+### STL files
+* `readstltriangles` : Imports vertex data from an STL file.
+
+### Tecplot files
+* `tecplotread` : Imports data from tecplot format files.
+
+### Text files or standard output
+* `readdata` : Read text files.
+* `write` : Writes strings to text files or to standard output (Linux).
+
+### Touchstone files
+* `touchstoneload` : Loads passive network data from a file containing Touchstone file formatted s-parameters.
+
+### VTK files
+* `vtksave` : Save in .vtk format
+
+## User-defined GUIs
+Custom GUIs can be created with the following commands.
+
+* `message` : Creates a message window that displays some text.
+* `newwizard` : Used to create a new user defined wizard.
+* `newwizardpage` : This creates a page for the wizard.
+* `wizardwidget` : Adds a new widget to the current wizard window.
+* `runwizard` : Runs the wizard and returns a value indicating which button was pressed.
+* `wizardgetdata` : Returns data entered into a specific widget.
+* `killwizard` : This closes the wizard window.
+* `wizardoption` : Sets some options for wizard widgets and labels.
+* `fileopendialog` : Calls the standard windows file open dialog.
+* `filesavedialog` : Calls the standard windows file save dialog.
+
+Typically, a wizard will be created with the following steps
+1. Open a new wizard with `newwizard`
+2. Add a new wizard page with `newwizardpage`
+3. Add widgets to the wizard page with `wizardwidget`
+4. Call `runwizard` to run the wizard
+5. Use `wizardgetdata` to obtain values entered into widgets by the user
+Depending on the values returned by `runwizard` , the wizard can be closed with `killwizard` , or a new wizard page is started with `newwizardpage`.
+
+## Interoperability
+This topic lists all commands related to Lumerical interoperability with other Lumerical products and 3rd party tools such as MATLAB, Python and Zemax.
+
+### Lumerical automation API
+* `opensession` : Open server session in any Lumerical product from your current simulation(client)
+* `closesession` : Close opened session
+* `putremotedata` : Send a variable from the client workspace to the server workspace
+* `getremotedata` : Get a variable from the server workspace to the client workspace
+* `evalremote` : Send and execute script command(s) on the server
+
+### Matlab automation API (used in Matlab)
+* `appopen` : Open Lumerical session from Matlab
+* `appclose` : Close opened Lumerical session from Matlab
+* `appevalscript` : Send Lumerical script command(s) from Matlab to the Lumerical and execute
+* `appgetvar` : Get a variable from Lumerical workspace to Matlab workspace
+* `appputvar` : Send a variable to Lumerical workspace from Matlab workspace
+
+### MATLAB functions (used in Lumerical)
+* `matlabsave` : Save workspace data to a Matlab .mat file.
+* `matlabsavelegacy` : Save workspace data to a legacy Matlab .mat file format.
+* `matlab` : Execute a MATLAB command
+* `matlabget` : Get a variable from the MATLAB workspace
+* `matlabput` : Send a variable to the MATLAB workspace
+* `matlabload` : Load from MATLAB .mat file into workspace.
+
+### Python API (lumapi module commands)
+Essentially all LSF functions work as methods with the Python API. For more information on importing the lumapi modules, and passing data between environments see Automation API overview.
+* `lumapi.eval`: Executes a string as Lumerical scripting language.
+* `lumapi.getv`: Gets a variable from the Lumerical Script Workspace.
+* `lumapi.putv`: Sends a variable from python environment to Lumerical Script Workspace.
+
+### Zemax Interface
+* `zbfread` : Zbfread reads a Zemax zbf file and adds the data into structure array that will be available in the script workspace for further processing
+* `zbfwrite` : Writes a 4D dataset into Zemax zbf file in the current directory. Data written into zbf file: Ex, Ey, Ez, x, y, z frequency, wavelength, index
+* `zbfexport` : Exports data from a frequency field or field and power monitor to Zemax *.zbf file. This command can be also used to export data from a d-card to Zemax file.
+* `zbfload` : Loads data from Zemax zbf file into a d-card called "zbf_data".
+* `zbf2read`: Read from a Zemax .zbf2 beam file and import it into Lumerical products.
+* `zbf2write`: Writes a dataset into a Zemax .zbf2 file in the specified directory.
