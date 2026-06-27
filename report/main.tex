@@ -1000,6 +1000,26 @@ Mode 1 exhibits an effective index of $n_{\mathrm{eff}} = 2.912 + 0.164i$ with a
     \caption{FDTD port mode list for the trenched resonator, highlighting the effective index and propagation losses of the two primary supported modes.}
     \label{fig:trench_mode_list}
 \end{figure}
+
+\subsubsection{Substrate Comparison: GaAs vs. Si}
+
+To evaluate the broader applicability of the trench geometry and assess its performance across different material platforms, a comparative study is established between the baseline Gallium Arsenide (GaAs) substrate and a high-resistivity Silicon (Si) substrate. The trench resonator will be evaluated on both substrates using identical geometric specifications (\SI{3}{\micro\metre} capacitor gap and the optimal \SI{30}{\micro\metre} trench depth). 
+
+\Cref{tab:substrate_comparison} outlines the comparison of the resonance parameters. By isolating the substrate material as the sole variable, this analysis aims to determine the extent to which the trenching technique mitigates the intrinsic dielectric losses specific to each material. A corresponding spectral plot will also be generated to visually compare the transmission profiles and quality factors of the GaAs and Si trenched resonators.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Substrate Material} & \boldmath$f_0$ \textbf{(\si{\tera\hertz})} & \textbf{Peak} \boldmath$|S_{21}|^2$ & \boldmath$\Delta f$ \textbf{(\si{\giga\hertz})} & \boldmath$Q_L$ \\
+        \midrule
+        Gallium Arsenide (GaAs) & 0.5993 & 0.4956 & 21.03 & 28.5 \\
+        High-Resistivity Silicon (Si) & -- & -- & -- & -- \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparative performance of the trenched CPW resonator (\SI{3}{\micro\metre} gap, \SI{30}{\micro\metre} depth) implemented on GaAs versus Si substrates. (Si data pending FDTD extraction).}
+    \label{tab:substrate_comparison}
+\end{table}
 % ============================================================
 % 7. DISCUSSION
 % ============================================================
