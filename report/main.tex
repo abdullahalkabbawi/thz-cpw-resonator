@@ -474,7 +474,7 @@ enabling parameterised and reproducible setups. The maximum FDTD simulation
 time was set to \SI{100}{\pico\second} (\num{100000}~fs) for all simulated
 geometries to ensure sufficient time for the high-Q resonant fields to
 decay, allowing the early auto-shutoff mechanism to trigger only when the
-fields reached the required threshold.
+fields reached the required threshold. The simulation recorded data over exactly 301 frequency points across the simulated bandwidth to provide a highly resolved spectral response.
 
 \subsection{Simulation Domain and Boundary Conditions}
 
@@ -519,8 +519,7 @@ each coupling structure to resolve sub-micrometre features:
     \end{tabular}
 \end{table}
 
-Fine mesh was applied only in the coupling regions to limit the total
-cell count and simulation runtime.
+Fine mesh was applied exclusively around the two coupling gaps. This highly localised meshing strategy was explicitly chosen to ensure fast simulation times while maintaining sufficient numerical accuracy for reliable results.
 
 \subsection{Data Processing}
 
