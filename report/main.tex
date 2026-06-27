@@ -951,6 +951,25 @@ According to interface participation models developed by Calusine \textit{et al.
 
 Furthermore, Saleh \textit{et al.}~\cite{Saleh2026} demonstrated that even within trenches, initial native oxide growth on the newly exposed substrate surfaces can exponentially degrade internal quality factors. Consequently, future physical fabrication of this trenched architecture could significantly benefit from the application of non-oxidising capping layers, such as Self-Assembled Monolayers (SAMs), to the trench walls. These monolayers suppress oxide regrowth and ensure the preservation of the enhanced coherence times achieved through trenching~\cite{Saleh2026}.
 
+\subsubsection{Trench Depth Analysis}
+
+To further investigate the effect of the trench on the resonator performance and confirm the $10g$ depth rule experimentally, a parametric sweep of the trench depth ($h_{\mathrm{buried}}$) was performed. \Cref{tab:trench_depth_sweep} summarises the extracted resonance parameters for trench depths of 30, 50, and \SI{70}{\micro\metre}.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{ccccc}
+        \toprule
+        \textbf{Trench Depth} (\si{\micro\metre}) & \boldmath$f_0$ \textbf{(\si{\tera\hertz})} & \textbf{Peak} \boldmath$|S_{21}|^2$ & \boldmath$\Delta f$ \textbf{(\si{\giga\hertz})} & \boldmath$Q_L$ \\
+        \midrule
+        30 & -- & -- & -- & -- \\
+        50 & -- & -- & -- & -- \\
+        70 & -- & -- & -- & -- \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparison of extracted resonance parameters for varying trench depths. Values are pending extraction from FDTD transmission data.}
+    \label{tab:trench_depth_sweep}
+\end{table}
+
 \subsubsection{Port Mode Analysis}
 
 To fully understand the excitation of the trenched cavity, the eigenmodes supported by the injection port were analysed. \Cref{fig:trench_mode_profile} shows the spatial distribution of the electric field intensity for the primary injected mode. The mode profile vividly illustrates how the electromagnetic fields are tightly confined within the etched trench volume and the capacitive gap, validating the premise that the trench geometry removes the high-loss GaAs substrate from the most intense regions of the modal field.
