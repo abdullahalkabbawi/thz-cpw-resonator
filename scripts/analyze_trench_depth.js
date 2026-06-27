@@ -10,7 +10,13 @@ function analyze(filePath, label) {
         if (parts.length >= 2) {
             let f = parseFloat(parts[0]);
             let y = parseFloat(parts[1]);
-            if (f >= 0.5 && f <= 0.7) {
+            
+            // convert to THz if in Hz
+            if (f > 1e11) {
+                f = f / 1e12;
+            }
+            
+            if (f >= 0.4 && f <= 0.8) {
                 freqs.push(f);
                 s21s.push(y);
             }
@@ -48,5 +54,5 @@ function analyze(filePath, label) {
 }
 
 analyze('data/trench_30um_depth_3um_gap_S21.csv', '30 um Depth');
-analyze('data/trench_3um_capacitor_gap.csv', '50 um Depth');
+analyze('data/trench_50um_depth_v2_S21.csv', '50 um Depth (v2)');
 analyze('data/trench_70um_depth_3um_gap_S21.csv', '70 um Depth');

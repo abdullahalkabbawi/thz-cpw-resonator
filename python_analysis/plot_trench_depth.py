@@ -66,7 +66,7 @@ def extract_q_from_spline(freq, s21_sq, label):
 # Load files
 datasets = [
     ("../data/trench_30um_depth_3um_gap_S21.csv", "30 \u00b5m Depth"),
-    ("../data/trench_3um_capacitor_gap.csv", "50 \u00b5m Depth"),
+    ("../data/trench_50um_depth_v2_S21.csv", "50 \u00b5m Depth (v2)"),
     ("../data/trench_70um_depth_3um_gap_S21.csv", "70 \u00b5m Depth")
 ]
 
@@ -77,6 +77,10 @@ for i, (path, label) in enumerate(datasets):
     df = pd.read_csv(path, comment='#')
     freq = df.iloc[:, 0].values
     s21 = df.iloc[:, 1].values
+    
+    # Convert from Hz to THz if needed
+    if np.max(freq) > 1e11:
+        freq = freq / 1e12
     
     f_fine, s21_fine, f0, ql = extract_q_from_spline(freq, s21, label)
     
