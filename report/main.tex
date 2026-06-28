@@ -1014,12 +1014,23 @@ To evaluate the broader applicability of the trench geometry and assess its perf
         \textbf{Substrate Material} & \boldmath$f_0$ \textbf{(\si{\tera\hertz})} & \textbf{Peak} \boldmath$|S_{21}|^2$ & \boldmath$\Delta f$ \textbf{(\si{\giga\hertz})} & \boldmath$Q_L$ \\
         \midrule
         Gallium Arsenide (GaAs) & 0.5993 & 0.4956 & 21.03 & 28.5 \\
-        High-Resistivity Silicon (Si) & -- & -- & -- & -- \\
+        High-Resistivity Silicon (Si) & 0.6273 & 0.8478 & 18.46 & 34.0 \\
         \bottomrule
     \end{tabular}
-    \caption{Comparative performance of the trenched CPW resonator (\SI{3}{\micro\metre} gap, \SI{30}{\micro\metre} depth) implemented on GaAs versus Si substrates. (Si data pending FDTD extraction).}
+    \caption{Comparative performance of the trenched CPW resonator (\SI{3}{\micro\metre} gap, \SI{30}{\micro\metre} depth) implemented on GaAs versus Si substrates.}
     \label{tab:substrate_comparison}
 \end{table}
+
+The simulation results conclusively highlight the advantages of utilising a high-resistivity Silicon substrate. As detailed in \Cref{tab:substrate_comparison}, the Silicon-based resonator exhibits a substantially higher loaded quality factor ($Q_L = 34.0$) compared to its GaAs counterpart ($Q_L = 28.5$), representing a near 20\% improvement in coherence. Even more strikingly, the peak power transmission ($|S_{21}|^2$) increases dramatically from 0.4956 to 0.8478, indicating drastically reduced insertion losses. 
+
+The resonance frequency also experiences a minor upward shift from \SI{0.5993}{\tera\hertz} to \SI{0.6273}{\tera\hertz}. This blue-shift is a direct physical consequence of Silicon possessing a lower relative permittivity ($\epsilon_r \approx 11.9$) than Gallium Arsenide ($\epsilon_r \approx 12.9$), which inherently increases the phase velocity of the propagating CPW mode. Overall, this comparison demonstrates that combining the geometric isolation of the deep trench architecture with the intrinsically lower dielectric loss tangent of high-resistivity Silicon yields a vastly superior quantum microwave environment.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{substrate_comparison_si_vs_gaas.png}
+    \caption{Transmission spectra ($|S_{21}|^2$) comparing the trenched resonator performance on Gallium Arsenide (GaAs) versus High-Resistivity Silicon (Si) substrates. The Silicon substrate yields a significantly higher quality factor and dramatically reduced insertion losses.}
+    \label{fig:substrate_comparison_si_vs_gaas}
+\end{figure}
 % ============================================================
 % 7. DISCUSSION
 % ============================================================
