@@ -53,5 +53,5 @@ function analyze(filePath, label) {
     console.log(`QL: ${ql.toFixed(2)}\n`);
 }
 
-analyze('data/trench_30um_depth_3um_gap_S21.csv', 'GaAs Substrate (30um trench)');
-analyze('data/trench_30um_si_S21.csv', 'Si Substrate (30um trench)');
+analyze('data/trench_50um_depth_v2_S21.csv', 'GaAs Substrate (50um trench)');
+analyze('data/trench_50um_si_S21.csv', 'Si Substrate (50um trench)');

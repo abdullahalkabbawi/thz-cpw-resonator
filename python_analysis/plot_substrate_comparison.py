@@ -47,8 +47,8 @@ def extract_q_from_spline(freq, s21_sq, label):
     return f_fine, s21_fine, f0, ql
 
 datasets = [
-    ("../data/trench_30um_depth_3um_gap_S21.csv", "GaAs Substrate"),
-    ("../data/trench_30um_si_S21.csv", "High-Resistivity Si Substrate")
+    ("../data/trench_50um_depth_v2_S21.csv", "GaAs Substrate"),
+    ("../data/trench_50um_si_S21.csv", "High-Resistivity Si Substrate")
 ]
 
 plt.figure(figsize=(10, 6))
@@ -70,7 +70,7 @@ for i, (path, label) in enumerate(datasets):
 plt.xlim(0.4, 0.8)
 plt.xlabel("Frequency (THz)")
 plt.ylabel("$|S_{21}|^2$")
-plt.title("Substrate Comparison: GaAs vs Si (30 µm Trench Depth)")
+plt.title("Substrate Comparison: GaAs vs Si (50 µm Trench Depth)")
 plt.legend()
 plt.grid(True, which='both', linestyle='--', alpha=0.6)
 plt.tight_layout()
