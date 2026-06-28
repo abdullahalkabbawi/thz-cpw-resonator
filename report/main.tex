@@ -1025,7 +1025,7 @@ The simulation results conclusively highlight the advantages of utilising a high
 
 The resonance frequency also experiences a minor upward shift from \SI{0.5993}{\tera\hertz} to \SI{0.6273}{\tera\hertz}. This blue-shift is a direct physical consequence of Silicon possessing a lower relative permittivity ($\epsilon_r \approx 11.9$) than Gallium Arsenide ($\epsilon_r \approx 12.9$), which inherently increases the phase velocity of the propagating CPW mode. 
 
-To further corroborate these enhancements, an FDTD port mode analysis was conducted on the Silicon trench geometry to evaluate the fundamental transmission channel. While the optimal propagating mode in the GaAs trenched geometry suffered from a propagation loss of \SI{0.106}{\decibel/\milli\metre}, the Silicon substrate essentially eliminates this attenuation. At the target resonance frequency of \SI{0.6273}{\tera\hertz}, the extracted propagation loss for the Silicon trench mode is an astonishingly low \SI{0.00138}{\decibel/\milli\metre}---a nearly 80-fold reduction. This near-elimination of transmission line attenuation (\cref{fig:si_substrate_propagation_loss}) perfectly substantiates the significantly enhanced $S_{21}$ peak and superior $Q_L$ observed in the full 3D resonator simulation. Overall, this comparison demonstrates that combining the geometric isolation of the deep trench architecture with the intrinsically lower dielectric loss tangent of high-resistivity Silicon yields a vastly superior quantum microwave environment.
+To further corroborate these enhancements, an FDTD port mode analysis was conducted on the Silicon trench geometry to evaluate the fundamental transmission channel. While the optimal propagating mode in the GaAs trenched geometry suffered from a propagation loss of \SI{0.106}{\decibel/\milli\metre}, the Silicon substrate essentially eliminates this attenuation. At the target resonance frequency of \SI{0.6273}{\tera\hertz}, the extracted propagation loss for the Silicon trench mode is an astonishingly low \SI{0.00138}{\decibel/\milli\metre}---a nearly 80-fold reduction. This near-elimination of transmission line attenuation (\cref{fig:substrate_loss_comparison}) perfectly substantiates the significantly enhanced $S_{21}$ peak and superior $Q_L$ observed in the full 3D resonator simulation. Overall, this comparison demonstrates that combining the geometric isolation of the deep trench architecture with the intrinsically lower dielectric loss tangent of high-resistivity Silicon yields a vastly superior quantum microwave environment.
 
 \begin{figure}[htbp]
     \centering
@@ -1036,9 +1036,9 @@ To further corroborate these enhancements, an FDTD port mode analysis was conduc
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{si_substrate_propagation_loss.png}
-    \caption{High-resolution spline interpolation of the FDTD port mode propagation loss for the high-resistivity Silicon substrate. At the resonance frequency of \SI{0.6273}{\tera\hertz}, the loss is reduced to \SI{0.00138}{\decibel/\milli\metre}.}
-    \label{fig:si_substrate_propagation_loss}
+    \includegraphics[width=0.9\textwidth]{substrate_loss_comparison.png}
+    \caption{High-resolution spline interpolation of the FDTD port mode propagation loss, comparing the optimal transmission modes for the GaAs and High-Resistivity Si substrates. The logarithmic scale vividly illustrates the near two orders of magnitude reduction in attenuation achieved by switching to Silicon.}
+    \label{fig:substrate_loss_comparison}
 \end{figure}
 % ============================================================
 % 7. DISCUSSION
