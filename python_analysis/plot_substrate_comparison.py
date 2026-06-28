@@ -64,7 +64,7 @@ for i, (path, label) in enumerate(datasets):
     f_fine, s21_fine, f0, ql = extract_q_from_spline(freq, s21, label)
     
     mask = (freq >= 0.4) & (freq <= 0.8)
-    plt.scatter(freq[mask], s21[mask], color=colors[i], s=15, alpha=0.6)
+    plt.scatter(freq[mask], s21[mask], color=colors[i], s=15, alpha=0.4)
     plt.plot(f_fine, s21_fine, color=colors[i], label=f"{label} (Q = {ql:.1f})")
 
 plt.xlim(0.4, 0.8)
@@ -77,5 +77,5 @@ plt.tight_layout()
 
 os.makedirs("../figures", exist_ok=True)
 save_path = "../figures/substrate_comparison_si_vs_gaas.png"
-plt.savefig(save_path, dpi=300)
-print(f"Saved plot to {save_path}")
+plt.savefig(save_path, dpi=600)
+print(f"Saved highly-resolved S21 plot to {save_path}")
