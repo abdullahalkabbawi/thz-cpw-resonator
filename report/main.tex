@@ -991,14 +991,13 @@ To fully understand the excitation of the trenched cavity, the eigenmodes suppor
     \label{fig:trench_mode_profile}
 \end{figure}
 
-The FDTD mode solver identified two dominant propagating modes, as detailed in \cref{fig:trench_mode_list}. 
-Mode 1 exhibits an effective index of $n_{\mathrm{eff}} = 2.912 + 0.164i$ with a relatively high propagation loss of \SI{2.987}{\decibel/\milli\metre}. By contrast, Mode 2 features an effective index of $n_{\mathrm{eff}} = 2.699 + 0.0058i$, which closely matches the theoretical end-correction fit of $n_{\mathrm{eff}} = 2.68$ calculated in \cref{eq:fit_neff}. Crucially, Mode 2 experiences a dramatically lower propagation loss (\SI{0.106}{\decibel/\milli\metre}), demonstrating the existence of a highly efficient transmission channel when the mode properly couples into the trench geometry.
+The FDTD mode solver identified two dominant propagating modes. Mode 1 exhibits an effective index of $n_{\mathrm{eff}} = 2.912 + 0.164i$ with a relatively high propagation loss of \SI{2.987}{\decibel/\milli\metre}. By contrast, Mode 2 features an effective index of $n_{\mathrm{eff}} = 2.699 + 0.0058i$, which closely matches the theoretical end-correction fit of $n_{\mathrm{eff}} = 2.68$ calculated in \cref{eq:fit_neff}. Crucially, Mode 2 experiences a dramatically lower propagation loss (\SI{0.106}{\decibel/\milli\metre}), demonstrating the existence of a highly efficient transmission channel when the mode properly couples into the trench geometry.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{mode_list_trenched.png}
-    \caption{FDTD port mode list for the trenched resonator, highlighting the effective index and propagation losses of the two primary supported modes.}
-    \label{fig:trench_mode_list}
+    \includegraphics[width=0.9\textwidth]{substrate_loss_comparison.png}
+    \caption{High-resolution spline interpolation of the FDTD port mode propagation loss, comparing the optimal transmission modes for the GaAs and High-Resistivity Si substrates. The logarithmic scale vividly illustrates the near two orders of magnitude reduction in attenuation achieved by switching to Silicon.}
+    \label{fig:substrate_loss_comparison}
 \end{figure}
 
 \subsubsection{Substrate Comparison: GaAs vs. Si}
@@ -1032,13 +1031,6 @@ To further corroborate these enhancements, an FDTD port mode analysis was conduc
     \includegraphics[width=0.9\textwidth]{substrate_comparison_si_vs_gaas.png}
     \caption{Transmission spectra ($|S_{21}|^2$) comparing the trenched resonator performance on Gallium Arsenide (GaAs) versus High-Resistivity Silicon (Si) substrates. The Silicon substrate yields a significantly higher quality factor and dramatically reduced insertion losses.}
     \label{fig:substrate_comparison_si_vs_gaas}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{substrate_loss_comparison.png}
-    \caption{High-resolution spline interpolation of the FDTD port mode propagation loss, comparing the optimal transmission modes for the GaAs and High-Resistivity Si substrates. The logarithmic scale vividly illustrates the near two orders of magnitude reduction in attenuation achieved by switching to Silicon.}
-    \label{fig:substrate_loss_comparison}
 \end{figure}
 % ============================================================
 % 7. DISCUSSION
