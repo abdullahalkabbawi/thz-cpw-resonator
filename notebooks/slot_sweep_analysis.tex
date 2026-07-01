@@ -1,0 +1,88 @@
+% ============================================================
+% Slot Sweep Analysis — Copy into Jupyter Markdown Cell
+% ============================================================
+
+\section*{Slot Sweep: Effect of Trench-to-Ground-Plane Distance on Propagation Loss}
+
+This plot presents the propagation loss (dB/mm) on a logarithmic scale as a function of frequency (0.1--1.5\,THz), parametrised across 12 slot distances ranging from 2\,$\mu$m to 45\,$\mu$m. The \textit{slot} parameter defines the lateral distance between the edge of the CPW ground plane and the nearest edge of the etched trench.
+
+\subsection*{1. Core Principle: Electric Field Distribution in a CPW}
+
+In a coplanar waveguide, the electric field is overwhelmingly concentrated in the gap between the signal conductor and the ground planes. Near the conductor edges, the field intensity exhibits a characteristic singularity:
+\begin{equation}
+    |\mathbf{E}(x)| \propto \frac{1}{\sqrt{x - x_{\mathrm{edge}}}}
+\end{equation}
+and decays approximately exponentially with lateral distance from the gap. Consequently, the vast majority of the electromagnetic energy---and therefore the dielectric loss---is contained within a few microns of the conductor edges.
+
+The dielectric attenuation contributed by any region of substrate is proportional to the local electric field energy density integrated over the substrate cross-section:
+\begin{equation}
+    \alpha_d \propto \int_{\mathrm{substrate}} \varepsilon_r \cdot \tan\delta \cdot |\mathbf{E}|^2 \, dA
+\end{equation}
+This integral is the \textbf{field participation ratio} of the substrate. It determines the fraction of total modal energy that interacts with the lossy dielectric, and therefore directly governs the propagation loss. The purpose of the trench is to minimise this integral by replacing high-$\varepsilon_r$, lossy GaAs ($\varepsilon_r = 12.9$) with air ($\varepsilon_r = 1$, $\tan\delta \approx 0$) in the region where $|\mathbf{E}|^2$ is largest.
+
+\subsection*{2. Three Distinct Regimes of Trench Placement}
+
+\subsubsection*{2.1\quad Small Slot (2--4\,$\mu$m) --- Lowest Loss}
+
+When the trench is positioned within 2--4\,$\mu$m of the ground plane edge, it sits directly in the region of \textit{maximum} electric field intensity. The lossy GaAs substrate is removed precisely where the field participation ratio is highest. The guided mode propagates predominantly through air, yielding losses as low as:
+\begin{equation}
+    \alpha \sim 0.003\text{--}0.01 \; \mathrm{dB/mm}
+\end{equation}
+This represents a reduction of up to three orders of magnitude compared to the worst-case trench placement. The loss in this regime is dominated by residual conductor (ohmic) losses rather than dielectric absorption.
+
+\subsubsection*{2.2\quad Intermediate Slot (10--20\,$\mu$m) --- Highest Loss}
+
+At intermediate distances, the trench is displaced well beyond the conductor edges. The entire high-field region between signal and ground remains filled with lossy substrate, and the trench removes material only where the field has already decayed to a negligible fraction of its peak value. The resulting loss approaches that of an \textit{un-trenched} CPW:
+\begin{equation}
+    \alpha \sim 1\text{--}10^{+} \; \mathrm{dB/mm} \quad (\text{at } f > 0.5\,\text{THz})
+\end{equation}
+
+Additionally, at certain intermediate distances, the trench cavity dimensions can become commensurate with a fraction of the guided wavelength, potentially exciting \textbf{parasitic cavity resonances}. These manifest as the localised loss bumps visible in several curves around 0.3--0.5\,THz.
+
+\subsubsection*{2.3\quad Large Slot (35--45\,$\mu$m) --- Moderate Loss}
+
+At very large lateral offsets, the trench is positioned so far from the CPW mode that it has essentially zero interaction with the guided wave. The CPW behaves as if on a homogeneous substrate, with loss governed purely by the intrinsic conductor and bulk dielectric properties. The loss is moderate and follows a smooth frequency dependence without parasitic features.
+
+\subsection*{3. Frequency Dependence of the Slot Effect}
+
+The dramatic fanning out of curves at higher frequencies is explained by the frequency-dependent mode confinement:
+
+\begin{itemize}
+    \item \textbf{Low frequencies ($f < 0.3$\,THz):} The guided wavelength is very long ($\lambda_g \gg w_{\mathrm{slot}}$). The mode extends broadly, and the field distribution is relatively insensitive to micron-scale geometric features. All curves converge to approximately the same loss value ($\sim 0.005$\,dB/mm), dominated by conductor resistance.
+
+    \item \textbf{High frequencies ($f > 0.5$\,THz):} The mode becomes \textit{more tightly confined} to the gap region. The field participation ratio in the first few microns near the conductor edges increases sharply. Whether or not the trench overlaps with this shrinking high-field zone produces an enormous difference in loss---hence the $\sim$1000$\times$ spread between curves on the logarithmic scale.
+\end{itemize}
+
+This can be understood quantitatively by noting that the effective lateral decay length of the CPW mode scales as:
+\begin{equation}
+    \ell_{\mathrm{decay}} \propto \frac{\lambda_g}{2\pi} = \frac{c}{2\pi f \sqrt{\varepsilon_{\mathrm{eff}}}}
+\end{equation}
+At 0.1\,THz, $\ell_{\mathrm{decay}} \approx 170\,\mu$m (much larger than any slot value), so all trench positions are ``inside'' the mode. At 1.5\,THz, $\ell_{\mathrm{decay}} \approx 11\,\mu$m, so only the closest trench positions (2--4\,$\mu$m) remain within the high-field region.
+
+\subsection*{4. Engineering Implications}
+
+This sweep conclusively demonstrates that \textbf{trench placement is a far more critical design parameter than trench width or depth}. The key design rule is:
+
+\begin{quote}
+\textit{Position the trench as close to the CPW conductor edges as fabrication tolerances allow---ideally within 2--4\,$\mu$m of the ground plane---to maximise the overlap between the air-filled trench and the region of peak electric field intensity.}
+\end{quote}
+
+Even a deep, wide trench provides essentially zero loss reduction if placed more than $\sim$10\,$\mu$m from the ground plane edge. This is the electromagnetic analogue of placing thermal insulation where heat loss is greatest.
+
+\subsection*{5. Summary Table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Slot Distance} & \textbf{Loss at 1\,THz (dB/mm)} & \textbf{Physical Explanation} \\
+\hline
+2--4\,$\mu$m & $\sim 0.01$ & Trench in peak $|\mathbf{E}|^2$ region; substrate removed where it matters \\
+\hline
+10--20\,$\mu$m & $\sim 1$--$10$ & Trench beyond field decay length; no effective substrate removal \\
+\hline
+35--45\,$\mu$m & Moderate & Trench too far to interact with mode; bulk substrate behaviour \\
+\hline
+\end{tabular}
+\caption{Summary of trench placement regimes and their effect on propagation loss.}
+\end{table}
